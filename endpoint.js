@@ -97,7 +97,7 @@ class InterceptedEndpoint extends Endpoint {
 
     const its = this.interceptors;
 
-    if (its.length > 0) {
+    if (its && its.length > 0) {
       json.interceptors = its.map(i => i.toJSON());
     }
 
