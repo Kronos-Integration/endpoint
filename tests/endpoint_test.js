@@ -50,17 +50,20 @@ describe('endpoint', () => {
   describe('connecting', () => {
 
     describe('initial', () => {
-      const ep1 = new endpoint.SendEndpoint('ep1', nameIt('o1'));
+      const se = new endpoint.SendEndpoint('se', nameIt('o1'));
 
-      it('not isConnected', () => assert.isFalse(ep1.isConnected));
+      it('not isConnected', () => assert.isFalse(se.isConnected));
+      it('json', () => assert.deepEqual(se.toJSON(), {
+        "out": true
+      }));
     });
 
     describe('interceptors send', () => {
       describe('initially', () => {
-        const ep1 = new endpoint.SendEndpoint('ep1', nameIt('o1'));
-        it('empty interceptors', () => assert.deepEqual(ep1.interceptors, []));
-        it('no firstInterceptor', () => assert.isUndefined(ep1.firstInterceptor));
-        it('no lastInterceptor', () => assert.isUndefined(ep1.lastInterceptor));
+        const se = new endpoint.SendEndpoint('se', nameIt('o1'));
+        it('empty interceptors', () => assert.deepEqual(se.interceptors, []));
+        it('no firstInterceptor', () => assert.isUndefined(se.firstInterceptor));
+        it('no lastInterceptor', () => assert.isUndefined(se.lastInterceptor));
       });
 
       describe('set/get array', () => {
@@ -178,24 +181,24 @@ describe('endpoint', () => {
     });
 
     describe('connecting', () => {
-      const ep1 = new endpoint.SendEndpoint('ep1', nameIt('o1'));
-      const ep2 = new endpoint.ReceiveEndpoint('ep2', nameIt('o2'));
+      const se = new endpoint.SendEndpoint('se', nameIt('ss'));
+      const re = new endpoint.ReceiveEndpoint('re', nameIt('rs'));
 
-      ep1.connected = ep2;
-      it('isConnected', () => assert.isTrue(ep1.isConnected));
-      it('has otherEnd', () => assert.equal(ep1.otherEnd, ep2));
+      se.connected = re;
+      it('isConnected', () => assert.isTrue(se.isConnected));
+      it('has otherEnd', () => assert.equal(se.otherEnd, re));
 
       describe('with interceptor', () => {
-        const in1 = new Interceptor(ep1);
-        ep1.injectNext(in1);
+        const in1 = new Interceptor(se);
+        se.injectNext(in1);
 
-        it('still isConnected', () => assert.isTrue(ep1.isConnected));
+        it('still isConnected', () => assert.isTrue(se.isConnected));
         it('interceptor also isConnected', () => assert.isTrue(in1.isConnected));
-        it('has otherEnd', () => assert.equal(ep1.otherEnd, ep2));
+        it('has otherEnd', () => assert.equal(se.otherEnd, re));
 
         describe('remove', () => {
-          ep1.removeNext();
-          it('connected', () => assert.equal(ep1.connected, ep2));
+          se.removeNext();
+          it('connected', () => assert.equal(se.connected, re));
         });
       });
     });

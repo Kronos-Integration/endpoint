@@ -1,7 +1,7 @@
 {
   "name": "kronos-endpoint",
   "version": "0.0.0-semantic-release",
-  "description": "",
+  "description": "named communication points inside of kronos",
   "main": "endpoint.js",
   "keywords": [],
   "scripts": {
