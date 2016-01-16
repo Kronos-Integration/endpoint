@@ -95,9 +95,10 @@ class InterceptedEndpoint extends Endpoint {
   toJSON() {
     const json = super.toJSON();
 
-    const its = this.interceptors.map(i => i.toJSON());
+    const its = this.interceptors;
+
     if (its.length > 0) {
-      json.interceptors = its
+      json.interceptors = its.map(i => i.toJSON());
     }
 
     return json;
