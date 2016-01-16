@@ -1,0 +1,48 @@
+{
+  "name": "kronos-endpoint",
+  "version": "0.0.0-semantic-release",
+  "description": "",
+  "main": "endpoint.js",
+  "keywords": [],
+  "scripts": {
+    "cover": "node ./node_modules/istanbul/lib/cli.js cover --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --R spec --U exports tests",
+    "doc": "jsdoc lib/*.js",
+    "test": "mocha tests/*_test.js",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kronos-Integration/kronos-endpoint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kronos-Integration/kronos-endpoint/issues"
+  },
+  "homepage": "https://github.com/Kronos-Integration/kronos-endpoint#readme",
+  "dependencies": {
+    "kronos-interceptor": "^1.0.1"
+  },
+  "devDependencies": {
+    "chai": "3.4.1",
+    "cz-conventional-changelog": "^1.1.5",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.4",
+    "semantic-release": "6.1.0",
+    "kronos-test-interceptor": "^1.6.1"
+  },
+  "contributors": [{
+    "name": "Torsten Link",
+    "email": "torstenlink@gmx.de"
+  }, {
+    "name": "Markus Felten",
+    "email": "markus.felten@gmx.de"
+  }],
+  "license": "BSD-2-Clause",
+  "engines": {
+    "node": ">=4.2.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
