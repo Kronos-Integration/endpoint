@@ -30,7 +30,7 @@ function testReceive(name, ep, value, hops, cb) {
       }).then(response => {
         const exp = {
           value: value
-        }
+        };
         if (hops) {
           exp.hops = hops;
         }
