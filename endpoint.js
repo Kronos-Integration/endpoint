@@ -76,8 +76,8 @@ class InterceptedEndpoint extends Endpoint {
 
   /**
    * set the interceptors
-   * a connected chain from array element 0 over all entries up to the las element in the array
-   * is formed.
+   * a connected chain from array element 0 over all entries up to the last element
+   * in the array is formed.
    * Additionally firstInterceptor and lastInterceptor are set.
    * @param newInterceptors {Array}
    */
@@ -94,7 +94,6 @@ class InterceptedEndpoint extends Endpoint {
 
   toJSON() {
     const json = super.toJSON();
-
     const its = this.interceptors;
 
     if (its && its.length > 0) {
