@@ -85,12 +85,12 @@ describe('endpoint', () => {
           });
         });
 
-        const ic1 = new kti.TestInterceptor(ep1, {
+        const ic1 = new kti.TestInterceptor({
           name: 'ic1'
-        });
-        const ic2 = new kti.TestInterceptor(ep1, {
+        }, ep1);
+        const ic2 = new kti.TestInterceptor({
           name: 'ic2'
-        });
+        }, ep1);
 
         ep1.interceptors = [ic1, ic2];
 
@@ -115,9 +115,9 @@ describe('endpoint', () => {
           const ep2 = new endpoint.ReceiveEndpoint('ep2', nameIt('o1'));
 
           ep1.connected = ep2;
-          const ic1 = new kti.TestInterceptor(ep1, {
+          const ic1 = new kti.TestInterceptor({
             name: 'ic1'
-          });
+          }, ep1);
           ep1.interceptors = [ic1];
 
           ep1.interceptors = [];
@@ -140,19 +140,19 @@ describe('endpoint', () => {
       re.receive = kti.testResponseHandler;
 
       testReceive('passes without', se, 3, undefined, done => {
-        const ic1 = new kti.TestInterceptor(re, {
+        const ic1 = new kti.TestInterceptor({
           name: 'ic1'
-        });
-        const ic2 = new kti.TestInterceptor(re, {
+        }, re);
+        const ic2 = new kti.TestInterceptor({
           name: 'ic2'
-        });
+        }, re);
 
         re.interceptors = [ic1, ic2];
 
         testReceive('receiving endpoint', se, 4, ["ic1", "ic2"], done => {
-          const ic3 = new kti.TestInterceptor(re, {
+          const ic3 = new kti.TestInterceptor({
             name: 'ic3'
-          });
+          }, re);
 
           // ep2.receive now at the internalEndpoint
           re.receive = kti.testResponseHandler;
@@ -189,7 +189,7 @@ describe('endpoint', () => {
       it('has otherEnd', () => assert.equal(se.otherEnd, re));
 
       describe('with interceptor', () => {
-        const in1 = new Interceptor(se);
+        const in1 = new Interceptor(undefined, se);
         se.injectNext(in1);
 
         it('still isConnected', () => assert.isTrue(se.isConnected));
