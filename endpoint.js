@@ -150,9 +150,7 @@ class ReceiveEndpoint extends InterceptedEndpoint {
       }
 
       this.lastInterceptor.connected = this._internalEndpoint;
-      this._receive = request => {
-        return this.firstInterceptor.receive(request);
-      };
+      this._receive = request => this.firstInterceptor.receive(request);
     } else {
       this._receive = lastReceive;
     }
