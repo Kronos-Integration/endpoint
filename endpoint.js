@@ -205,11 +205,13 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
 
   // TODO why is this required ?
   get connected() {
-      return this._connected;
-    }
-    // TODO why is this required ?
+    return this._connected;
+  }
   get interceptors() {
     return super.interceptors;
+  }
+  get otherEnd() {
+    return super.otherEnd;
   }
 }
 
