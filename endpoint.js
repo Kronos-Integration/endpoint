@@ -1,4 +1,6 @@
 /* jslint node: true, esnext: true */
+/* eslint-env es6 */
+/* eslint valid-jsdoc: 2 */
 
 "use strict";
 
@@ -79,7 +81,7 @@ class InterceptedEndpoint extends Endpoint {
    * a connected chain from array element 0 over all entries up to the last element
    * in the array is formed.
    * Additionally firstInterceptor and lastInterceptor are set.
-   * @param newInterceptors {Array}
+   * @param {Array} newInterceptors replaces all interceptors
    */
   set interceptors(newInterceptors) {
     if (newInterceptors === undefined || newInterceptors.length === 0) {
@@ -109,9 +111,9 @@ class InterceptedEndpoint extends Endpoint {
  */
 class ReceiveEndpoint extends InterceptedEndpoint {
 
-  /*
+  /**
    * connect other side to us
-   * @param other
+   * @param {Endpoint} other endpoint to be connected to
    */
   set connected(other) {
     other.connected = this;
