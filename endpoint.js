@@ -173,7 +173,7 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
 
     if (this.isConnected) {
       const o = this.otherEnd;
-      json.target = `${o.owner.name}/${o.name}`;
+      json.target = o.endpointIdentifier(this);
     }
 
     return json;
