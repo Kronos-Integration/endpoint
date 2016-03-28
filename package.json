@@ -1,7 +1,7 @@
 {
   "name": "kronos-endpoint",
   "version": "0.0.0-semantic-release",
-  "description": "named communication points inside of kronos",
+  "description": "named communication (end)-points inside of kronos",
   "main": "endpoint.js",
   "keywords": [],
   "scripts": {
@@ -26,7 +26,7 @@
     "cz-conventional-changelog": "1.1.5",
     "istanbul": "0.4.2",
     "jsdoc": "3.4.0",
-    "kronos-test-interceptor": "^2.0.2",
+    "kronos-test-interceptor": "^2.0.3",
     "mocha": "2.4.5",
     "semantic-release": "6.2.1"
   },
