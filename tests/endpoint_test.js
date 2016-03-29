@@ -15,6 +15,9 @@ const chai = require('chai'),
 function nameIt(name) {
   return {get name() {
       return name;
+    },
+    endpointIdentifier(e) {
+    	return `${this.name}/${e.name}`;
     }
   };
 }
