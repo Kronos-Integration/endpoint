@@ -13,12 +13,16 @@ const chai = require('chai'),
 
 /* simple owner with name */
 function nameIt(name) {
-  return {get name() {
-      return name;
-    },
-    endpointIdentifier(e) {
-    	return `${this.name}/${e.name}`;
-    }
+  return {
+    toString() {
+        return `name: ${name}`;
+      },
+      get name() {
+        return name;
+      },
+      endpointIdentifier(e) {
+        return `${this.name}/${e.name}`;
+      }
   };
 }
 
@@ -56,10 +60,8 @@ describe('endpoint', () => {
   });
 
   describe('connecting', () => {
-
     describe('initial', () => {
       const se = new endpoint.SendEndpoint('se', nameIt('o1'));
-
       it('not isDefault', () => assert.isFalse(se.isDefault));
       it('not isConnected', () => assert.isFalse(se.isConnected));
       it('json', () => assert.deepEqual(se.toJSON(), {
@@ -68,8 +70,9 @@ describe('endpoint', () => {
     });
 
     describe('interceptors send', () => {
-      describe('initially', () => {
+      describe('initial', () => {
         const se = new endpoint.SendEndpoint('se', nameIt('o1'));
+        it('not isConnected', () => assert.isFalse(se.isConnected));
         it('empty interceptors', () => assert.deepEqual(se.interceptors, []));
         it('no firstInterceptor', () => assert.isUndefined(se.firstInterceptor));
         it('no lastInterceptor', () => assert.isUndefined(se.lastInterceptor));
@@ -77,13 +80,16 @@ describe('endpoint', () => {
 
       describe('set/get array', () => {
         const ep1 = new endpoint.SendEndpoint('ep1', nameIt('o1'));
-        const ep2 = new endpoint.ReceiveEndpoint('ep2', nameIt('o1'));
+        const ep2 = new endpoint.ReceiveEndpoint('ep2', nameIt('o2'));
 
         ep2.receive = kti.testResponseHandler;
 
         ep1.connected = ep2;
 
         describe('passes though', () => {
+          it('isConnected', () => assert.isTrue(ep1.isConnected));
+          it('otherEnd', () => assert.equal(ep1.otherEnd, ep2));
+
           it('without interceptor', done => {
             ep1.receive({
               value: 1
@@ -115,7 +121,7 @@ describe('endpoint', () => {
         describe('json with interceptor', () => {
           it('toJSON', () => assert.deepEqual(ep1.toJSON(), {
             out: true,
-            target: "o1/ep2",
+            target: "o2/ep2",
             interceptors: [{
               "type": "test-interceptor"
             }, {
@@ -140,7 +146,6 @@ describe('endpoint', () => {
           }, ep1);
           ep1.interceptors = [ic1];
 
-
           ep1.interceptors = [];
           it('empty interceptors', () => assert.deepEqual(ep1.interceptors, []));
           it('no firstInterceptor', () => assert.isUndefined(ep1.firstInterceptor));
@@ -149,7 +154,6 @@ describe('endpoint', () => {
           describe('connected chain', () => {
             it('ep1->ic1', () => assert.equal(ep1.connected, ep2));
           });
-
         });
       });
     });
