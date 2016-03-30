@@ -21,6 +21,7 @@ function nameIt(name) {
         return name;
       },
       endpointIdentifier(e) {
+        if (name === undefined) return undefined;
         return `${this.name}/${e.name}`;
       }
   };
@@ -55,8 +56,14 @@ function testReceive(name, ep, value, hops, cb) {
 
 describe('endpoint', () => {
   describe('defaultEndpoint', () => {
-    const se = new endpoint.SendEndpointDefault('se', nameIt('o1'));
-    it('isDefault', () => assert.isTrue(se.isDefault));
+    describe('send', () => {
+      const se = new endpoint.SendEndpointDefault('se', nameIt('o1'));
+      it('isDefault', () => assert.isTrue(se.isDefault));
+    });
+    describe('receive', () => {
+      const re = new endpoint.ReceiveEndpointDefault('re', nameIt('o1'));
+      it('isDefault', () => assert.isTrue(re.isDefault));
+    });
   });
 
   describe('connecting', () => {

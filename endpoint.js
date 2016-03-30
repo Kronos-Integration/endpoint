@@ -163,6 +163,12 @@ class ReceiveEndpoint extends InterceptedEndpoint {
   }
 }
 
+class ReceiveEndpointDefault extends ReceiveEndpoint {
+  get isDefault() {
+    return true;
+  }
+}
+
 class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
   receive(request, formerRequest) {
     return this.connected.receive(request, formerRequest);
@@ -174,7 +180,10 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
     if (this.isConnected) {
       const o = this.otherEnd;
       if (o && o.owner) {
-        json.target = o.owner.endpointIdentifier(o);
+        const ei = o.owner.endpointIdentifier(o);
+        if (ei !== undefined) {
+          json.target = ei;
+        }
       }
     }
 
@@ -225,5 +234,6 @@ class SendEndpointDefault extends SendEndpoint {
 
 exports.Endpoint = Endpoint;
 exports.ReceiveEndpoint = ReceiveEndpoint;
+exports.ReceiveEndpointDefault = ReceiveEndpointDefault;
 exports.SendEndpoint = SendEndpoint;
 exports.SendEndpointDefault = SendEndpointDefault;
