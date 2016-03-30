@@ -11,6 +11,10 @@
 [![downloads](http://img.shields.io/npm/dm/kronos-endpoint.svg?style=flat-square)](https://npmjs.org/package/kronos-endpoint)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
+kronos-endpoint
+=====
+Named communication (end)-points inside of kronos
+
 install
 =======
 
