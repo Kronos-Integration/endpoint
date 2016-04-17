@@ -2,7 +2,7 @@
 /* eslint-env es6 */
 /* eslint valid-jsdoc: 2 */
 
-"use strict";
+'use strict';
 
 const cnm = require('kronos-interceptor');
 
@@ -77,7 +77,7 @@ class InterceptedEndpoint extends Endpoint {
   }
 
   /**
-   * set the interceptors
+   * Set the interceptors
    * a connected chain from array element 0 over all entries up to the last element
    * in the array is formed.
    * Additionally firstInterceptor and lastInterceptor are set.
@@ -112,7 +112,7 @@ class InterceptedEndpoint extends Endpoint {
 class ReceiveEndpoint extends InterceptedEndpoint {
 
   /**
-   * connect other side to us
+   * Connect other side to us
    * @param {Endpoint} other endpoint to be connected to
    */
   set connected(other) {
