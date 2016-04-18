@@ -177,6 +177,24 @@ class ReceiveEndpointDefault extends ReceiveEndpoint {
 }
 
 class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
+
+  constructor(name, owner, options) {
+    super(name, owner);
+
+    if (options) {
+      if (options.hasBeenConnected) {
+        Object.defineProperty(this, 'hasBeenConnected', {
+          value: options.hasBeenConnected
+        });
+      }
+      if (options.hasBeenDisConnected) {
+        Object.defineProperty(this, 'hasBeenDisConnected', {
+          value: options.hasBeenDisConnected
+        });
+      }
+    }
+  }
+
   receive(request, formerRequest) {
     return this.connected.receive(request, formerRequest);
   }
@@ -218,6 +236,12 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
       this.lastInterceptor.connected = e;
     } else {
       super.connected = e;
+    }
+
+    if (e && this.hasBeenConnected) {
+      this.hasBeenConnected.call(this);
+    } else if (e === undefined && this.hasBeenDisConnected) {
+      this.hasBeenDisConnected.call(this);
     }
   }
 

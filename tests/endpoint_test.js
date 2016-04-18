@@ -77,6 +77,26 @@ describe('endpoint', () => {
       }));
     });
 
+    describe('with hasbBeen...', () => {
+      let hasBeenConnected, hasBeenDisConnected;
+      const se = new endpoint.SendEndpoint('se', nameIt('o1'), {
+        hasBeenConnected() {
+            hasBeenConnected = true;
+          },
+          hasBeenDisConnected() {
+            hasBeenDisConnected = true;
+          }
+      });
+
+      const re = new endpoint.ReceiveEndpoint('re', nameIt('o2'));
+      se.connected = re;
+
+      it('hasBeenConnected was called', () => assert.isTrue(hasBeenConnected));
+
+      se.connected = undefined;
+      it('hasBeenDisConnected was called', () => assert.isTrue(hasBeenDisConnected));
+    });
+
     describe('interceptors send', () => {
       describe('initial', () => {
         const se = new endpoint.SendEndpoint('se', nameIt('o1'));
