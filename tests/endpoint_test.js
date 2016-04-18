@@ -92,6 +92,7 @@ describe('endpoint', () => {
       se.connected = re;
 
       it('hasBeenConnected was called', () => assert.isTrue(hasBeenConnected));
+      //it('hasBeenDisConnected was not already called', () => assert.isFalse(hasBeenDisConnected));
 
       se.connected = undefined;
       it('hasBeenDisConnected was called', () => assert.isTrue(hasBeenDisConnected));
