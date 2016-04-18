@@ -34,6 +34,13 @@ class Endpoint {
     return false;
   }
 
+  /**
+   * @return {Endpoint} representing the opposite direction
+   */
+  get opposite() {
+    return undefined;
+  }
+
   toJSON() {
     const json = {};
 

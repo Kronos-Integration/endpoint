@@ -1,7 +1,7 @@
 /* global describe, it, xit */
 /* jslint node: true, esnext: true */
 
-"use strict";
+'use strict';
 
 const chai = require('chai'),
   assert = chai.assert,
@@ -70,9 +70,10 @@ describe('endpoint', () => {
     describe('initial', () => {
       const se = new endpoint.SendEndpoint('se', nameIt('o1'));
       it('not isDefault', () => assert.isFalse(se.isDefault));
+      it('no opposite', () => assert.isUndefined(se.opposite));
       it('not isConnected', () => assert.isFalse(se.isConnected));
       it('json', () => assert.deepEqual(se.toJSON(), {
-        "out": true
+        out: true
       }));
     });
 
@@ -128,11 +129,11 @@ describe('endpoint', () => {
         describe('json with interceptor', () => {
           it('toJSON', () => assert.deepEqual(ep1.toJSON(), {
             out: true,
-            target: "o2/ep2",
+            target: 'o2/ep2',
             interceptors: [{
-              "type": "test-interceptor"
+              type: 'test-interceptor'
             }, {
-              "type": "test-interceptor"
+              type: 'test-interceptor'
             }]
           }));
         });
@@ -182,7 +183,7 @@ describe('endpoint', () => {
 
         re.interceptors = [ic1, ic2];
 
-        testReceive('receiving endpoint', se, 4, ["ic1", "ic2"], done => {
+        testReceive('receiving endpoint', se, 4, ['ic1', 'ic2'], done => {
           const ic3 = new kti.TestInterceptor({
             name: 'ic3'
           }, re);
@@ -191,7 +192,7 @@ describe('endpoint', () => {
           re.receive = kti.testResponseHandler;
           re.interceptors = [ic3];
 
-          testReceive('receiving endpoint internal endpoint', se, 5, ["ic3"], done => {
+          testReceive('receiving endpoint internal endpoint', se, 5, ['ic3'], done => {
             re.interceptors = undefined;
             testReceive('receiving endpoint removed interceptos', se, 6, undefined, done => {
               done();
