@@ -15,6 +15,8 @@ kronos-endpoint
 =====
 Named communication (end)-points inside of kronos
 
+![request forwarding](doc/images/requestForwarding.png "Requests Forwading")
+
 install
 =======
 
