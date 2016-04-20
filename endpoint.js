@@ -44,8 +44,12 @@ class Endpoint {
   toJSON() {
     const json = {};
 
-    if (this.isIn) json.in = true;
-    if (this.isOut) json.out = true;
+    if (this.isIn) {
+      json.in = true;
+    }
+    if (this.isOut) { 
+      json.out = true;
+    }
 
     return json;
   }
