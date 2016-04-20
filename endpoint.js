@@ -35,6 +35,14 @@ class Endpoint {
   }
 
   /**
+   * Deliver data flow direction
+   * @return {String} delivers data flow direction 'in', 'out' or undefined
+   */
+  get direction() {
+    return this.isIn ? 'in' : this.isOut ? 'out' : undefined;
+  }
+
+  /**
    * @return {Endpoint} representing the opposite direction
    */
   get opposite() {

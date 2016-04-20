@@ -59,15 +59,17 @@ describe('endpoint', () => {
     describe('send', () => {
       const se = new endpoint.SendEndpointDefault('se', nameIt('o1'));
       it('isDefault', () => assert.isTrue(se.isDefault));
+      it('direction out', () => assert.equal(se.direction, 'out'));
     });
     describe('receive', () => {
       const re = new endpoint.ReceiveEndpointDefault('re', nameIt('o1'));
       it('isDefault', () => assert.isTrue(re.isDefault));
+      it('direction in', () => assert.equal(re.direction, 'in'));
     });
   });
 
   describe('connecting', () => {
-    describe('initial', () => {
+    describe('initial SendEndpoint', () => {
       const se = new endpoint.SendEndpoint('se', nameIt('o1'));
       it('not isDefault', () => assert.isFalse(se.isDefault));
       it('no opposite', () => assert.isUndefined(se.opposite));
