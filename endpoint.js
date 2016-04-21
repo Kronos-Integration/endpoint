@@ -190,6 +190,13 @@ class ReceiveEndpointDefault extends ReceiveEndpoint {
 
 class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
 
+  /**
+   * possible options:
+   * - opposite endpoint
+   * - hasBeenConnected() called after connected
+   * - hasBeenDisconected() called after disconnected
+   * @param {Object} options
+   */
   constructor(name, owner, options) {
     super(name, owner);
 
@@ -202,6 +209,11 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
       if (options.hasBeenDisConnected) {
         Object.defineProperty(this, 'hasBeenDisConnected', {
           value: options.hasBeenDisConnected
+        });
+      }
+      if (options.opposite) {
+        Object.defineProperty(this, 'opposite', {
+          value: options.opposite
         });
       }
     }
