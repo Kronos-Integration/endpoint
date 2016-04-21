@@ -262,10 +262,18 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
       super.connected = e;
     }
 
-    if (e && this.hasBeenConnected) {
-      this.hasBeenConnected.call(this);
-    } else if (e === undefined && this.hasBeenDisConnected) {
-      this.hasBeenDisConnected.call(this);
+    if (e) {
+      if(e.opposite && this.opposite) {
+        e.opposite.connected = this.opposite;
+      }
+ 
+      if(this.hasBeenConnected) {
+        this.hasBeenConnected.call(this);
+      }
+    } else if (e === undefined) {
+      if(this.hasBeenDisConnected) {
+        this.hasBeenDisConnected.call(this);
+      }
     }
   }
 
