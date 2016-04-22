@@ -8,7 +8,13 @@ const cnm = require('kronos-interceptor');
 
 
 class Endpoint {
-  constructor(name, owner) {
+  /**
+   * possible options:
+   * - opposite endpoint specify opposite endpoint
+   * - createOpposite creates an opposite endpoint
+   * @param {Object} options
+   */
+  constructor(name, owner, options) {
     Object.defineProperty(this, 'name', {
       value: name
     });
@@ -16,6 +22,25 @@ class Endpoint {
     Object.defineProperty(this, 'owner', {
       value: owner
     });
+
+    if (options) {
+      if (options.opposite) {
+        Object.defineProperty(this, 'opposite', {
+          value: options.opposite
+        });
+      }
+      if (options.createOpposite) {
+        const o = this.isIn ? new SendEndpoint(name, owner, {
+          opposite: this
+        }) : new ReceiveEndpoint(name, owner, {
+          opposite: this
+        });
+
+        Object.defineProperty(this, 'opposite', {
+          value: o
+        });
+      }
+    }
   }
 
   get isDefault() {
@@ -68,6 +93,7 @@ class Endpoint {
  * also provides fistInterceptor and lastInterceptor
  */
 class InterceptedEndpoint extends Endpoint {
+
   get hasInterceptors() {
     return this._firstInterceptor !== undefined;
   }
@@ -177,6 +203,9 @@ class ReceiveEndpoint extends InterceptedEndpoint {
     }
   }
 
+  /**
+   * @return {boolean} always true
+   */
   get isIn() {
     return true;
   }
@@ -198,7 +227,7 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
    * @param {Object} options
    */
   constructor(name, owner, options) {
-    super(name, owner);
+    super(name, owner, options);
 
     if (options) {
       if (options.hasBeenConnected) {
@@ -209,11 +238,6 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
       if (options.hasBeenDisConnected) {
         Object.defineProperty(this, 'hasBeenDisConnected', {
           value: options.hasBeenDisConnected
-        });
-      }
-      if (options.opposite) {
-        Object.defineProperty(this, 'opposite', {
-          value: options.opposite
         });
       }
     }
@@ -256,23 +280,26 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
   }
 
   set connected(e) {
+    let oldConnected;
     if (this.hasInterceptors) {
+      oldConnected = this.lastInterceptor.connected;
       this.lastInterceptor.connected = e;
     } else {
+      oldConnected = super.connected;
       super.connected = e;
     }
 
     if (e) {
-      if(e.opposite && this.opposite) {
+      if (e.opposite && this.opposite && e.opposite.connected !== this.opposite) {
         e.opposite.connected = this.opposite;
       }
- 
-      if(this.hasBeenConnected) {
+
+      if (this.hasBeenConnected) {
         this.hasBeenConnected.call(this);
       }
     } else if (e === undefined) {
-      if(this.hasBeenDisConnected) {
-        this.hasBeenDisConnected.call(this);
+      if (this.hasBeenDisConnected) {
+        this.hasBeenDisConnected.call(this, oldConnected);
       }
     }
   }

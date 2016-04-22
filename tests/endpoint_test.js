@@ -15,7 +15,7 @@ const chai = require('chai'),
 function nameIt(name) {
   return {
     toString() {
-        return `name: ${name}`;
+        return name;
       },
       get name() {
         return name;
@@ -55,6 +55,12 @@ function testReceive(name, ep, value, hops, cb) {
 }
 
 describe('endpoint', () => {
+  describe('base Endpoint', () => {
+    const e = new endpoint.Endpoint('e', nameIt('o1'));
+    it('no direction', () => assert.isUndefined(e.direction));
+    it('toString', () => assert.equal(e.toString(), 'o1/e'));
+  });
+
   describe('defaultEndpoint', () => {
     describe('send', () => {
       const se = new endpoint.SendEndpointDefault('se', nameIt('o1'));
@@ -80,24 +86,30 @@ describe('endpoint', () => {
     });
 
     describe('with hasbBeen...', () => {
-      let hasBeenConnected, hasBeenDisConnected;
+      let hasBeenConnected, hasBeenDisConnected, oldConnection;
       const se = new endpoint.SendEndpoint('se', nameIt('o1'), {
         hasBeenConnected() {
             hasBeenConnected = true;
           },
-          hasBeenDisConnected() {
+          hasBeenDisConnected(endpoint) {
+            oldConnection = endpoint;
             hasBeenDisConnected = true;
           }
       });
 
       const re = new endpoint.ReceiveEndpoint('re', nameIt('o2'));
-      se.connected = re;
 
-      it('hasBeenConnected was called', () => assert.isTrue(hasBeenConnected));
-      //it('hasBeenDisConnected was not already called', () => assert.isFalse(hasBeenDisConnected));
+      describe('connect', () => {
+        se.connected = re;
+        it('hasBeenConnected was called', () => assert.isTrue(hasBeenConnected));
+        //it('hasBeenDisConnected was not already called', () => assert.isUndefined(hasBeenDisConnected));
+      });
 
-      se.connected = undefined;
-      it('hasBeenDisConnected was called', () => assert.isTrue(hasBeenDisConnected));
+      describe('disconnect', () => {
+        se.connected = undefined;
+        it('hasBeenDisConnected was called', () => assert.isTrue(hasBeenDisConnected));
+        it('with old connection', () => assert.equal(oldConnection, re));
+      });
     });
 
     describe('interceptors send', () => {
@@ -258,6 +270,25 @@ describe('endpoint', () => {
           it('connected', () => assert.equal(se.connected, re));
         });
       });
+    });
+
+    describe('with opposite', () => {
+      const ss = nameIt('ss'),
+        rs = nameIt('rs');
+      const se = new endpoint.SendEndpoint('se', ss, {
+        createOpposite: true
+      });
+      const re = new endpoint.ReceiveEndpoint('re', rs, {
+        createOpposite: true
+      });
+
+      se.connected = re;
+
+      it('sender opposite', () => assert.isTrue(se.opposite.isIn));
+      it('sender opposite opposite', () => assert.equal(se.opposite.opposite, se));
+
+      it('receiver opposite', () => assert.isTrue(re.opposite.isOut));
+      it('receiver opposite opposite', () => assert.equal(re.opposite.opposite, re));
     });
   });
 });
