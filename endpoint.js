@@ -33,14 +33,14 @@ class Endpoint {
         });
       }
       if (options.createOpposite) {
-        const o = this.isIn ? new SendEndpoint(name, owner, {
+        const opposite = this.isIn ? new SendEndpoint(name, owner, {
           opposite: this
         }) : new ReceiveEndpoint(name, owner, {
           opposite: this
         });
 
         Object.defineProperty(this, 'opposite', {
-          value: o
+          value: opposite
         });
       }
     }
