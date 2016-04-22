@@ -28,6 +28,9 @@ class Endpoint {
         Object.defineProperty(this, 'opposite', {
           value: options.opposite
         });
+        Object.defineProperty(options.opposite, 'opposite', {
+          value: this
+        });
       }
       if (options.createOpposite) {
         const o = this.isIn ? new SendEndpoint(name, owner, {
