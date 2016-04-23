@@ -160,7 +160,7 @@ class InterceptedEndpoint extends Endpoint {
 class ReceiveEndpoint extends InterceptedEndpoint {
 
   /**
-   * Set dummy rejecting receiver 
+   * Set dummy rejecting receiver
    */
   constructor(name, owner, options) {
     super(name, owner, options);
@@ -181,6 +181,10 @@ class ReceiveEndpoint extends InterceptedEndpoint {
   }
 
   set receive(receive) {
+    if (receive === undefined) {
+      receive = cnm.rejectingReceiver;
+    }
+
     if (this.hasInterceptors) {
       this._internalEndpoint.receive = receive;
     } else {
