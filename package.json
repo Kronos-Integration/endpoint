@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Kronos-Integration/kronos-endpoint#readme",
   "dependencies": {
-    "kronos-interceptor": "2.1.0"
+    "kronos-interceptor": "2.2.1"
   },
   "devDependencies": {
     "chai": "3.5.0",
