@@ -160,6 +160,15 @@ class InterceptedEndpoint extends Endpoint {
 class ReceiveEndpoint extends InterceptedEndpoint {
 
   /**
+   * Set dummy rejecting receiver 
+   */
+  constructor(name, owner, options) {
+    super(name, owner, options);
+
+    this._receive = cnm.rejectingReceiver;
+  }
+
+  /**
    * Connect other side to us
    * @param {Endpoint} other endpoint to be connected to
    */
