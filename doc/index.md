@@ -12,6 +12,7 @@ There are always two ends A sending and a receiving endpoint always belong toget
 opposite endpoints
 ===
 to represent the opposite data flow the notion of opposite endpoints
-is present optionally each endpoint has an opposite one
+is present.
+Optionally each endpoint has an opposite one
 
 ![opposite endpoint](images/opposite.svg)
