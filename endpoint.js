@@ -180,11 +180,7 @@ class ReceiveEndpoint extends InterceptedEndpoint {
     return this._receive;
   }
 
-  set receive(receive) {
-    if (receive === undefined) {
-      receive = cnm.rejectingReceiver;
-    }
-
+  set receive(receive = cnm.rejectingReceiver) {
     if (this.hasInterceptors) {
       this._internalEndpoint.receive = receive;
     } else {
@@ -201,7 +197,7 @@ class ReceiveEndpoint extends InterceptedEndpoint {
       if (!this._internalEndpoint) {
         let internalReceive = lastReceive;
         this._internalEndpoint = Object.create(this, {
-          'receive': {
+          receive: {
             get() {
                 return internalReceive;
               },
