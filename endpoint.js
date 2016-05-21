@@ -203,8 +203,9 @@ class ReceiveEndpoint extends InterceptedEndpoint {
    */
   set receive(receive = cnm.rejectingReceiver) {
     const s = this.sender;
+
     if (s && s.willBeClosed && receive === cnm.rejectingReceiver) {
-      s.willBeClosed(s);
+      s.willBeClosed();
     }
 
     if (this.hasInterceptors) {
@@ -214,7 +215,7 @@ class ReceiveEndpoint extends InterceptedEndpoint {
     }
 
     if (s && s.hasBeenOpened && receive !== cnm.rejectingReceiver) {
-      s.hasBeenOpened(s);
+      s.hasBeenOpened();
     }
   }
 
@@ -262,7 +263,7 @@ class ReceiveEndpointDefault extends ReceiveEndpoint {
 class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
 
   /**
-   * possible options:
+   * supported options:
    * - opposite endpoint
    * - hasBeenConnected() called after connected
    * - hasBeenDisconected() called after disconnected
@@ -322,6 +323,13 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
 
   set connected(e) {
     let oldConnected;
+
+    if (!e) {
+      if (this.willBeClosed && this.connected.receiver !== cnm.rejectingReceiver) {
+        this.willBeClosed();
+      }
+    }
+
     if (this.hasInterceptors) {
       oldConnected = this.lastInterceptor.connected;
       this.lastInterceptor.connected = e;
@@ -333,14 +341,17 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
     if (e) {
       if (e.opposite && this.opposite && e.opposite.connected !== this.opposite) {
         e.opposite.connected = this.opposite;
+        if (this.hasBeenOpened && this.connected.receiver !== cnm.rejectingReceiver) {
+          this.hasBeenOpened();
+        }
       }
 
       if (this.hasBeenConnected) {
-        this.hasBeenConnected.call(this);
+        this.hasBeenConnected();
       }
     } else if (e === undefined) {
       if (this.hasBeenDisConnected) {
-        this.hasBeenDisConnected.call(this, oldConnected);
+        this.hasBeenDisConnected(oldConnected);
       }
     }
   }
