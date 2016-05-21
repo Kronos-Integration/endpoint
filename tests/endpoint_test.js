@@ -275,8 +275,17 @@ describe('endpoint', () => {
     describe('with opposite', () => {
       const ss = nameIt('ss'),
         rs = nameIt('rs');
+
+      let hasBeenOpened, willBeClosed;
+
       const se = new endpoint.SendEndpoint('se', ss, {
-        createOpposite: true
+        createOpposite: true,
+        hasBeenOpened() {
+          hasBeenOpened = true;
+        },
+        willBeClosed() {
+          willBeClosed = true;
+        }
       });
       const re = new endpoint.ReceiveEndpoint('re', rs, {
         createOpposite: true
@@ -289,6 +298,16 @@ describe('endpoint', () => {
 
       it('receiver opposite', () => assert.isTrue(re.opposite.isOut));
       it('receiver opposite opposite', () => assert.equal(re.opposite.opposite, re));
+
+      it('receiver sender', () => assert.equal(re.sender, se));
+      it('sender opposite sender', () => assert.equal(se.opposite.sender, re.opposite));
+
+      describe('open / close', () => {
+        re.receive = request => {};
+        it('hasBeenOpened', () => assert.isTrue(hasBeenOpened));
+        re.receive = undefined;
+        it('willBeClosed', () => assert.isTrue(willBeClosed));
+      });
     });
   });
 });

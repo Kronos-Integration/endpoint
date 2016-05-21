@@ -176,15 +176,45 @@ class ReceiveEndpoint extends InterceptedEndpoint {
     other.connected = this;
   }
 
+  /**
+   * Deliver the sending side Endpoint
+   * Currently only endpoints with opposite direction are able to deliver
+   * the sending endpoint.
+   * @return {SendEndpoint} the sending side
+   */
+  get sender() {
+    const o = this.opposite;
+    if (o) {
+      const c = o.connected;
+      if (c) {
+        return c.opposite;
+      }
+    }
+    return undefined;
+  }
+
   get receive() {
     return this._receive;
   }
 
+  /**
+   * If we know the sender we will inform him about our open/close state
+   * by calling willBeClosed() and hasBeenOpened()
+   */
   set receive(receive = cnm.rejectingReceiver) {
+    const s = this.sender;
+    if (s && s.willBeClosed && receive === cnm.rejectingReceiver) {
+      s.willBeClosed(s);
+    }
+
     if (this.hasInterceptors) {
       this._internalEndpoint.receive = receive;
     } else {
       this._receive = receive;
+    }
+
+    if (s && s.hasBeenOpened && receive !== cnm.rejectingReceiver) {
+      s.hasBeenOpened(s);
     }
   }
 
@@ -236,21 +266,20 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
    * - opposite endpoint
    * - hasBeenConnected() called after connected
    * - hasBeenDisconected() called after disconnected
+   * - hasBeenOpened() called after receiver is open
+   * - willBeClosed() called before receiver is closed
    * @param {Object} options
    */
   constructor(name, owner, options) {
     super(name, owner, options);
 
     if (options) {
-      if (options.hasBeenConnected) {
-        Object.defineProperty(this, 'hasBeenConnected', {
-          value: options.hasBeenConnected
-        });
-      }
-      if (options.hasBeenDisConnected) {
-        Object.defineProperty(this, 'hasBeenDisConnected', {
-          value: options.hasBeenDisConnected
-        });
+      for (const key of['hasBeenConnected', 'hasBeenDisConnected', 'hasBeenOpened', 'willBeClosed']) {
+        if (options[key]) {
+          Object.defineProperty(this, key, {
+            value: options[key]
+          });
+        }
       }
     }
   }
