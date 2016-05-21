@@ -1,4 +1,4 @@
-/* global describe, it, xit */
+/* global describe, it, xit, before, beforeEach, after, afterEach */
 /* jslint node: true, esnext: true */
 
 'use strict';
@@ -201,7 +201,7 @@ describe('endpoint', () => {
       });
     });
 
-    describe('interceptors on the receive side', () => {
+    describe('interceptors on the receive side', function () {
       const se = new endpoint.SendEndpoint('se', nameIt('st'));
       const re = new endpoint.ReceiveEndpoint('re', nameIt('rt'));
 
@@ -277,8 +277,10 @@ describe('endpoint', () => {
         rs = nameIt('rs');
 
       let hasBeenOpened, willBeClosed;
+      let se, re;
 
-      const se = new endpoint.SendEndpoint('se', ss, {
+      //beforeEach(function () {
+      se = new endpoint.SendEndpoint('se', ss, {
         createOpposite: true,
         hasBeenOpened() {
           hasBeenOpened = true;
@@ -287,11 +289,13 @@ describe('endpoint', () => {
           willBeClosed = true;
         }
       });
-      const re = new endpoint.ReceiveEndpoint('re', rs, {
+      re = new endpoint.ReceiveEndpoint('re', rs, {
         createOpposite: true
       });
 
       se.connected = re;
+      //  });
+
 
       it('sender opposite', () => assert.isTrue(se.opposite.isIn));
       it('sender opposite opposite', () => assert.equal(se.opposite.opposite, se));
@@ -302,12 +306,29 @@ describe('endpoint', () => {
       it('receiver sender', () => assert.equal(re.sender, se));
       it('sender opposite sender', () => assert.equal(se.opposite.sender, re.opposite));
 
-      describe('open / close', () => {
+      describe('open / close with receive', () => {
         re.receive = request => {};
         it('hasBeenOpened', () => assert.isTrue(hasBeenOpened));
         re.receive = undefined;
         it('willBeClosed', () => assert.isTrue(willBeClosed));
       });
+
+      /*
+            describe('open / close with connected', () => {
+              re.receive = request => {};
+              se.connected = undefined;
+
+              hasBeenOpened = false;
+              willBeClosed = false;
+
+              se.connected = re;
+
+              it('hasBeenOpened', () => assert.isTrue(hasBeenOpened));
+              se.connected = undefined;
+
+              it('willBeClosed', () => assert.isTrue(willBeClosed));
+            });
+            */
     });
   });
 });
