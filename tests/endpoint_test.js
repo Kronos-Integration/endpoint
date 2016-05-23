@@ -59,6 +59,7 @@ describe('endpoint', () => {
     const e = new endpoint.Endpoint('e', nameIt('o1'));
     it('no direction', () => assert.isUndefined(e.direction));
     it('toString', () => assert.equal(e.toString(), 'o1/e'));
+    it('identifier', () => assert.equal(e.identifier, 'o1/e'));
   });
 
   describe('defaultEndpoint', () => {

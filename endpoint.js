@@ -54,6 +54,10 @@ class Endpoint {
     return `${this.owner}/${this.name}`;
   }
 
+  get identifier() {
+    return this.owner.endpointIdentifier(this);
+  }
+
   get isIn() {
     return false;
   }
