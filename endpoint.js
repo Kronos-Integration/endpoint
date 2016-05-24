@@ -194,7 +194,11 @@ class ReceiveEndpoint extends InterceptedEndpoint {
         return c.opposite;
       }
     }
-    return undefined;
+    return this._sender;
+  }
+
+  set sender(sender) {
+    this._sender = sender;
   }
 
   get receive() {
@@ -328,7 +332,9 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
   set connected(e) {
     let oldConnected;
 
-    if (!e) {
+    if (e) {
+      e.sender = this;
+    } else {
       if (this.willBeClosed && this.connected.receiver !== cnm.rejectingReceiver) {
         this.willBeClosed();
       }
@@ -343,11 +349,12 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
     }
 
     if (e) {
+      if (this.hasBeenOpened && this.connected.receiver !== cnm.rejectingReceiver) {
+        this.hasBeenOpened();
+      }
+
       if (e.opposite && this.opposite && e.opposite.connected !== this.opposite) {
         e.opposite.connected = this.opposite;
-        if (this.hasBeenOpened && this.connected.receiver !== cnm.rejectingReceiver) {
-          this.hasBeenOpened();
-        }
       }
 
       if (this.hasBeenConnected) {

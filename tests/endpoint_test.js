@@ -257,6 +257,7 @@ describe('endpoint', () => {
       se.connected = re;
       it('isConnected', () => assert.isTrue(se.isConnected));
       it('has otherEnd', () => assert.equal(se.otherEnd, re));
+      it('receiver sender', () => assert.equal(re.sender, se));
 
       describe('with interceptor', () => {
         const in1 = new Interceptor(undefined, se);
