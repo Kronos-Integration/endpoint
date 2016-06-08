@@ -66,6 +66,10 @@ class Endpoint {
     return false;
   }
 
+  get isOpen() {
+    return false;
+  }
+
   /**
    * Deliver data flow direction
    * @return {String} delivers data flow direction 'in', 'out' or undefined
@@ -203,6 +207,10 @@ class ReceiveEndpoint extends InterceptedEndpoint {
 
   get receive() {
     return this._receive;
+  }
+
+  get isOpen() {
+    return (this.hasInterceptors ? this._internalEndpoint.receive : this._receive) !== cnm.rejectingReceiver;
   }
 
   /**
@@ -365,6 +373,10 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
         this.hasBeenDisConnected(oldConnected);
       }
     }
+  }
+
+  get isOpen() {
+    return this.isConnected && this.connected.isOpen;
   }
 
   // TODO why is this required ?

@@ -60,6 +60,7 @@ describe('endpoint', () => {
     it('no direction', () => assert.isUndefined(e.direction));
     it('toString', () => assert.equal(e.toString(), 'o1/e'));
     it('identifier', () => assert.equal(e.identifier, 'o1/e'));
+    it('isOpen', () => assert.isFalse(e.isOpen));
   });
 
   describe('defaultEndpoint', () => {
@@ -67,11 +68,13 @@ describe('endpoint', () => {
       const se = new endpoint.SendEndpointDefault('se', nameIt('o1'));
       it('isDefault', () => assert.isTrue(se.isDefault));
       it('direction out', () => assert.equal(se.direction, 'out'));
+      it('isOpen', () => assert.isFalse(se.isOpen));
     });
     describe('receive', () => {
       const re = new endpoint.ReceiveEndpointDefault('re', nameIt('o1'));
       it('isDefault', () => assert.isTrue(re.isDefault));
       it('direction in', () => assert.equal(re.direction, 'in'));
+      it('isOpen', () => assert.isFalse(re.isOpen));
     });
   });
 
@@ -86,7 +89,7 @@ describe('endpoint', () => {
       }));
     });
 
-    describe('with hasbBeen...', () => {
+    describe('with hasBeen...', () => {
       let hasBeenConnected, hasBeenDisConnected, oldConnection;
       const se = new endpoint.SendEndpoint('se', nameIt('o1'), {
         hasBeenConnected() {
@@ -103,6 +106,8 @@ describe('endpoint', () => {
       describe('connect', () => {
         se.connected = re;
         it('hasBeenConnected was called', () => assert.isTrue(hasBeenConnected));
+        it('se not isOpen', () => assert.isFalse(se.isOpen));
+        it('re not isOpen', () => assert.isFalse(re.isOpen));
         //it('hasBeenDisConnected was not already called', () => assert.isUndefined(hasBeenDisConnected));
       });
 
@@ -110,6 +115,9 @@ describe('endpoint', () => {
         se.connected = undefined;
         it('hasBeenDisConnected was called', () => assert.isTrue(hasBeenDisConnected));
         it('with old connection', () => assert.equal(oldConnection, re));
+
+        it('se not isOpen', () => assert.isFalse(se.isOpen));
+        it('re not isOpen', () => assert.isFalse(re.isOpen));
       });
     });
 
@@ -309,10 +317,19 @@ describe('endpoint', () => {
       it('sender opposite sender', () => assert.equal(se.opposite.sender, re.opposite));
 
       describe('open / close with receive', () => {
-        re.receive = request => {};
-        it('hasBeenOpened', () => assert.isTrue(hasBeenOpened));
-        re.receive = undefined;
-        it('willBeClosed', () => assert.isTrue(willBeClosed));
+        describe('after open', () => {
+          re.receive = request => {};
+          it('hasBeenOpened was called', () => assert.isTrue(hasBeenOpened));
+          it('se isOpen', () => assert.isTrue(se.isOpen));
+          it('re isOpen', () => assert.isTrue(re.isOpen));
+        });
+
+        describe('after close', () => {
+          re.receive = undefined;
+          it('willBeClosed was called', () => assert.isTrue(willBeClosed));
+          it('se not isOpen', () => assert.isFalse(se.isOpen));
+          it('re not isOpen', () => assert.isFalse(re.isOpen));
+        });
       });
 
       /*
