@@ -58,7 +58,7 @@ describe('endpoint', () => {
   describe('base Endpoint', () => {
     const e = new endpoint.Endpoint('e', nameIt('o1'));
     it('no direction', () => assert.isUndefined(e.direction));
-    it('toString', () => assert.equal(e.toString(), 'o1/e'));
+    it('toString', () => assert.equal(e.toString(), 'o1/e(connected=false,open=false)'));
     it('identifier', () => assert.equal(e.identifier, 'o1/e'));
     it('isOpen', () => assert.isFalse(e.isOpen));
   });
@@ -69,12 +69,14 @@ describe('endpoint', () => {
       it('isDefault', () => assert.isTrue(se.isDefault));
       it('direction out', () => assert.equal(se.direction, 'out'));
       it('isOpen', () => assert.isFalse(se.isOpen));
+      it('toString', () => assert.equal(se.toString(), 'o1/se(connected=false,open=false)'));
     });
     describe('receive', () => {
       const re = new endpoint.ReceiveEndpointDefault('re', nameIt('o1'));
       it('isDefault', () => assert.isTrue(re.isDefault));
       it('direction in', () => assert.equal(re.direction, 'in'));
       it('isOpen', () => assert.isFalse(re.isOpen));
+      it('toString', () => assert.equal(re.toString(), 'o1/re(connected=false,open=false)'));
     });
   });
 
@@ -115,7 +117,6 @@ describe('endpoint', () => {
         se.connected = undefined;
         it('hasBeenDisConnected was called', () => assert.isTrue(hasBeenDisConnected));
         it('with old connection', () => assert.equal(oldConnection, re));
-
         it('se not isOpen', () => assert.isFalse(se.isOpen));
         it('re not isOpen', () => assert.isFalse(re.isOpen));
       });
@@ -289,7 +290,6 @@ describe('endpoint', () => {
       let hasBeenOpened, willBeClosed;
       let se, re;
 
-      //beforeEach(function () {
       se = new endpoint.SendEndpoint('se', ss, {
         createOpposite: true,
         hasBeenOpened() {
@@ -303,9 +303,9 @@ describe('endpoint', () => {
         createOpposite: true
       });
 
-      se.connected = re;
-      //  });
-
+      beforeEach(function () {
+        se.connected = re;
+      });
 
       it('sender opposite', () => assert.isTrue(se.opposite.isIn));
       it('sender opposite opposite', () => assert.equal(se.opposite.opposite, se));
@@ -318,36 +318,41 @@ describe('endpoint', () => {
 
       describe('open / close with receive', () => {
         describe('after open', () => {
-          re.receive = request => {};
+          beforeEach(() => re.receive = request => {});
           it('hasBeenOpened was called', () => assert.isTrue(hasBeenOpened));
           it('se isOpen', () => assert.isTrue(se.isOpen));
           it('re isOpen', () => assert.isTrue(re.isOpen));
         });
 
         describe('after close', () => {
-          re.receive = undefined;
+          beforeEach(() => re.receive = undefined);
           it('willBeClosed was called', () => assert.isTrue(willBeClosed));
           it('se not isOpen', () => assert.isFalse(se.isOpen));
           it('re not isOpen', () => assert.isFalse(re.isOpen));
         });
       });
 
-      /*
-            describe('open / close with connected', () => {
-              re.receive = request => {};
-              se.connected = undefined;
+      describe('open / close with connected', () => {
+        re.receive = request => {};
+        se.connected = undefined;
 
-              hasBeenOpened = false;
-              willBeClosed = false;
+        hasBeenOpened = false;
+        willBeClosed = false;
 
-              se.connected = re;
+        describe('after open', () => {
+          beforeEach(() => se.connected = re);
+          it('hasBeenOpened', () => assert.isTrue(hasBeenOpened));
+          xit('se isOpen', () => assert.isTrue(se.isOpen));
+          xit('re isOpen', () => assert.isTrue(re.isOpen));
+        });
 
-              it('hasBeenOpened', () => assert.isTrue(hasBeenOpened));
-              se.connected = undefined;
-
-              it('willBeClosed', () => assert.isTrue(willBeClosed));
-            });
-            */
+        describe('after close', () => {
+          beforeEach(() => se.connected = undefined);
+          it('willBeClosed', () => assert.isTrue(willBeClosed));
+          it('se not isOpen', () => assert.isFalse(se.isOpen));
+          it('re not isOpen', () => assert.isFalse(re.isOpen));
+        });
+      });
     });
   });
 });

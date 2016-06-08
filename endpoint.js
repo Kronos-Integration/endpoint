@@ -51,7 +51,7 @@ class Endpoint {
   }
 
   toString() {
-    return `${this.owner}/${this.name}`;
+    return `${this.owner}/${this.name}(connected=${this.isConnected},open=${this.isOpen})`;
   }
 
   get identifier() {
@@ -67,6 +67,10 @@ class Endpoint {
   }
 
   get isOpen() {
+    return false;
+  }
+
+  get isConnected() {
     return false;
   }
 
@@ -343,7 +347,7 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
     if (e) {
       e.sender = this;
     } else {
-      if (this.willBeClosed && this.connected.receiver !== cnm.rejectingReceiver) {
+      if (this.willBeClosed && this.isConnected && this.connected.receiver !== cnm.rejectingReceiver) {
         this.willBeClosed();
       }
     }
