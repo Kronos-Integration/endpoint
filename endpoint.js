@@ -74,6 +74,11 @@ class Endpoint {
     return false;
   }
 
+  hasBeenConnected() {}
+  hasBeenDisConnected(formerConnected) {}
+  hasBeenOpened() {}
+  willBeClosed() {}
+
   /**
    * Deliver data flow direction
    * @return {String} delivers data flow direction 'in', 'out' or undefined
@@ -190,18 +195,9 @@ class ReceiveEndpoint extends InterceptedEndpoint {
 
   /**
    * Deliver the sending side Endpoint
-   * Currently only endpoints with opposite direction are able to deliver
-   * the sending endpoint.
    * @return {SendEndpoint} the sending side
    */
   get sender() {
-    const o = this.opposite;
-    if (o) {
-      const c = o.connected;
-      if (c) {
-        return c.opposite;
-      }
-    }
     return this._sender;
   }
 
@@ -213,6 +209,10 @@ class ReceiveEndpoint extends InterceptedEndpoint {
     return this._receive;
   }
 
+  /**
+   * Are we able to receive requests
+   * @return {boolean} true if we are able to receive requests
+   */
   get isOpen() {
     return (this.hasInterceptors ? this._internalEndpoint.receive : this._receive) !== cnm.rejectingReceiver;
   }
@@ -224,7 +224,7 @@ class ReceiveEndpoint extends InterceptedEndpoint {
   set receive(receive = cnm.rejectingReceiver) {
     const s = this.sender;
 
-    if (s && s.willBeClosed && receive === cnm.rejectingReceiver) {
+    if (s && receive === cnm.rejectingReceiver) {
       s.willBeClosed();
     }
 
@@ -234,7 +234,7 @@ class ReceiveEndpoint extends InterceptedEndpoint {
       this._receive = receive;
     }
 
-    if (s && s.hasBeenOpened && receive !== cnm.rejectingReceiver) {
+    if (s && s.isOpen) {
       s.hasBeenOpened();
     }
   }
@@ -341,41 +341,44 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
     }
   }
 
-  set connected(e) {
-    let oldConnected;
+  set connected(toBeConnected) {
+    let formerConnected;
 
-    if (e) {
-      e.sender = this;
+    if (toBeConnected) {
+      toBeConnected.sender = this;
     } else {
-      if (this.willBeClosed && this.isConnected && this.connected.receiver !== cnm.rejectingReceiver) {
+      if (this.isOpen) {
         this.willBeClosed();
       }
     }
 
     if (this.hasInterceptors) {
-      oldConnected = this.lastInterceptor.connected;
-      this.lastInterceptor.connected = e;
+      formerConnected = this.lastInterceptor.connected;
+      this.lastInterceptor.connected = toBeConnected;
     } else {
-      oldConnected = super.connected;
-      super.connected = e;
+      formerConnected = super.connected;
+      super.connected = toBeConnected;
     }
 
-    if (e) {
-      if (this.hasBeenOpened && this.connected.receiver !== cnm.rejectingReceiver) {
+    /* TODO
+    if (formerConnected) {
+      formerConnected.sender = undefined;
+    }
+    */
+
+    if (toBeConnected) {
+      if (toBeConnected.opposite && this.opposite && toBeConnected.opposite.connected !== this.opposite) {
+        toBeConnected.opposite.connected = this.opposite;
+      }
+
+      this.hasBeenConnected();
+
+      if (this.isOpen) {
         this.hasBeenOpened();
       }
 
-      if (e.opposite && this.opposite && e.opposite.connected !== this.opposite) {
-        e.opposite.connected = this.opposite;
-      }
-
-      if (this.hasBeenConnected) {
-        this.hasBeenConnected();
-      }
-    } else if (e === undefined) {
-      if (this.hasBeenDisConnected) {
-        this.hasBeenDisConnected(oldConnected);
-      }
+    } else if (toBeConnected === undefined) {
+      this.hasBeenDisConnected(formerConnected);
     }
   }
 

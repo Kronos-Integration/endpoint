@@ -318,14 +318,14 @@ describe('endpoint', () => {
 
       describe('open / close with receive', () => {
         describe('after open', () => {
-          beforeEach(() => re.receive = request => {});
+          before(() => re.receive = request => {});
           it('hasBeenOpened was called', () => assert.isTrue(hasBeenOpened));
           it('se isOpen', () => assert.isTrue(se.isOpen));
           it('re isOpen', () => assert.isTrue(re.isOpen));
         });
 
         describe('after close', () => {
-          beforeEach(() => re.receive = undefined);
+          before(() => re.receive = undefined);
           it('willBeClosed was called', () => assert.isTrue(willBeClosed));
           it('se not isOpen', () => assert.isFalse(se.isOpen));
           it('re not isOpen', () => assert.isFalse(re.isOpen));
@@ -333,24 +333,25 @@ describe('endpoint', () => {
       });
 
       describe('open / close with connected', () => {
-        re.receive = request => {};
-        se.connected = undefined;
-
-        hasBeenOpened = false;
-        willBeClosed = false;
+        beforeEach(() => {
+          hasBeenOpened = false;
+          willBeClosed = false;
+          re.receive = request => {};
+          se.connected = undefined;
+        });
 
         describe('after open', () => {
-          beforeEach(() => se.connected = re);
+          before(() => se.connected = re);
           it('hasBeenOpened', () => assert.isTrue(hasBeenOpened));
           xit('se isOpen', () => assert.isTrue(se.isOpen));
-          xit('re isOpen', () => assert.isTrue(re.isOpen));
+          it('re isOpen', () => assert.isTrue(re.isOpen));
         });
 
         describe('after close', () => {
-          beforeEach(() => se.connected = undefined);
+          before(() => se.connected = undefined);
           it('willBeClosed', () => assert.isTrue(willBeClosed));
           it('se not isOpen', () => assert.isFalse(se.isOpen));
-          it('re not isOpen', () => assert.isFalse(re.isOpen));
+          xit('re not isOpen', () => assert.isFalse(re.isOpen));
         });
       });
     });
