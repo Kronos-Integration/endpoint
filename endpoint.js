@@ -14,7 +14,7 @@ class Endpoint {
    * - createOpposite creates an opposite endpoint
    * @param {Object} options
    */
-  constructor(name, owner, options) {
+  constructor(name, owner, options = {}) {
     Object.defineProperty(this, 'name', {
       value: name
     });
@@ -23,26 +23,23 @@ class Endpoint {
       value: owner
     });
 
-    if (options) {
-      if (options.opposite) {
-        Object.defineProperty(this, 'opposite', {
-          value: options.opposite
-        });
-        Object.defineProperty(options.opposite, 'opposite', {
-          value: this
-        });
-      }
-      if (options.createOpposite) {
-        const opposite = this.isIn ? new SendEndpoint(name, owner, {
-          opposite: this
-        }) : new ReceiveEndpoint(name, owner, {
-          opposite: this
-        });
+    if (options.opposite) {
+      Object.defineProperty(this, 'opposite', {
+        value: options.opposite
+      });
+      Object.defineProperty(options.opposite, 'opposite', {
+        value: this
+      });
+    } else if (options.createOpposite) {
+      const opposite = this.isIn ? new SendEndpoint(name, owner, {
+        opposite: this
+      }) : new ReceiveEndpoint(name, owner, {
+        opposite: this
+      });
 
-        Object.defineProperty(this, 'opposite', {
-          value: opposite
-        });
-      }
+      Object.defineProperty(this, 'opposite', {
+        value: opposite
+      });
     }
   }
 
@@ -291,16 +288,14 @@ class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
    * - willBeClosed() called before receiver is closed
    * @param {Object} options
    */
-  constructor(name, owner, options) {
+  constructor(name, owner, options = {}) {
     super(name, owner, options);
 
-    if (options) {
-      for (const key of['hasBeenConnected', 'hasBeenDisConnected', 'hasBeenOpened', 'willBeClosed']) {
-        if (options[key]) {
-          Object.defineProperty(this, key, {
-            value: options[key]
-          });
-        }
+    for (const key of['hasBeenConnected', 'hasBeenDisConnected', 'hasBeenOpened', 'willBeClosed']) {
+      if (options[key]) {
+        Object.defineProperty(this, key, {
+          value: options[key]
+        });
       }
     }
   }
