@@ -8,7 +8,7 @@ const chai = require('chai'),
   expect = chai.expect,
   should = chai.should(),
   kti = require('kronos-test-interceptor'),
-  endpoint = require('../endpoint'),
+  endpoint = require('../dist/Endpoint'),
   Interceptor = require('kronos-interceptor').Interceptor;
 
 /* simple owner with name */

@@ -4,8 +4,11 @@
 
 'use strict';
 
-const cnm = require('kronos-interceptor');
-
+import {
+  ConnectorMixin,
+  rejectingReceiver
+}
+from 'kronos-interceptor';
 
 class Endpoint {
   /**
@@ -179,7 +182,7 @@ class ReceiveEndpoint extends InterceptedEndpoint {
   constructor(name, owner, options) {
     super(name, owner, options);
 
-    this._receive = cnm.rejectingReceiver;
+    this._receive = rejectingReceiver;
   }
 
   /**
@@ -211,17 +214,17 @@ class ReceiveEndpoint extends InterceptedEndpoint {
    * @return {boolean} true if we are able to receive requests
    */
   get isOpen() {
-    return (this.hasInterceptors ? this._internalEndpoint.receive : this._receive) !== cnm.rejectingReceiver;
+    return (this.hasInterceptors ? this._internalEndpoint.receive : this._receive) !== rejectingReceiver;
   }
 
   /**
    * If we know the sender we will inform him about our open/close state
    * by calling willBeClosed() and hasBeenOpened()
    */
-  set receive(receive = cnm.rejectingReceiver) {
+  set receive(receive = rejectingReceiver) {
     const s = this.sender;
 
-    if (s && receive === cnm.rejectingReceiver) {
+    if (s && receive === rejectingReceiver) {
       s.willBeClosed();
     }
 
@@ -277,7 +280,7 @@ class ReceiveEndpointDefault extends ReceiveEndpoint {
   }
 }
 
-class SendEndpoint extends cnm.ConnectorMixin(InterceptedEndpoint) {
+class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
 
   /**
    * supported options:
@@ -399,8 +402,10 @@ class SendEndpointDefault extends SendEndpoint {
   }
 }
 
-exports.Endpoint = Endpoint;
-exports.ReceiveEndpoint = ReceiveEndpoint;
-exports.ReceiveEndpointDefault = ReceiveEndpointDefault;
-exports.SendEndpoint = SendEndpoint;
-exports.SendEndpointDefault = SendEndpointDefault;
+export {
+  Endpoint,
+  ReceiveEndpoint,
+  ReceiveEndpointDefault,
+  SendEndpoint,
+  SendEndpointDefault
+};

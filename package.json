@@ -2,14 +2,14 @@
   "name": "kronos-endpoint",
   "version": "0.0.0-semantic-release",
   "description": "named communication (end)-points inside of kronos",
-  "main": "endpoint.js",
+  "main": "dist/Endpoint.js",
+  "module": "src/Endpoint.js",
   "keywords": [],
   "scripts": {
     "cover": "npm run build && node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -u exports tests/*_test.js",
-    "doc": "./node_modules/.bin/jsdoc lib/*.js",
     "test": "npm run build && node_modules/.bin/mocha tests/*_test.js && markdown-doctest",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "build": "node_modules/rollup/bin/rollup --output=endpoint.js -c -- {{module}}",
+    "build": "node_modules/rollup/bin/rollup --output=dist/Endpoint.js -c -- src/Endpoint.js",
     "docs": "jsdoc2md -l off -t doc/README.hbs -f src/*.js > README.md"
   },
   "repository": {
@@ -24,11 +24,10 @@
     "kronos-interceptor": "^2.4.2"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "cz-conventional-changelog": "^1.2.0",
-    "istanbul": "^0.4.5",
-    "jsdoc": "^3.4.3",
     "kronos-test-interceptor": "^2.0.5",
+    "istanbul": "^0.4.5",
+    "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "semantic-release": "^6.3.3",
     "jsdoc-to-markdown": "^2.0.1",
@@ -37,16 +36,13 @@
     "rollup-plugin-commonjs": "^5.0.5",
     "rollup-plugin-node-resolve": "^2.0.0"
   },
-  "contributors": [
-    {
-      "name": "Torsten Link",
-      "email": "torstenlink@gmx.de"
-    },
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    }
-  ],
+  "contributors": [{
+    "name": "Torsten Link",
+    "email": "torstenlink@gmx.de"
+  }, {
+    "name": "Markus Felten",
+    "email": "markus.felten@gmx.de"
+  }],
   "license": "BSD-2-Clause",
   "engines": {
     "node": ">=6.9.1"
