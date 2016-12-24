@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Kronos-Integration/kronos-endpoint#readme",
   "dependencies": {
-    "kronos-interceptor": "^2.4.5"
+    "kronos-interceptor": "^2.4.6"
   },
   "devDependencies": {
     "cz-conventional-changelog": "^1.2.0",
