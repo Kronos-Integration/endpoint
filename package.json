@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "kronos-test-interceptor": "^2.1.0",
-    "chai": "^4.1.0",
+    "chai": "^4.1.1",
     "mocha": "^3.5.0",
     "semantic-release": "^6.3.6",
     "jsdoc-to-markdown": "^3.0.0",
