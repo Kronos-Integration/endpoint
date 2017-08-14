@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kronos-Integration/kronos-endpoint.git"
+    "url": "git+https://github.com/Kronos-Integration/kronos-endpoint.git"
   },
   "bugs": {
     "url": "https://github.com/Kronos-Integration/kronos-endpoint/issues"
@@ -33,7 +33,7 @@
     "semantic-release": "^6.3.6",
     "jsdoc-to-markdown": "^3.0.0",
     "markdown-doctest": "^0.9.1",
-    "rollup": "^0.47.0",
+    "rollup": "^0.47.4",
     "nyc": "^11.1.0"
   },
   "contributors": [
@@ -48,7 +48,7 @@
   ],
   "license": "BSD-2-Clause",
   "engines": {
-    "node": ">=8.2.1"
+    "node": ">=8.3.0"
   },
   "nyc": {
     "include": [
