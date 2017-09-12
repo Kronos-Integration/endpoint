@@ -4,7 +4,9 @@
   "description": "named communication (end)-points inside of kronos",
   "main": "dist/endpoint.js",
   "module": "src/endpoint.js",
-  "keywords": ["endpoint"],
+  "keywords": [
+    "endpoint"
+  ],
   "scripts": {
     "cover": "nyc npm test",
     "test": "mocha tests/*-test.js",
