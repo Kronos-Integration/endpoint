@@ -32,7 +32,7 @@
     "kronos-test-interceptor": "^2.1.0",
     "chai": "^4.1.2",
     "mocha": "^3.5.3",
-    "semantic-release": "^8.0.3",
+    "semantic-release": "^8.0.4",
     "jsdoc-to-markdown": "^3.0.0",
     "markdown-doctest": "^0.9.1",
     "rollup": "^0.50.0",
