@@ -1,16 +1,6 @@
-/* jslint node: true, esnext: true */
-/* eslint-env es6 */
-/* eslint valid-jsdoc: 2 */
+import { ConnectorMixin, rejectingReceiver } from 'kronos-interceptor';
 
-'use strict';
-
-import {
-  ConnectorMixin,
-  rejectingReceiver
-}
-from 'kronos-interceptor';
-
-class Endpoint {
+export class Endpoint {
   /**
    * possible options:
    * - opposite endpoint specify opposite endpoint
@@ -34,11 +24,13 @@ class Endpoint {
         value: this
       });
     } else if (options.createOpposite) {
-      const opposite = this.isIn ? new SendEndpoint(name, owner, {
-        opposite: this
-      }) : new ReceiveEndpoint(name, owner, {
-        opposite: this
-      });
+      const opposite = this.isIn
+        ? new SendEndpoint(name, owner, {
+            opposite: this
+          })
+        : new ReceiveEndpoint(name, owner, {
+            opposite: this
+          });
 
       Object.defineProperty(this, 'opposite', {
         value: opposite
@@ -51,7 +43,8 @@ class Endpoint {
   }
 
   toString() {
-    return `${this.owner}/${this.name}(connected=${this.isConnected},open=${this.isOpen})`;
+    return `${this.owner}/${this.name}(connected=${this.isConnected},open=${this
+      .isOpen})`;
   }
 
   get identifier() {
@@ -100,7 +93,7 @@ class Endpoint {
     if (this.isIn) {
       json.in = true;
     }
-    if (this.isOut) { 
+    if (this.isOut) {
       json.out = true;
     }
 
@@ -112,8 +105,7 @@ class Endpoint {
  * Endpoint with a list of interceptors
  * also provides fistInterceptor and lastInterceptor
  */
-class InterceptedEndpoint extends Endpoint {
-
+export class InterceptedEndpoint extends Endpoint {
   get hasInterceptors() {
     return this._firstInterceptor !== undefined;
   }
@@ -154,8 +146,10 @@ class InterceptedEndpoint extends Endpoint {
       this._lastInterceptor = undefined;
     } else {
       this._firstInterceptor = newInterceptors[0];
-      this._lastInterceptor = newInterceptors.reduce((previous, current) => previous.connected = current,
-        this._firstInterceptor);
+      this._lastInterceptor = newInterceptors.reduce(
+        (previous, current) => (previous.connected = current),
+        this._firstInterceptor
+      );
     }
   }
 
@@ -174,8 +168,7 @@ class InterceptedEndpoint extends Endpoint {
 /**
  * Receiving Endpoint
  */
-class ReceiveEndpoint extends InterceptedEndpoint {
-
+export class ReceiveEndpoint extends InterceptedEndpoint {
   /**
    * Set dummy rejecting receiver
    */
@@ -214,7 +207,11 @@ class ReceiveEndpoint extends InterceptedEndpoint {
    * @return {boolean} true if we are able to receive requests
    */
   get isOpen() {
-    return (this.hasInterceptors ? this._internalEndpoint.receive : this._receive) !== rejectingReceiver;
+    return (
+      (this.hasInterceptors
+        ? this._internalEndpoint.receive
+        : this._receive) !== rejectingReceiver
+    );
   }
 
   /**
@@ -240,7 +237,9 @@ class ReceiveEndpoint extends InterceptedEndpoint {
   }
 
   set interceptors(newInterceptors) {
-    const lastReceive = this.hasInterceptors ? this._internalEndpoint.receive : this.receive;
+    const lastReceive = this.hasInterceptors
+      ? this._internalEndpoint.receive
+      : this.receive;
 
     super.interceptors = newInterceptors;
 
@@ -250,11 +249,11 @@ class ReceiveEndpoint extends InterceptedEndpoint {
         this._internalEndpoint = Object.create(this, {
           receive: {
             get() {
-                return internalReceive;
-              },
-              set(r) {
-                internalReceive = r;
-              }
+              return internalReceive;
+            },
+            set(r) {
+              internalReceive = r;
+            }
           }
         });
       }
@@ -274,14 +273,13 @@ class ReceiveEndpoint extends InterceptedEndpoint {
   }
 }
 
-class ReceiveEndpointDefault extends ReceiveEndpoint {
+export class ReceiveEndpointDefault extends ReceiveEndpoint {
   get isDefault() {
     return true;
   }
 }
 
-class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
-
+export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   /**
    * supported options:
    * - opposite endpoint
@@ -294,7 +292,12 @@ class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
-    for (const key of['hasBeenConnected', 'hasBeenDisConnected', 'hasBeenOpened', 'willBeClosed']) {
+    for (const key of [
+      'hasBeenConnected',
+      'hasBeenDisConnected',
+      'hasBeenOpened',
+      'willBeClosed'
+    ]) {
       if (options[key]) {
         Object.defineProperty(this, key, {
           value: options[key]
@@ -328,7 +331,9 @@ class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   }
 
   set interceptors(newInterceptors) {
-    const lastConnected = this.hasInterceptors ? this.lastInterceptor.connected : this._connected;
+    const lastConnected = this.hasInterceptors
+      ? this.lastInterceptor.connected
+      : this._connected;
 
     super.interceptors = newInterceptors;
     if (this.hasInterceptors) {
@@ -365,7 +370,11 @@ class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     */
 
     if (toBeConnected) {
-      if (toBeConnected.opposite && this.opposite && toBeConnected.opposite.connected !== this.opposite) {
+      if (
+        toBeConnected.opposite &&
+        this.opposite &&
+        toBeConnected.opposite.connected !== this.opposite
+      ) {
         toBeConnected.opposite.connected = this.opposite;
       }
 
@@ -374,7 +383,6 @@ class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       if (this.isOpen) {
         this.hasBeenOpened();
       }
-
     } else if (toBeConnected === undefined) {
       this.hasBeenDisConnected(formerConnected);
     }
@@ -396,16 +404,8 @@ class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   }
 }
 
-class SendEndpointDefault extends SendEndpoint {
+export class SendEndpointDefault extends SendEndpoint {
   get isDefault() {
     return true;
   }
 }
-
-export {
-  Endpoint,
-  ReceiveEndpoint,
-  ReceiveEndpointDefault,
-  SendEndpoint,
-  SendEndpointDefault
-};
