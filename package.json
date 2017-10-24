@@ -32,11 +32,11 @@
     "kronos-test-interceptor": "^2.1.0",
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
-    "semantic-release": "^8.2.0",
+    "semantic-release": "^8.2.2",
     "jsdoc-to-markdown": "^3.0.0",
     "markdown-doctest": "^0.9.1",
     "rollup": "^0.50.0",
-    "nyc": "^11.2.1"
+    "nyc": "^11.3.0"
   },
   "contributors": [
     {
@@ -50,7 +50,7 @@
   ],
   "license": "BSD-2-Clause",
   "engines": {
-    "node": ">=8.6.0"
+    "node": ">=8.7.0"
   },
   "nyc": {
     "include": [
