@@ -29,7 +29,7 @@
     "kronos-interceptor": "^2.5.1"
   },
   "devDependencies": {
-    "kronos-test-interceptor": "^2.1.0",
+    "kronos-test-interceptor": "^3.1.1",
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
     "semantic-release": "^10.0.1",
