@@ -56,15 +56,6 @@
   "engines": {
     "node": ">=8.9.1"
   },
-  "nyc": {
-    "include": [
-      "dist/**/*.js"
-    ],
-    "reporter": [
-      "lcov"
-    ],
-    "report-dir": "./coverage"
-  },
   "template": {
     "repository": {
       "url": "https://github.com/arlac77/npm-package-template.git"
@@ -83,5 +74,14 @@
     "require": [
       "babel-register"
     ]
+  },
+  "nyc": {
+    "include": [
+      "build/*-test.js"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "report-dir": "./build/coverage"
   }
 }

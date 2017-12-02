@@ -1,15 +1,7 @@
-/* global describe, it, xit, before, beforeEach, after, afterEach */
-/* jslint node: true, esnext: true */
-
-'use strict';
-
-const chai = require('chai'),
-  assert = chai.assert,
-  expect = chai.expect,
-  should = chai.should(),
-  kti = require('kronos-test-interceptor'),
-  endpoint = require('../dist/endpoint'),
-  Interceptor = require('kronos-interceptor').Interceptor;
+import { Endpoint } from '../src/endpoint';
+import { Interceptor } from 'kronos-interceptor';
+import test from 'ava';
+import {} from 'kronos-test-interceptor';
 
 /* simple owner with name */
 function nameIt(name) {
