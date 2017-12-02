@@ -1,9 +1,13 @@
-import { Endpoint } from '../src/endpoint';
+import {
+  Endpoint,
+  SendEndpoint,
+  SendEndpointDefault,
+  ReceiveEndpointDefault
+} from '../src/endpoint';
 import { Interceptor } from 'kronos-interceptor';
 import test from 'ava';
 import {} from 'kronos-test-interceptor';
 
-/* simple owner with name */
 function nameIt(name) {
   return {
     toString() {
@@ -19,9 +23,43 @@ function nameIt(name) {
   };
 }
 
+test('Endpoint constructor', t => {
+  const e = new Endpoint('e', nameIt('o1'));
+  t.is(e.direction, undefined);
+  t.is(e.toString(), 'o1/e(connected=false,open=false)');
+  t.is(e.identifier, 'o1/e');
+  t.is(e.isOpen, false);
+});
+
+test('SendEndpointDefault constructor', t => {
+  const e = new SendEndpointDefault('se', nameIt('o1'));
+  t.is(e.isDefault, true);
+  t.is(e.direction, 'out');
+  t.is(e.isOpen, false);
+  t.is(e.toString(), 'o1/se(connected=false,open=false)');
+});
+
+test('ReceiveEndpointDefault constructor', t => {
+  const e = new ReceiveEndpointDefault('se', nameIt('o1'));
+  t.is(e.isDefault, true);
+  t.is(e.direction, 'in');
+  t.is(e.isOpen, false);
+  t.is(e.toString(), 'o1/se(connected=false,open=false)');
+});
+
+test('SendEndpoint connect', t => {
+  const e = new SendEndpoint('se', nameIt('o1'));
+  t.is(e.isDefault, false);
+  t.is(e.opposite, undefined);
+  t.is(e.isConnected, false);
+  t.deepEqual(e.toJSON(), {
+    out: true
+  });
+});
+
 /*
  * send receive request and check if we whent though some interceptors
- */
+
 function testReceive(name, ep, value, hops, cb) {
   describe(name, () => {
     it(`interceptors ${hops ? hops : 'none'} passed`, done => {
@@ -50,46 +88,7 @@ function testReceive(name, ep, value, hops, cb) {
 }
 
 describe('endpoint', () => {
-  describe('base Endpoint', () => {
-    const e = new endpoint.Endpoint('e', nameIt('o1'));
-    it('no direction', () => assert.isUndefined(e.direction));
-    it('toString', () =>
-      assert.equal(e.toString(), 'o1/e(connected=false,open=false)'));
-    it('identifier', () => assert.equal(e.identifier, 'o1/e'));
-    it('isOpen', () => assert.isFalse(e.isOpen));
-  });
-
-  describe('defaultEndpoint', () => {
-    describe('send', () => {
-      const se = new endpoint.SendEndpointDefault('se', nameIt('o1'));
-      it('isDefault', () => assert.isTrue(se.isDefault));
-      it('direction out', () => assert.equal(se.direction, 'out'));
-      it('isOpen', () => assert.isFalse(se.isOpen));
-      it('toString', () =>
-        assert.equal(se.toString(), 'o1/se(connected=false,open=false)'));
-    });
-    describe('receive', () => {
-      const re = new endpoint.ReceiveEndpointDefault('re', nameIt('o1'));
-      it('isDefault', () => assert.isTrue(re.isDefault));
-      it('direction in', () => assert.equal(re.direction, 'in'));
-      it('isOpen', () => assert.isFalse(re.isOpen));
-      it('toString', () =>
-        assert.equal(re.toString(), 'o1/re(connected=false,open=false)'));
-    });
-  });
-
   describe('connecting', () => {
-    describe('initial SendEndpoint', () => {
-      const se = new endpoint.SendEndpoint('se', nameIt('o1'));
-      it('not isDefault', () => assert.isFalse(se.isDefault));
-      it('no opposite', () => assert.isUndefined(se.opposite));
-      it('not isConnected', () => assert.isFalse(se.isConnected));
-      it('json', () =>
-        assert.deepEqual(se.toJSON(), {
-          out: true
-        }));
-    });
-
     describe('with hasBeen...', () => {
       let hasBeenConnected, hasBeenDisConnected, oldConnection;
       const se = new endpoint.SendEndpoint('se', nameIt('o1'), {
@@ -404,3 +403,4 @@ describe('endpoint', () => {
     });
   });
 });
+*/
