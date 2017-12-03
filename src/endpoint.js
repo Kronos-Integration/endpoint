@@ -43,8 +43,9 @@ export class Endpoint {
   }
 
   toString() {
-    return `${this.owner}/${this.name}(connected=${this.isConnected},open=${this
-      .isOpen})`;
+    return `${this.owner}/${this.name}(connected=${this.isConnected},open=${
+      this.isOpen
+    })`;
   }
 
   get identifier() {
@@ -298,7 +299,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       'hasBeenOpened',
       'willBeClosed'
     ]) {
-      if (options[key]) {
+      if (options[key] !== undefined) {
         Object.defineProperty(this, key, {
           value: options[key]
         });
@@ -315,7 +316,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
 
     if (this.isConnected) {
       const o = this.otherEnd;
-      if (o && o.owner) {
+      if (o !== undefined && o.owner !== undefined) {
         const ei = o.owner.endpointIdentifier(o);
         if (ei !== undefined) {
           json.target = ei;
@@ -347,7 +348,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   set connected(toBeConnected) {
     let formerConnected;
 
-    if (toBeConnected) {
+    if (toBeConnected !== undefined) {
       toBeConnected.sender = this;
     } else {
       if (this.isOpen) {
