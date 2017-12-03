@@ -8,13 +8,13 @@
     "endpoint"
   ],
   "scripts": {
-    "cover": "nyc --temp-directory build/nyc npm test",
-    "test": "mocha tests/*-test.js",
+    "cover": "nyc --temp-directory build/nyc ava",
+    "test": "ava",
     "semantic-release": "semantic-release",
-    "docs": "jsdoc2md -l off -t doc/README.hbs -f src/*.js >README.md",
-    "pretest": "rollup -c",
-    "posttest": "markdown-doctest",
-    "precover": "rollup -c",
+    "docs": "jsdoc2md --configure doc/jsdoc.json -l off -t doc/README.hbs -f src/*.js >README.md",
+    "pretest": "rollup -c tests/rollup.config.js",
+    "posttest": "npm run prepare && markdown-doctest",
+    "precover": "rollup -c tests/rollup.config.js",
     "prepare": "rollup -c"
   },
   "repository": {
@@ -29,14 +29,18 @@
     "kronos-interceptor": "^2.5.1"
   },
   "devDependencies": {
-    "kronos-test-interceptor": "^2.1.0",
-    "chai": "^4.1.2",
-    "mocha": "^4.0.1",
-    "semantic-release": "^10.0.1",
+    "ava": "^0.24.0",
+    "babel-preset-env": "^1.6.1",
+    "jsdoc-babel": "^0.3.0",
     "jsdoc-to-markdown": "^3.0.2",
+    "kronos-test-interceptor": "^3.1.1",
     "markdown-doctest": "^0.9.1",
+    "nyc": "^11.4.0",
     "rollup": "^0.52.0",
-    "nyc": "^11.4.0"
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-multi-entry": "^2.0.2",
+    "semantic-release": "^10.0.1",
+    "xo": "^0.19.0"
   },
   "contributors": [
     {
@@ -52,21 +56,32 @@
   "engines": {
     "node": ">=8.9.1"
   },
-  "nyc": {
-    "include": [
-      "dist/**/*.js"
-    ],
-    "reporter": [
-      "lcov"
-    ],
-    "report-dir": "./coverage"
-  },
   "template": {
     "repository": {
-      "url": "https://github.com/Kronos-Tools/npm-package-template.git"
+      "url": "https://github.com/arlac77/npm-package-template.git"
     }
   },
   "xo": {
     "space": true
+  },
+  "ava": {
+    "files": [
+      "build/*-test.js"
+    ],
+    "presets": [
+      "env"
+    ],
+    "require": [
+      "babel-register"
+    ]
+  },
+  "nyc": {
+    "include": [
+      "build/*-test.js"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "report-dir": "./build/coverage"
   }
 }
