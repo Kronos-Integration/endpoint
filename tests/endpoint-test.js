@@ -77,6 +77,13 @@ test('SendEndpoint connecting with hasBeen...', t => {
   t.is(se.isOpen, false);
   t.is(re.isOpen, false);
   //it('hasBeenDisConnected was not already called', () => assert.isUndefined(hasBeenDisConnected));
+
+  se.connected = undefined;
+
+  t.is(hasBeenDisConnected, true);
+  t.is(oldConnection, re);
+  t.is(se.isOpen, false);
+  t.is(re.isOpen, false);
 });
 
 /*
@@ -110,40 +117,6 @@ function testReceive(name, ep, value, hops, cb) {
 }
 
 describe('endpoint', () => {
-  describe('connecting', () => {
-    describe('with hasBeen...', () => {
-      let hasBeenConnected, hasBeenDisConnected, oldConnection;
-      const se = new endpoint.SendEndpoint('se', nameIt('o1'), {
-        hasBeenConnected() {
-          hasBeenConnected = true;
-        },
-        hasBeenDisConnected(endpoint) {
-          oldConnection = endpoint;
-          hasBeenDisConnected = true;
-        }
-      });
-
-      const re = new endpoint.ReceiveEndpoint('re', nameIt('o2'));
-
-      describe('connect', () => {
-        se.connected = re;
-        it('hasBeenConnected was called', () =>
-          assert.isTrue(hasBeenConnected));
-        it('se not isOpen', () => assert.isFalse(se.isOpen));
-        it('re not isOpen', () => assert.isFalse(re.isOpen));
-        //it('hasBeenDisConnected was not already called', () => assert.isUndefined(hasBeenDisConnected));
-      });
-
-      describe('disconnect', () => {
-        se.connected = undefined;
-        it('hasBeenDisConnected was called', () =>
-          assert.isTrue(hasBeenDisConnected));
-        it('with old connection', () => assert.equal(oldConnection, re));
-        it('se not isOpen', () => assert.isFalse(se.isOpen));
-        it('re not isOpen', () => assert.isFalse(re.isOpen));
-      });
-    });
-
     describe('interceptors send', () => {
       describe('initial', () => {
         const se = new endpoint.SendEndpoint('se', nameIt('o1'));
