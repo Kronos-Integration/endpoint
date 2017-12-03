@@ -2,9 +2,9 @@ import {
   Endpoint,
   SendEndpoint,
   SendEndpointDefault,
+  ReceiveEndpoint,
   ReceiveEndpointDefault
 } from '../src/endpoint';
-import { Interceptor } from 'kronos-interceptor';
 import test from 'ava';
 import {} from 'kronos-test-interceptor';
 
@@ -55,6 +55,28 @@ test('SendEndpoint connect', t => {
   t.deepEqual(e.toJSON(), {
     out: true
   });
+});
+
+test('SendEndpoint connecting with hasBeen...', t => {
+  let hasBeenConnected, hasBeenDisConnected, oldConnection;
+  const se = new SendEndpoint('se', nameIt('o1'), {
+    hasBeenConnected() {
+      hasBeenConnected = true;
+    },
+    hasBeenDisConnected(endpoint) {
+      oldConnection = endpoint;
+      hasBeenDisConnected = true;
+    }
+  });
+
+  const re = new ReceiveEndpoint('re', nameIt('o2'));
+
+  se.connected = re;
+
+  t.is(hasBeenConnected, true);
+  t.is(se.isOpen, false);
+  t.is(re.isOpen, false);
+  //it('hasBeenDisConnected was not already called', () => assert.isUndefined(hasBeenDisConnected));
 });
 
 /*
