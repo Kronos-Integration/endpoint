@@ -86,6 +86,15 @@ test('SendEndpoint connecting with hasBeen...', t => {
   t.is(re.isOpen, false);
 });
 
+test('SendEndpoint connecting with hasBeen...', t => {
+  const se = new SendEndpoint('se', nameIt('o1'));
+
+  t.is(se.isConnected, false);
+  t.deepEqual(se.interceptors, []);
+  t.is(se.firstInterceptor, undefined);
+  t.is(se.lastInterceptor, undefined);
+});
+
 /*
  * send receive request and check if we whent though some interceptors
 
@@ -118,15 +127,6 @@ function testReceive(name, ep, value, hops, cb) {
 
 describe('endpoint', () => {
     describe('interceptors send', () => {
-      describe('initial', () => {
-        const se = new endpoint.SendEndpoint('se', nameIt('o1'));
-        it('not isConnected', () => assert.isFalse(se.isConnected));
-        it('empty interceptors', () => assert.deepEqual(se.interceptors, []));
-        it('no firstInterceptor', () =>
-          assert.isUndefined(se.firstInterceptor));
-        it('no lastInterceptor', () => assert.isUndefined(se.lastInterceptor));
-      });
-
       describe('set/get array', () => {
         const ep1 = new endpoint.SendEndpoint('ep1', nameIt('o1'));
         const ep2 = new endpoint.ReceiveEndpoint('ep2', nameIt('o2'));
