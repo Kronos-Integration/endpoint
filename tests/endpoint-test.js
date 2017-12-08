@@ -5,8 +5,10 @@ import {
   ReceiveEndpoint,
   ReceiveEndpointDefault
 } from '../src/endpoint';
+import { Interceptor } from 'kronos-interceptor';
+
 import test from 'ava';
-import {} from 'kronos-test-interceptor';
+import { testResponseHandler } from 'kronos-test-interceptor';
 
 function nameIt(name) {
   return {
@@ -93,6 +95,52 @@ test('SendEndpoint connecting with hasBeen...', t => {
   t.deepEqual(se.interceptors, []);
   t.is(se.firstInterceptor, undefined);
   t.is(se.lastInterceptor, undefined);
+});
+
+test('connecting Receiver conveniance otherEnd', t => {
+  const se = new SendEndpoint('se', nameIt('ss'));
+  const re = new ReceiveEndpoint('re', nameIt('rs'));
+
+  re.connected = se;
+  t.is(se.isConnected, true);
+  t.is(se.otherEnd, re);
+});
+
+test('connecting with interceptor', t => {
+  const se = new SendEndpoint('se', nameIt('ss'));
+  const re = new ReceiveEndpoint('re', nameIt('rs'));
+
+  se.connected = re;
+  t.is(se.isConnected, true);
+  t.is(se.otherEnd, re);
+  t.is(re.sender, se);
+
+  const in1 = new Interceptor(undefined, se);
+  se.injectNext(in1);
+
+  t.is(se.isConnected, true);
+  t.is(in1.isConnected, true);
+  t.is(se.otherEnd, re);
+
+  se.removeNext();
+  t.is(se.connected, re);
+});
+
+test('interceptor send', async t => {
+  const ep1 = new SendEndpoint('ep1', nameIt('o1'));
+  const ep2 = new ReceiveEndpoint('ep2', nameIt('o2'));
+
+  ep2.receive = testResponseHandler;
+  ep1.connected = ep2;
+
+  t.is(ep1.isConnected, true);
+  t.is(ep1.otherEnd, ep2);
+
+  const response = await ep1.receive({
+    value: 1
+  });
+
+  t.is(response.value, 1);
 });
 
 /*
@@ -284,40 +332,6 @@ describe('endpoint', () => {
           done();
         });
         done();
-      });
-    });
-
-    describe('connecting Receiver conveniance', () => {
-      const se = new endpoint.SendEndpoint('se', nameIt('ss'));
-      const re = new endpoint.ReceiveEndpoint('re', nameIt('rs'));
-
-      re.connected = se;
-      it('isConnected', () => assert.isTrue(se.isConnected));
-      it('has otherEnd', () => assert.equal(se.otherEnd, re));
-    });
-
-    describe('connecting', () => {
-      const se = new endpoint.SendEndpoint('se', nameIt('ss'));
-      const re = new endpoint.ReceiveEndpoint('re', nameIt('rs'));
-
-      se.connected = re;
-      it('isConnected', () => assert.isTrue(se.isConnected));
-      it('has otherEnd', () => assert.equal(se.otherEnd, re));
-      it('receiver sender', () => assert.equal(re.sender, se));
-
-      describe('with interceptor', () => {
-        const in1 = new Interceptor(undefined, se);
-        se.injectNext(in1);
-
-        it('still isConnected', () => assert.isTrue(se.isConnected));
-        it('interceptor also isConnected', () =>
-          assert.isTrue(in1.isConnected));
-        it('has otherEnd', () => assert.equal(se.otherEnd, re));
-
-        describe('remove', () => {
-          se.removeNext();
-          it('connected', () => assert.equal(se.connected, re));
-        });
       });
     });
 
