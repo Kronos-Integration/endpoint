@@ -1,4 +1,5 @@
 import { ConnectorMixin, rejectingReceiver } from 'kronos-interceptor';
+import { definePropertiesFromOptions } from './util';
 
 export class Endpoint {
   /**
@@ -8,15 +9,12 @@ export class Endpoint {
    * @param {Object} options
    */
   constructor(name, owner, options = {}) {
-    Object.defineProperty(this, 'name', {
-      value: name
+    Object.defineProperties(this, {
+      name: { value: name },
+      owner: { value: owner }
     });
 
-    Object.defineProperty(this, 'owner', {
-      value: owner
-    });
-
-    if (options.opposite) {
+    if (options.opposite !== undefined) {
       Object.defineProperty(this, 'opposite', {
         value: options.opposite
       });
@@ -24,13 +22,13 @@ export class Endpoint {
         value: this
       });
     } else if (options.createOpposite) {
-      const opposite = this.isIn
-        ? new SendEndpoint(name, owner, {
-            opposite: this
-          })
-        : new ReceiveEndpoint(name, owner, {
-            opposite: this
-          });
+      const opposite = new (this.isIn ? SendEndpoint : ReceiveEndpoint)(
+        name,
+        owner,
+        {
+          opposite: this
+        }
+      );
 
       Object.defineProperty(this, 'opposite', {
         value: opposite
@@ -293,18 +291,12 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
-    for (const key of [
+    definePropertiesFromOptions(this, options, [
       'hasBeenConnected',
       'hasBeenDisConnected',
       'hasBeenOpened',
       'willBeClosed'
-    ]) {
-      if (options[key] !== undefined) {
-        Object.defineProperty(this, key, {
-          value: options[key]
-        });
-      }
-    }
+    ]);
   }
 
   receive(request, formerRequest) {
