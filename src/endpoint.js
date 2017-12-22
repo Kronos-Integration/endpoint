@@ -1,13 +1,12 @@
 import { ConnectorMixin, rejectingReceiver } from 'kronos-interceptor';
 import { definePropertiesFromOptions } from './util';
 
+/**
+ * @param {Object} options
+ * @param {Endpoint} options.opposite opposite endpoint
+ * @param {boolean} options.createOpposite creates an opposite endpoint
+ */
 export class Endpoint {
-  /**
-   * possible options:
-   * - opposite endpoint specify opposite endpoint
-   * - createOpposite creates an opposite endpoint
-   * @param {Object} options
-   */
   constructor(name, owner, options = {}) {
     Object.defineProperties(this, {
       name: { value: name },
@@ -73,7 +72,7 @@ export class Endpoint {
 
   /**
    * Deliver data flow direction
-   * @return {String} delivers data flow direction 'in', 'out' or undefined
+   * @return {string} delivers data flow direction 'in', 'out' or undefined
    */
   get direction() {
     return this.isIn ? 'in' : this.isOut ? 'out' : undefined;
@@ -118,7 +117,7 @@ export class InterceptedEndpoint extends Endpoint {
   }
 
   /**
-   * @return {Array} the interceptors or empty array if none are present
+   * @return {Interceptor[]} the interceptors or empty array if none are present
    */
   get interceptors() {
     const itcs = [];
@@ -137,7 +136,7 @@ export class InterceptedEndpoint extends Endpoint {
    * a connected chain from array element 0 over all entries up to the last element
    * in the array is formed.
    * Additionally firstInterceptor and lastInterceptor are set.
-   * @param {Array} newInterceptors replaces all interceptors
+   * @param {Interceptor[]} newInterceptors replaces all interceptors
    */
   set interceptors(newInterceptors) {
     if (newInterceptors === undefined || newInterceptors.length === 0) {
@@ -278,16 +277,15 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
   }
 }
 
+/**
+ * @param {Object} options
+ * @param {Endpoint} options.opposite
+ * @param {Function} options.hasBeenConnected called after connected
+ * @param {Function} options.hasBeenDisconected called after disconnected
+ * @param {Function} options.hasBeenOpened called after receiver is open
+ * @param {Function} options.willBeClosed called before receiver is closed
+ */
 export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
-  /**
-   * supported options:
-   * - opposite endpoint
-   * - hasBeenConnected() called after connected
-   * - hasBeenDisconected() called after disconnected
-   * - hasBeenOpened() called after receiver is open
-   * - willBeClosed() called before receiver is closed
-   * @param {Object} options
-   */
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
