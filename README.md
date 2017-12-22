@@ -22,55 +22,7 @@ Named communication (end)-points inside of kronos
 
 ![request forwarding](doc/images/requestForwarding.png "Requests Forwading")
 
-# API Reference
-
-* <a name="set"></a>
-
-## set()
-If we know the sender we will inform him about our open/close state
-by calling willBeClosed() and hasBeenOpened()
-
-**Kind**: global function  
-
-* <a name="<anonymous>..Endpoint"></a>
-
-## &lt;anonymous&gt;~Endpoint(options)
-possible options:
-- opposite endpoint specify opposite endpoint
-- createOpposite creates an opposite endpoint
-
-**Kind**: inner method of <code>&lt;anonymous&gt;</code>  
-
-| Param | Type |
-| --- | --- |
-| options | <code>Object</code> | 
-
-
-* <a name="<anonymous>..ReceiveEndpoint"></a>
-
-## &lt;anonymous&gt;~ReceiveEndpoint()
-Set dummy rejecting receiver
-
-**Kind**: inner method of <code>&lt;anonymous&gt;</code>  
-
-* <a name="<anonymous>..SendEndpoint"></a>
-
-## &lt;anonymous&gt;~SendEndpoint(options)
-supported options:
-- opposite endpoint
-- hasBeenConnected() called after connected
-- hasBeenDisconected() called after disconnected
-- hasBeenOpened() called after receiver is open
-- willBeClosed() called before receiver is closed
-
-**Kind**: inner method of <code>&lt;anonymous&gt;</code>  
-
-| Param | Type |
-| --- | --- |
-| options | <code>Object</code> | 
-
-
-* * *
+# API
 
 install
 =======
