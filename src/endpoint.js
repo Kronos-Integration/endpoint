@@ -3,7 +3,7 @@ import { definePropertiesFromOptions } from './util';
 
 /**
  * @param {string} name endpoint name
- * @param {Objects} owner of the endpoint (service or step)
+ * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
  * @param {Endpoint} options.opposite opposite endpoint
  * @param {boolean} options.createOpposite creates an opposite endpoint
@@ -112,7 +112,6 @@ export class Endpoint {
  * also provides fistInterceptor and lastInterceptor
  */
 export class InterceptedEndpoint extends Endpoint {
-
   /**
    * @return {boolean} true if there is at least one interceptor assigned
    */
@@ -129,7 +128,7 @@ export class InterceptedEndpoint extends Endpoint {
   }
 
   /**
-   * Deliver arry of all assigned interceptors
+   * Deliver array of all assigned interceptors
    * @return {Interceptor[]} the interceptors or empty array if none are present
    */
   get interceptors() {
@@ -178,11 +177,12 @@ export class InterceptedEndpoint extends Endpoint {
 
 /**
  * Receiving Endpoint
+ * by default a dummy rejecting receiver is assigned
+ * @param {string} name endpoint name
+ * @param {Object} owner of the endpoint (service or step)
+ * @param {Object} options
  */
 export class ReceiveEndpoint extends InterceptedEndpoint {
-  /**
-   * Set dummy rejecting receiver
-   */
   constructor(name, owner, options) {
     super(name, owner, options);
 
@@ -209,6 +209,10 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     this._sender = sender;
   }
 
+  /**
+   * get the recive function
+   * @return {Function}
+   */
   get receive() {
     return this._receive;
   }
@@ -226,8 +230,10 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   }
 
   /**
+   * Set the recive function
    * If we know the sender we will inform him about our open/close state
    * by calling willBeClosed() and hasBeenOpened()
+   * @param {Function} receive
    */
   set receive(receive = rejectingReceiver) {
     const s = this.sender;
@@ -277,7 +283,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   }
 
   /**
-   * We are always 'in'
+   * We are always _in_
    * @return {boolean} always true
    */
   get isIn() {
@@ -285,13 +291,23 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   }
 }
 
+/**
+ * Receive Endpoint acting as a default endpoints
+ */
 export class ReceiveEndpointDefault extends ReceiveEndpoint {
+  /**
+   * We are a default endpoint
+   * @return {boolean} always true
+   */
   get isDefault() {
     return true;
   }
 }
 
 /**
+ * Sending Endpoint
+ * @param {string} name endpoint name
+ * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
  * @param {Endpoint} options.opposite
  * @param {Function} options.hasBeenConnected called after connected
@@ -331,6 +347,10 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     return json;
   }
 
+  /**
+   * We are always _out_
+   * @return {boolean} always true
+   */
   get isOut() {
     return true;
   }
@@ -409,7 +429,14 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   }
 }
 
+/**
+ * Send Endpoint acting as a default endpoints
+ */
 export class SendEndpointDefault extends SendEndpoint {
+  /**
+   * We are a default endpoint
+   * @return {boolean} always true
+   */
   get isDefault() {
     return true;
   }

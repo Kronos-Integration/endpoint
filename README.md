@@ -29,28 +29,43 @@ Named communication (end)-points inside of kronos
 ### Table of Contents
 
 -   [Endpoint](#endpoint)
+    -   [isDefault](#isdefault)
     -   [direction](#direction)
     -   [opposite](#opposite)
 -   [InterceptedEndpoint](#interceptedendpoint)
+    -   [hasInterceptors](#hasinterceptors)
     -   [interceptors](#interceptors)
     -   [interceptors](#interceptors-1)
 -   [ReceiveEndpoint](#receiveendpoint)
     -   [connected](#connected)
     -   [sender](#sender)
-    -   [isOpen](#isopen)
     -   [receive](#receive)
+    -   [receive](#receive-1)
+    -   [isOpen](#isopen)
     -   [isIn](#isin)
+-   [ReceiveEndpointDefault](#receiveendpointdefault)
+    -   [isDefault](#isdefault-1)
 -   [SendEndpoint](#sendendpoint)
+    -   [isOut](#isout)
+-   [SendEndpointDefault](#sendendpointdefault)
+    -   [isDefault](#isdefault-2)
 
 ## Endpoint
 
 **Parameters**
 
--   `name`  
--   `owner`  
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.opposite` **[Endpoint](#endpoint)** opposite endpoint
     -   `options.createOpposite` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** creates an opposite endpoint
+
+### isDefault
+
+Indicate whatever we are a default endpoint.
+Default means buildin.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
 
 ### direction
 
@@ -59,6 +74,8 @@ Deliver data flow direction
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** delivers data flow direction 'in', 'out' or undefined
 
 ### opposite
+
+Deliver the opposite endpoint
 
 Returns **[Endpoint](#endpoint)** representing the opposite direction
 
@@ -69,7 +86,13 @@ Returns **[Endpoint](#endpoint)** representing the opposite direction
 Endpoint with a list of interceptors
 also provides fistInterceptor and lastInterceptor
 
+### hasInterceptors
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is at least one interceptor assigned
+
 ### interceptors
+
+Deliver array of all assigned interceptors
 
 Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Interceptor>** the interceptors or empty array if none are present
 
@@ -89,12 +112,13 @@ Additionally firstInterceptor and lastInterceptor are set.
 **Extends InterceptedEndpoint**
 
 Receiving Endpoint
+by default a dummy rejecting receiver is assigned
 
 **Parameters**
 
--   `name`  
--   `owner`  
--   `options`  
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 ### connected
 
@@ -110,22 +134,43 @@ Deliver the sending side Endpoint
 
 Returns **[SendEndpoint](#sendendpoint)** the sending side
 
+### receive
+
+get the recive function
+
+Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+
+### receive
+
+Set the recive function
+If we know the sender we will inform him about our open/close state
+by calling willBeClosed() and hasBeenOpened()
+
+**Parameters**
+
+-   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)**  (optional, default `rejectingReceiver`)
+
 ### isOpen
 
 Are we able to receive requests
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we are able to receive requests
 
-### receive
-
-If we know the sender we will inform him about our open/close state
-by calling willBeClosed() and hasBeenOpened()
-
-**Parameters**
-
--   `receive`   (optional, default `rejectingReceiver`)
-
 ### isIn
+
+We are always _in_
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## ReceiveEndpointDefault
+
+**Extends ReceiveEndpoint**
+
+Receive Endpoint acting as a default endpoints
+
+### isDefault
+
+We are a default endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
@@ -133,16 +178,36 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Extends ConnectorMixin(InterceptedEndpoint)**
 
+Sending Endpoint
+
 **Parameters**
 
--   `name`  
--   `owner`  
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.opposite` **[Endpoint](#endpoint)** 
     -   `options.hasBeenConnected` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** called after connected
     -   `options.hasBeenDisconected` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** called after disconnected
     -   `options.hasBeenOpened` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** called after receiver is open
     -   `options.willBeClosed` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** called before receiver is closed
+
+### isOut
+
+We are always _out_
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## SendEndpointDefault
+
+**Extends SendEndpoint**
+
+Send Endpoint acting as a default endpoints
+
+### isDefault
+
+We are a default endpoint
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
 # install
 
