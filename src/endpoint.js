@@ -2,6 +2,8 @@ import { ConnectorMixin, rejectingReceiver } from 'kronos-interceptor';
 import { definePropertiesFromOptions } from './util';
 
 /**
+ * @param {string} name endpoint name
+ * @param {Objects} owner of the endpoint (service or step)
  * @param {Object} options
  * @param {Endpoint} options.opposite opposite endpoint
  * @param {boolean} options.createOpposite creates an opposite endpoint
@@ -35,6 +37,11 @@ export class Endpoint {
     }
   }
 
+  /**
+   * Indicate whatever we are a default endpoint.
+   * Default means buildin.
+   * @return {boolean} false
+   */
   get isDefault() {
     return false;
   }
@@ -79,6 +86,7 @@ export class Endpoint {
   }
 
   /**
+   * Deliver the opposite endpoint
    * @return {Endpoint} representing the opposite direction
    */
   get opposite() {
@@ -104,6 +112,10 @@ export class Endpoint {
  * also provides fistInterceptor and lastInterceptor
  */
 export class InterceptedEndpoint extends Endpoint {
+
+  /**
+   * @return {boolean} true if there is at least one interceptor assigned
+   */
   get hasInterceptors() {
     return this._firstInterceptor !== undefined;
   }
@@ -117,6 +129,7 @@ export class InterceptedEndpoint extends Endpoint {
   }
 
   /**
+   * Deliver arry of all assigned interceptors
    * @return {Interceptor[]} the interceptors or empty array if none are present
    */
   get interceptors() {
@@ -264,6 +277,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   }
 
   /**
+   * We are always 'in'
    * @return {boolean} always true
    */
   get isIn() {
