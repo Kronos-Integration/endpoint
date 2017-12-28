@@ -1,12 +1,23 @@
 {
   "name": "kronos-endpoint",
   "version": "0.0.0-semantic-release",
-  "description": "named communication (end)-points inside of kronos",
   "main": "dist/endpoint.js",
   "module": "src/endpoint.js",
+  "description": "named communication (end)-points inside of kronos",
   "keywords": [
     "endpoint"
   ],
+  "contributors": [
+    {
+      "name": "Torsten Link",
+      "email": "torstenlink@gmx.de"
+    },
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    }
+  ],
+  "license": "BSD-2-Clause",
   "scripts": {
     "cover": "nyc --temp-directory build/nyc ava",
     "test": "ava",
@@ -18,14 +29,6 @@
     "prepare": "rollup -c",
     "lint": "documentation lint src/endpoint.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Kronos-Integration/kronos-endpoint.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Kronos-Integration/kronos-endpoint/issues"
-  },
-  "homepage": "https://github.com/Kronos-Integration/kronos-endpoint#readme",
   "dependencies": {
     "kronos-interceptor": "^2.5.2"
   },
@@ -40,28 +43,17 @@
     "xo": "^0.19.0",
     "documentation": "^5.3.5"
   },
-  "contributors": [
-    {
-      "name": "Torsten Link",
-      "email": "torstenlink@gmx.de"
-    },
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    }
-  ],
-  "license": "BSD-2-Clause",
   "engines": {
     "node": ">=8.9.3"
   },
-  "template": {
-    "repository": {
-      "url": "https://github.com/arlac77/npm-package-template.git"
-    }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kronos-Integration/kronos-endpoint.git"
   },
-  "xo": {
-    "space": true
+  "bugs": {
+    "url": "https://github.com/Kronos-Integration/kronos-endpoint/issues"
   },
+  "homepage": "https://github.com/Kronos-Integration/kronos-endpoint#readme",
   "ava": {
     "files": [
       "build/*-test.js"
@@ -81,5 +73,13 @@
       "lcov"
     ],
     "report-dir": "./build/coverage"
+  },
+  "xo": {
+    "space": true
+  },
+  "template": {
+    "repository": {
+      "url": "https://github.com/arlac77/npm-package-template.git"
+    }
   }
 }
