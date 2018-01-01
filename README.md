@@ -57,8 +57,8 @@ Named communication (end)-points inside of kronos
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `options.opposite` **[Endpoint](#endpoint)** opposite endpoint
-    -   `options.createOpposite` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** creates an opposite endpoint
+    -   `options.opposite` **[Endpoint](#endpoint)?** opposite endpoint
+    -   `options.createOpposite` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** creates an opposite endpoint
 
 ### isDefault
 
@@ -185,11 +185,11 @@ Sending Endpoint
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `options.opposite` **[Endpoint](#endpoint)** 
-    -   `options.hasBeenConnected` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** called after connected
-    -   `options.hasBeenDisconected` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** called after disconnected
-    -   `options.hasBeenOpened` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** called after receiver is open
-    -   `options.willBeClosed` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** called before receiver is closed
+    -   `options.opposite` **[Endpoint](#endpoint)?** endpoint going into the opposite direction
+    -   `options.hasBeenConnected` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after connected
+    -   `options.hasBeenDisconected` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after disconnected
+    -   `options.hasBeenOpened` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is open
+    -   `options.willBeClosed` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called before receiver is closed
 
 ### isOut
 

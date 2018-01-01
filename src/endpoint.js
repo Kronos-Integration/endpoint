@@ -5,8 +5,8 @@ import { definePropertiesFromOptions } from './util';
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
- * @param {Endpoint} options.opposite opposite endpoint
- * @param {boolean} options.createOpposite creates an opposite endpoint
+ * @param {Endpoint} [options.opposite] opposite endpoint
+ * @param {boolean} [options.createOpposite] creates an opposite endpoint
  */
 export class Endpoint {
   constructor(name, owner, options = {}) {
@@ -47,7 +47,7 @@ export class Endpoint {
   }
 
   toString() {
-    return `${this.owner}/${this.name}(connected=${this.isConnected},open=${
+    return `${this.owner}.${this.name}(connected=${this.isConnected},open=${
       this.isOpen
     })`;
   }
@@ -309,11 +309,11 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
- * @param {Endpoint} options.opposite
- * @param {Function} options.hasBeenConnected called after connected
- * @param {Function} options.hasBeenDisconected called after disconnected
- * @param {Function} options.hasBeenOpened called after receiver is open
- * @param {Function} options.willBeClosed called before receiver is closed
+ * @param {Endpoint} [options.opposite] endpoint going into the opposite direction
+ * @param {Function} [options.hasBeenConnected] called after connected
+ * @param {Function} [options.hasBeenDisconected] called after disconnected
+ * @param {Function} [options.hasBeenOpened] called after receiver is open
+ * @param {Function} [options.willBeClosed] called before receiver is closed
  */
 export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   constructor(name, owner, options = {}) {

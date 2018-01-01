@@ -20,7 +20,7 @@ function nameIt(name) {
     },
     endpointIdentifier(e) {
       if (name === undefined) return undefined;
-      return `${this.name}/${e.name}`;
+      return `${this.name}.${e.name}`;
     }
   };
 }
@@ -28,8 +28,8 @@ function nameIt(name) {
 test('Endpoint constructor', t => {
   const e = new Endpoint('e', nameIt('o1'));
   t.is(e.direction, undefined);
-  t.is(e.toString(), 'o1/e(connected=false,open=false)');
-  t.is(e.identifier, 'o1/e');
+  t.is(e.toString(), 'o1.e(connected=false,open=false)');
+  t.is(e.identifier, 'o1.e');
   t.is(e.isOpen, false);
 });
 
@@ -38,7 +38,7 @@ test('SendEndpointDefault constructor', t => {
   t.is(e.isDefault, true);
   t.is(e.direction, 'out');
   t.is(e.isOpen, false);
-  t.is(e.toString(), 'o1/se(connected=false,open=false)');
+  t.is(e.toString(), 'o1.se(connected=false,open=false)');
 });
 
 test('ReceiveEndpointDefault constructor', t => {
@@ -46,7 +46,7 @@ test('ReceiveEndpointDefault constructor', t => {
   t.is(e.isDefault, true);
   t.is(e.direction, 'in');
   t.is(e.isOpen, false);
-  t.is(e.toString(), 'o1/se(connected=false,open=false)');
+  t.is(e.toString(), 'o1.se(connected=false,open=false)');
 });
 
 test('SendEndpoint connect', t => {
