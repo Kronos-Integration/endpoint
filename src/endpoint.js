@@ -6,7 +6,7 @@ import { definePropertiesFromOptions } from './util';
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
  * @param {Endpoint} [options.opposite] opposite endpoint
- * @param {boolean} [options.createOpposite] creates an opposite endpoint
+ * @param {boolean} [options.createOpposite] true to auto creates an opposite endpoint
  */
 export class Endpoint {
   constructor(name, owner, options = {}) {
@@ -56,18 +56,30 @@ export class Endpoint {
     return this.owner.endpointIdentifier(this);
   }
 
+  /**
+   * @return {boolean} false
+   */
   get isIn() {
     return false;
   }
 
+  /**
+   * @return {boolean} false
+   */
   get isOut() {
     return false;
   }
 
+  /**
+   * @return {boolean} false
+   */
   get isOpen() {
     return false;
   }
 
+  /**
+   * @return {boolean} false
+   */
   get isConnected() {
     return false;
   }
