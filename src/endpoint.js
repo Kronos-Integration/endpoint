@@ -1,6 +1,14 @@
 import { ConnectorMixin, rejectingReceiver } from 'kronos-interceptor';
 import { definePropertiesFromOptions } from './util';
 
+
+const FIRST = Symbol('first');
+const LAST = Symbol('last');
+const RECEIVE = Symbol('receive');
+const SENDER = Symbol('sender');
+const ENDPOINT = Symbol('endpoint');
+const CONNECTED = Symbol('connected');
+
 /**
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
@@ -128,15 +136,15 @@ export class InterceptedEndpoint extends Endpoint {
    * @return {boolean} true if there is at least one interceptor assigned
    */
   get hasInterceptors() {
-    return this._firstInterceptor !== undefined;
+    return this[FIRST] !== undefined;
   }
 
   get firstInterceptor() {
-    return this._firstInterceptor;
+    return this[FIRST];
   }
 
   get lastInterceptor() {
-    return this._lastInterceptor;
+    return this[LAST];
   }
 
   /**
@@ -164,13 +172,13 @@ export class InterceptedEndpoint extends Endpoint {
    */
   set interceptors(newInterceptors) {
     if (newInterceptors === undefined || newInterceptors.length === 0) {
-      this._firstInterceptor = undefined;
-      this._lastInterceptor = undefined;
+      this[FIRST] = undefined;
+      this[LAST] = undefined;
     } else {
-      this._firstInterceptor = newInterceptors[0];
-      this._lastInterceptor = newInterceptors.reduce(
+      this[FIRST] = newInterceptors[0];
+      this[LAST] = newInterceptors.reduce(
         (previous, current) => (previous.connected = current),
-        this._firstInterceptor
+        this[FIRST]
       );
     }
   }
@@ -198,7 +206,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   constructor(name, owner, options) {
     super(name, owner, options);
 
-    this._receive = rejectingReceiver;
+    this[RECEIVE] = rejectingReceiver;
   }
 
   /**
@@ -214,11 +222,11 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @return {SendEndpoint} the sending side
    */
   get sender() {
-    return this._sender;
+    return this[SENDER];
   }
 
   set sender(sender) {
-    this._sender = sender;
+    this[SENDER] = sender;
   }
 
   /**
@@ -226,7 +234,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @return {Function}
    */
   get receive() {
-    return this._receive;
+    return this[RECEIVE];
   }
 
   /**
@@ -236,8 +244,8 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   get isOpen() {
     return (
       (this.hasInterceptors
-        ? this._internalEndpoint.receive
-        : this._receive) !== rejectingReceiver
+        ? this[ENDPOINT].receive
+        : this[RECEIVE]) !== rejectingReceiver
     );
   }
 
@@ -255,9 +263,9 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     }
 
     if (this.hasInterceptors) {
-      this._internalEndpoint.receive = receive;
+      this[ENDPOINT].receive = receive;
     } else {
-      this._receive = receive;
+      this[RECEIVE] = receive;
     }
 
     if (s && s.isOpen) {
@@ -267,15 +275,15 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
 
   set interceptors(newInterceptors) {
     const lastReceive = this.hasInterceptors
-      ? this._internalEndpoint.receive
+      ? this[ENDPOINT].receive
       : this.receive;
 
     super.interceptors = newInterceptors;
 
     if (this.hasInterceptors) {
-      if (!this._internalEndpoint) {
+      if (!this[ENDPOINT]) {
         let internalReceive = lastReceive;
-        this._internalEndpoint = Object.create(this, {
+        this[ENDPOINT] = Object.create(this, {
           receive: {
             get() {
               return internalReceive;
@@ -287,10 +295,10 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
         });
       }
 
-      this.lastInterceptor.connected = this._internalEndpoint;
-      this._receive = request => this.firstInterceptor.receive(request);
+      this.lastInterceptor.connected = this[ENDPOINT];
+      this[RECEIVE] = request => this.firstInterceptor.receive(request);
     } else {
-      this._receive = lastReceive;
+      this[RECEIVE] = lastReceive;
     }
   }
 
@@ -370,14 +378,14 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   set interceptors(newInterceptors) {
     const lastConnected = this.hasInterceptors
       ? this.lastInterceptor.connected
-      : this._connected;
+      : this[CONNECTED];
 
     super.interceptors = newInterceptors;
     if (this.hasInterceptors) {
       this.lastInterceptor.connected = lastConnected;
-      this._connected = this.firstInterceptor;
+      this[CONNECTED] = this.firstInterceptor;
     } else {
-      this._connected = lastConnected;
+      this[CONNECTED] = lastConnected;
     }
   }
 
@@ -431,7 +439,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
 
   // TODO why is this required ?
   get connected() {
-    return this._connected;
+    return this[CONNECTED];
   }
   get interceptors() {
     return super.interceptors;
