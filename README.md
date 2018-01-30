@@ -30,6 +30,10 @@ Named communication (end)-points inside of kronos
 
 -   [Endpoint](#endpoint)
     -   [isDefault](#isdefault)
+    -   [isIn](#isin)
+    -   [isOut](#isout)
+    -   [isOpen](#isopen)
+    -   [isConnected](#isconnected)
     -   [direction](#direction)
     -   [opposite](#opposite)
 -   [InterceptedEndpoint](#interceptedendpoint)
@@ -41,12 +45,12 @@ Named communication (end)-points inside of kronos
     -   [sender](#sender)
     -   [receive](#receive)
     -   [receive](#receive-1)
-    -   [isOpen](#isopen)
-    -   [isIn](#isin)
+    -   [isOpen](#isopen-1)
+    -   [isIn](#isin-1)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [SendEndpoint](#sendendpoint)
-    -   [isOut](#isout)
+    -   [isOut](#isout-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-2)
 
@@ -58,12 +62,28 @@ Named communication (end)-points inside of kronos
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.opposite` **[Endpoint](#endpoint)?** opposite endpoint
-    -   `options.createOpposite` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** creates an opposite endpoint
+    -   `options.createOpposite` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true to auto creates an opposite endpoint
 
 ### isDefault
 
 Indicate whatever we are a default endpoint.
 Default means buildin.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
+
+### isIn
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
+
+### isOut
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
+
+### isOpen
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
+
+### isConnected
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
 

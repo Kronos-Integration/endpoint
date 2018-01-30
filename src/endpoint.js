@@ -1,13 +1,14 @@
 import { ConnectorMixin, rejectingReceiver } from 'kronos-interceptor';
 import { definePropertiesFromOptions } from './util';
 
-
 const FIRST = Symbol('first');
 const LAST = Symbol('last');
 const RECEIVE = Symbol('receive');
 const SENDER = Symbol('sender');
 const ENDPOINT = Symbol('endpoint');
-const CONNECTED = Symbol('connected');
+
+// TODO why is this not working as a symbol
+const CONNECTED = '_connected'; // Symbol('connected');
 
 /**
  * @param {string} name endpoint name
@@ -243,9 +244,8 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    */
   get isOpen() {
     return (
-      (this.hasInterceptors
-        ? this[ENDPOINT].receive
-        : this[RECEIVE]) !== rejectingReceiver
+      (this.hasInterceptors ? this[ENDPOINT].receive : this[RECEIVE]) !==
+      rejectingReceiver
     );
   }
 
