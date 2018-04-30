@@ -15,7 +15,7 @@ const CONNECTED = '_connected'; // Symbol('connected');
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
  * @param {Endpoint} [options.opposite] opposite endpoint
- * @param {boolean} [options.createOpposite] true to auto creates an opposite endpoint
+ * @param {boolean} [options.createOpposite] true to auto create an opposite endpoint
  */
 export class Endpoint {
   constructor(name, owner, options = {}) {
