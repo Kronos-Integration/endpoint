@@ -1,6 +1,9 @@
 {
   "name": "kronos-endpoint",
   "version": "0.0.0-semantic-release",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/endpoint.js",
   "module": "src/endpoint.js",
   "description": "named communication (end)-points inside of kronos",
