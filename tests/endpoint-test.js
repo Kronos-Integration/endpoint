@@ -4,11 +4,11 @@ import {
   SendEndpointDefault,
   ReceiveEndpoint,
   ReceiveEndpointDefault
-} from '../src/endpoint';
-import { Interceptor } from 'kronos-interceptor';
+} from "../src/endpoint";
+import { Interceptor } from "kronos-interceptor";
 
-import test from 'ava';
-import { testResponseHandler } from 'kronos-test-interceptor';
+import test from "ava";
+import { testResponseHandler } from "kronos-test-interceptor";
 
 function nameIt(name) {
   return {
@@ -25,32 +25,32 @@ function nameIt(name) {
   };
 }
 
-test('Endpoint constructor', t => {
-  const e = new Endpoint('e', nameIt('o1'));
+test("Endpoint constructor", t => {
+  const e = new Endpoint("e", nameIt("o1"));
   t.is(e.direction, undefined);
-  t.is(e.toString(), 'o1.e(connected=false,open=false)');
-  t.is(e.identifier, 'o1.e');
+  t.is(e.toString(), "o1.e(connected=false,open=false)");
+  t.is(e.identifier, "o1.e");
   t.is(e.isOpen, false);
 });
 
-test('SendEndpointDefault constructor', t => {
-  const e = new SendEndpointDefault('se', nameIt('o1'));
+test("SendEndpointDefault constructor", t => {
+  const e = new SendEndpointDefault("se", nameIt("o1"));
   t.is(e.isDefault, true);
-  t.is(e.direction, 'out');
+  t.is(e.direction, "out");
   t.is(e.isOpen, false);
-  t.is(e.toString(), 'o1.se(connected=false,open=false)');
+  t.is(e.toString(), "o1.se(connected=false,open=false)");
 });
 
-test('ReceiveEndpointDefault constructor', t => {
-  const e = new ReceiveEndpointDefault('se', nameIt('o1'));
+test("ReceiveEndpointDefault constructor", t => {
+  const e = new ReceiveEndpointDefault("se", nameIt("o1"));
   t.is(e.isDefault, true);
-  t.is(e.direction, 'in');
+  t.is(e.direction, "in");
   t.is(e.isOpen, false);
-  t.is(e.toString(), 'o1.se(connected=false,open=false)');
+  t.is(e.toString(), "o1.se(connected=false,open=false)");
 });
 
-test('SendEndpoint connect', t => {
-  const e = new SendEndpoint('se', nameIt('o1'));
+test("SendEndpoint connect", t => {
+  const e = new SendEndpoint("se", nameIt("o1"));
   t.is(e.isDefault, false);
   t.is(e.opposite, undefined);
   t.is(e.isConnected, false);
@@ -59,9 +59,9 @@ test('SendEndpoint connect', t => {
   });
 });
 
-test('SendEndpoint connecting with hasBeen...', t => {
+test("SendEndpoint connecting with hasBeen...", t => {
   let hasBeenConnected, hasBeenDisConnected, oldConnection;
-  const se = new SendEndpoint('se', nameIt('o1'), {
+  const se = new SendEndpoint("se", nameIt("o1"), {
     hasBeenConnected() {
       hasBeenConnected = true;
     },
@@ -71,7 +71,7 @@ test('SendEndpoint connecting with hasBeen...', t => {
     }
   });
 
-  const re = new ReceiveEndpoint('re', nameIt('o2'));
+  const re = new ReceiveEndpoint("re", nameIt("o2"));
 
   se.connected = re;
 
@@ -88,8 +88,8 @@ test('SendEndpoint connecting with hasBeen...', t => {
   t.is(re.isOpen, false);
 });
 
-test('SendEndpoint connecting with hasBeen...', t => {
-  const se = new SendEndpoint('se', nameIt('o1'));
+test("SendEndpoint initial", t => {
+  const se = new SendEndpoint("se", nameIt("o1"));
 
   t.is(se.isConnected, false);
   t.deepEqual(se.interceptors, []);
@@ -97,18 +97,18 @@ test('SendEndpoint connecting with hasBeen...', t => {
   t.is(se.lastInterceptor, undefined);
 });
 
-test('connecting Receiver conveniance otherEnd', t => {
-  const se = new SendEndpoint('se', nameIt('ss'));
-  const re = new ReceiveEndpoint('re', nameIt('rs'));
+test("connecting Receiver conveniance otherEnd", t => {
+  const se = new SendEndpoint("se", nameIt("ss"));
+  const re = new ReceiveEndpoint("re", nameIt("rs"));
 
   re.connected = se;
   t.is(se.isConnected, true);
   t.is(se.otherEnd, re);
 });
 
-test('connecting with interceptor', t => {
-  const se = new SendEndpoint('se', nameIt('ss'));
-  const re = new ReceiveEndpoint('re', nameIt('rs'));
+test("connecting with interceptor", t => {
+  const se = new SendEndpoint("se", nameIt("ss"));
+  const re = new ReceiveEndpoint("re", nameIt("rs"));
 
   se.connected = re;
   t.is(se.isConnected, true);
@@ -126,9 +126,9 @@ test('connecting with interceptor', t => {
   t.is(se.connected, re);
 });
 
-test('interceptor send', async t => {
-  const ep1 = new SendEndpoint('ep1', nameIt('o1'));
-  const ep2 = new ReceiveEndpoint('ep2', nameIt('o2'));
+test("interceptor send", async t => {
+  const ep1 = new SendEndpoint("ep1", nameIt("o1"));
+  const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"));
 
   ep2.receive = testResponseHandler;
   ep1.connected = ep2;
