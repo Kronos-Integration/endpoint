@@ -6,11 +6,9 @@
 [![codecov.io](http://codecov.io/github/Kronos-Integration/kronos-endpoint/coverage.svg?branch=master)](http://codecov.io/github/Kronos-Integration/kronos-endpoint?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/Kronos-Integration/kronos-endpoint/badge.svg)](https://snyk.io/test/github/Kronos-Integration/kronos-endpoint)
 [![GitHub Issues](https://img.shields.io/github/issues/Kronos-Integration/kronos-endpoint.svg?style=flat-square)](https://github.com/Kronos-Integration/kronos-endpoint/issues)
-[![Stories in Ready](https://badge.waffle.io/Kronos-Integration/kronos-endpoint.svg?label=ready&title=Ready)](http://waffle.io/Kronos-Integration/kronos-endpoint)
 [![Dependency Status](https://david-dm.org/Kronos-Integration/kronos-endpoint.svg)](https://david-dm.org/Kronos-Integration/kronos-endpoint)
 [![devDependency Status](https://david-dm.org/Kronos-Integration/kronos-endpoint/dev-status.svg)](https://david-dm.org/Kronos-Integration/kronos-endpoint#info=devDependencies)
 [![docs](http://inch-ci.org/github/Kronos-Integration/kronos-endpoint.svg?branch=master)](http://inch-ci.org/github/Kronos-Integration/kronos-endpoint)
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![downloads](http://img.shields.io/npm/dm/kronos-endpoint.svg?style=flat-square)](https://npmjs.org/package/kronos-endpoint)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
