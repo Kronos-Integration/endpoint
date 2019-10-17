@@ -1,14 +1,17 @@
-import { ConnectorMixin, rejectingReceiver } from 'kronos-interceptor';
-import { definePropertiesFromOptions } from './util';
+import {
+  ConnectorMixin,
+  rejectingReceiver
+} from "@kronos-integration/interceptor";
+import { definePropertiesFromOptions } from "./util.mjs";
 
-const FIRST = Symbol('first');
-const LAST = Symbol('last');
-const RECEIVE = Symbol('receive');
-const SENDER = Symbol('sender');
-const ENDPOINT = Symbol('endpoint');
+const FIRST = Symbol("first");
+const LAST = Symbol("last");
+const RECEIVE = Symbol("receive");
+const SENDER = Symbol("sender");
+const ENDPOINT = Symbol("endpoint");
 
 // TODO why is this not working as a symbol
-const CONNECTED = '_connected'; // Symbol('connected');
+const CONNECTED = "_connected"; // Symbol('connected');
 
 /**
  * @param {string} name endpoint name
@@ -25,10 +28,10 @@ export class Endpoint {
     });
 
     if (options.opposite !== undefined) {
-      Object.defineProperty(this, 'opposite', {
+      Object.defineProperty(this, "opposite", {
         value: options.opposite
       });
-      Object.defineProperty(options.opposite, 'opposite', {
+      Object.defineProperty(options.opposite, "opposite", {
         value: this
       });
     } else if (options.createOpposite) {
@@ -40,7 +43,7 @@ export class Endpoint {
         }
       );
 
-      Object.defineProperty(this, 'opposite', {
+      Object.defineProperty(this, "opposite", {
         value: opposite
       });
     }
@@ -56,9 +59,7 @@ export class Endpoint {
   }
 
   toString() {
-    return `${this.owner}.${this.name}(connected=${this.isConnected},open=${
-      this.isOpen
-    })`;
+    return `${this.owner}.${this.name}(connected=${this.isConnected},open=${this.isOpen})`;
   }
 
   get identifier() {
@@ -103,7 +104,7 @@ export class Endpoint {
    * @return {string} delivers data flow direction 'in', 'out' or undefined
    */
   get direction() {
-    return this.isIn ? 'in' : this.isOut ? 'out' : undefined;
+    return this.isIn ? "in" : this.isOut ? "out" : undefined;
   }
 
   /**
@@ -340,10 +341,10 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     super(name, owner, options);
 
     definePropertiesFromOptions(this, options, [
-      'hasBeenConnected',
-      'hasBeenDisConnected',
-      'hasBeenOpened',
-      'willBeClosed'
+      "hasBeenConnected",
+      "hasBeenDisConnected",
+      "hasBeenOpened",
+      "willBeClosed"
     ]);
   }
 

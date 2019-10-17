@@ -1,14 +1,20 @@
+import test from "ava";
+
 import {
   Endpoint,
   SendEndpoint,
   SendEndpointDefault,
   ReceiveEndpoint,
   ReceiveEndpointDefault
-} from "../src/endpoint";
-import { Interceptor } from "kronos-interceptor";
+} from "../src/endpoint.mjs";
+import { Interceptor } from "@kronos-integration/interceptor";
 
-import test from "ava";
-import { testResponseHandler } from "kronos-test-interceptor";
+//import { testResponseHandler } from "kronos-test-interceptor";
+
+const testResponseHandler = {
+  async receive(request, oldRequest) {
+  }
+};
 
 function nameIt(name) {
   return {
