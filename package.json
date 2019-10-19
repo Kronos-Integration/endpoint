@@ -33,11 +33,11 @@
     "@kronos-integration/interceptor": "^4.0.0"
   },
   "devDependencies": {
+    "@kronos-integration/test-interceptor": "^5.0.2",
     "ava": "^2.4.0",
     "c8": "^5.0.4",
     "documentation": "^12.1.2",
     "esm": "^3.2.25",
-    "@kronos-integration/test-interceptor": "^5.0.2",
     "markdown-doctest": "^1.0.0",
     "semantic-release": "^15.13.26"
   },
