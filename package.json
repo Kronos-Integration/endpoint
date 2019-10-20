@@ -5,7 +5,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "dist/endpoint.mjs",
+  "main": "src/endpoint.mjs",
   "module": "src/endpoint.mjs",
   "description": "named communication (end)-points inside of kronos",
   "keywords": [
@@ -54,7 +54,6 @@
   "homepage": "https://github.com/Kronos-Integration/kronos-endpoint#readme",
   "ava": {
     "files": [
-      "tests/*-test.js",
       "tests/*-test.mjs"
     ],
     "require": [
@@ -63,7 +62,6 @@
     "babel": false,
     "compileEnhancements": false,
     "extensions": [
-      "js",
       "mjs"
     ]
   },
