@@ -25,6 +25,7 @@ Named communication (end)-points inside of kronos
 ### Table of Contents
 
 -   [Endpoint](#endpoint)
+    -   [Parameters](#parameters)
     -   [isDefault](#isdefault)
     -   [isIn](#isin)
     -   [isOut](#isout)
@@ -36,29 +37,34 @@ Named communication (end)-points inside of kronos
     -   [hasInterceptors](#hasinterceptors)
     -   [interceptors](#interceptors)
     -   [interceptors](#interceptors-1)
+        -   [Parameters](#parameters-1)
 -   [ReceiveEndpoint](#receiveendpoint)
+    -   [Parameters](#parameters-2)
     -   [connected](#connected)
+        -   [Parameters](#parameters-3)
     -   [sender](#sender)
     -   [receive](#receive)
     -   [receive](#receive-1)
+        -   [Parameters](#parameters-4)
     -   [isOpen](#isopen-1)
     -   [isIn](#isin-1)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [SendEndpoint](#sendendpoint)
+    -   [Parameters](#parameters-5)
     -   [isOut](#isout-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-2)
 
 ## Endpoint
 
-**Parameters**
+### Parameters
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.opposite` **[Endpoint](#endpoint)?** opposite endpoint
-    -   `options.createOpposite` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true to auto creates an opposite endpoint
+    -   `options.createOpposite` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true to auto create an opposite endpoint
 
 ### isDefault
 
@@ -119,7 +125,7 @@ a connected chain from array element 0 over all entries up to the last element
 in the array is formed.
 Additionally firstInterceptor and lastInterceptor are set.
 
-**Parameters**
+#### Parameters
 
 -   `newInterceptors` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Interceptor>** replaces all interceptors
 
@@ -130,7 +136,7 @@ Additionally firstInterceptor and lastInterceptor are set.
 Receiving Endpoint
 by default a dummy rejecting receiver is assigned
 
-**Parameters**
+### Parameters
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
@@ -140,7 +146,7 @@ by default a dummy rejecting receiver is assigned
 
 Connect other side to us
 
-**Parameters**
+#### Parameters
 
 -   `other` **[Endpoint](#endpoint)** endpoint to be connected to
 
@@ -162,7 +168,7 @@ Set the recive function
 If we know the sender we will inform him about our open/close state
 by calling willBeClosed() and hasBeenOpened()
 
-**Parameters**
+#### Parameters
 
 -   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)**  (optional, default `rejectingReceiver`)
 
@@ -196,7 +202,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Sending Endpoint
 
-**Parameters**
+### Parameters
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)

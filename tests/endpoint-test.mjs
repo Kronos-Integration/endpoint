@@ -1,4 +1,5 @@
 import test from "ava";
+import { dummyResponseHandler } from "@kronos-integration/test-interceptor";
 
 import {
   Endpoint,
@@ -9,12 +10,6 @@ import {
 } from "../src/endpoint.mjs";
 import { Interceptor } from "@kronos-integration/interceptor";
 
-//import { testResponseHandler } from "kronos-test-interceptor";
-
-const testResponseHandler = {
-  async receive(request, oldRequest) {
-  }
-};
 
 function nameIt(name) {
   return {
@@ -136,7 +131,7 @@ test("interceptor send", async t => {
   const ep1 = new SendEndpoint("ep1", nameIt("o1"));
   const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"));
 
-  ep2.receive = testResponseHandler;
+  ep2.receive = dummyResponseHandler;
   ep1.connected = ep2;
 
   t.is(ep1.isConnected, true);
