@@ -22,31 +22,32 @@ const CONNECTED = "_connected"; // Symbol('connected');
  */
 export class Endpoint {
   constructor(name, owner, options = {}) {
-    Object.defineProperties(this, {
+    const properties = {
       name: { value: name },
       owner: { value: owner }
-    });
+    };
 
     if (options.opposite !== undefined) {
-      Object.defineProperty(this, "opposite", {
+      properties.opposite = {
         value: options.opposite
-      });
+      };
+
       Object.defineProperty(options.opposite, "opposite", {
         value: this
       });
     } else if (options.createOpposite) {
-      const opposite = new (this.isIn ? SendEndpoint : ReceiveEndpoint)(
-        name,
-        owner,
-        {
-          opposite: this
-        }
-      );
-
-      Object.defineProperty(this, "opposite", {
-        value: opposite
-      });
+      properties.opposite = {
+        value: new (this.isIn ? SendEndpoint : ReceiveEndpoint)(
+          name,
+          owner,
+          {
+            opposite: this
+          }
+        )
+      };
     }
+
+    Object.defineProperties(this,properties);
   }
 
   /**
