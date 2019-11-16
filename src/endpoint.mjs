@@ -11,7 +11,8 @@ const SENDER = Symbol("sender");
 const ENDPOINT = Symbol("endpoint");
 
 // TODO why is this not working as a symbol
-const CONNECTED = "_connected"; // Symbol('connected');
+const CONNECTED = "_connected";
+//const CONNECTED = Symbol("connected");
 
 /**
  * @param {string} name endpoint name
@@ -462,4 +463,15 @@ export class SendEndpointDefault extends SendEndpoint {
   get isDefault() {
     return true;
   }
+}
+
+
+/**
+ * check for Endpoint
+ * @param {any} object
+ * @return {boolean} true if object is a Endpoint
+ */
+export function isEndpoint(object)
+{
+  return object instanceof Endpoint;
 }

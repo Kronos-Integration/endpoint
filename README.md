@@ -55,6 +55,8 @@ Named communication (end)-points inside of kronos
     -   [isOut](#isout-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-2)
+-   [isEndpoint](#isendpoint)
+    -   [Parameters](#parameters-6)
 
 ## Endpoint
 
@@ -230,6 +232,16 @@ Send Endpoint acting as a default endpoints
 We are a default endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## isEndpoint
+
+check for Endpoint
+
+### Parameters
+
+-   `object` **any** 
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if object is a Endpoint
 
 # install
 
