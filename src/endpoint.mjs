@@ -38,17 +38,13 @@ export class Endpoint {
       });
     } else if (options.createOpposite) {
       properties.opposite = {
-        value: new (this.isIn ? SendEndpoint : ReceiveEndpoint)(
-          name,
-          owner,
-          {
-            opposite: this
-          }
-        )
+        value: new (this.isIn ? SendEndpoint : ReceiveEndpoint)(name, owner, {
+          opposite: this
+        })
       };
     }
 
-    Object.defineProperties(this,properties);
+    Object.defineProperties(this, properties);
   }
 
   /**
@@ -128,6 +124,10 @@ export class Endpoint {
     }
 
     return json;
+  }
+
+  get hasInterceptors() {
+    return false;
   }
 }
 
@@ -465,13 +465,11 @@ export class SendEndpointDefault extends SendEndpoint {
   }
 }
 
-
 /**
  * check for Endpoint
  * @param {any} object
  * @return {boolean} true if object is a Endpoint
  */
-export function isEndpoint(object)
-{
+export function isEndpoint(object) {
   return object instanceof Endpoint;
 }

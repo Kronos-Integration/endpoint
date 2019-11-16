@@ -1,64 +1,12 @@
 import test from "ava";
+import { nameIt } from "./util.mjs";
 import { dummyResponseHandler } from "@kronos-integration/test-interceptor";
-
-import {
-  Endpoint,
-  SendEndpoint,
-  SendEndpointDefault,
-  ReceiveEndpoint,
-  ReceiveEndpointDefault
-} from "../src/endpoint.mjs";
 import { Interceptor } from "@kronos-integration/interceptor";
 
-
-function nameIt(name) {
-  return {
-    toString() {
-      return name;
-    },
-    get name() {
-      return name;
-    },
-    endpointIdentifier(e) {
-      if (name === undefined) return undefined;
-      return `${this.name}.${e.name}`;
-    }
-  };
-}
-
-test("Endpoint constructor", t => {
-  const e = new Endpoint("e", nameIt("o1"));
-  t.is(e.direction, undefined);
-  t.is(e.toString(), "o1.e(connected=false,open=false)");
-  t.is(e.identifier, "o1.e");
-  t.is(e.isOpen, false);
-});
-
-test("SendEndpointDefault constructor", t => {
-  const e = new SendEndpointDefault("se", nameIt("o1"));
-  t.is(e.isDefault, true);
-  t.is(e.direction, "out");
-  t.is(e.isOpen, false);
-  t.is(e.toString(), "o1.se(connected=false,open=false)");
-});
-
-test("ReceiveEndpointDefault constructor", t => {
-  const e = new ReceiveEndpointDefault("se", nameIt("o1"));
-  t.is(e.isDefault, true);
-  t.is(e.direction, "in");
-  t.is(e.isOpen, false);
-  t.is(e.toString(), "o1.se(connected=false,open=false)");
-});
-
-test("SendEndpoint connect", t => {
-  const e = new SendEndpoint("se", nameIt("o1"));
-  t.is(e.isDefault, false);
-  t.is(e.opposite, undefined);
-  t.is(e.isConnected, false);
-  t.deepEqual(e.toJSON(), {
-    out: true
-  });
-});
+import {
+  SendEndpoint,
+  ReceiveEndpoint,
+} from "../src/endpoint.mjs";
 
 test("SendEndpoint connecting with hasBeen...", t => {
   let hasBeenConnected, hasBeenDisConnected, oldConnection;
@@ -87,15 +35,6 @@ test("SendEndpoint connecting with hasBeen...", t => {
   t.is(oldConnection, re);
   t.is(se.isOpen, false);
   t.is(re.isOpen, false);
-});
-
-test("SendEndpoint initial", t => {
-  const se = new SendEndpoint("se", nameIt("o1"));
-
-  t.is(se.isConnected, false);
-  t.deepEqual(se.interceptors, []);
-  t.is(se.firstInterceptor, undefined);
-  t.is(se.lastInterceptor, undefined);
 });
 
 test("connecting Receiver conveniance otherEnd", t => {
