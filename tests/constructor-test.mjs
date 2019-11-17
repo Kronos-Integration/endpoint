@@ -41,27 +41,45 @@ function et(t, factory, options, expected) {
   }
 }
 
-et.title = (providedTitle = "", factory, b) =>
-  `interceptor ${providedTitle} ${factory.name} ${b}`.trim();
+et.title = (providedTitle = "", factory, config) =>
+  `interceptor ${providedTitle} ${factory.name} ${JSON.stringify(
+    config
+  )}`.trim();
 
 test(et, Endpoint, undefined, {});
 
-test(et, SendEndpoint, undefined, {
+const SendEndpointExpectations = {
   direction: "out",
   toJSON: { out: true },
   interceptors: []
-});
+};
+
+test(et, SendEndpoint, undefined, SendEndpointExpectations);
+test(et, SendEndpoint, {}, SendEndpointExpectations);
+
+/*
+test(
+  et,
+  SendEndpoint,
+  { connected: new ReceiveEndpoint("c", nameIt("o")) },
+  {...SendEndpointExpectations, connected: 'xx'}
+);*/
 
 test(et, SendEndpointDefault, undefined, {
-  isDefault: true,
-  direction: "out"
+  ...SendEndpointExpectations,
+  isDefault: true
 });
 
-test(et, ReceiveEndpoint, undefined, {
-  direction: "in"
-});
+const ReceiveEndpointExpectations = {
+  direction: "in",
+  toJSON: { in: true }
+  //  interceptors: []
+};
+
+test(et, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
+test(et, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
 
 test(et, ReceiveEndpointDefault, undefined, {
-  isDefault: true,
-  direction: "in"
+  ...ReceiveEndpointExpectations,
+  isDefault: true
 });
