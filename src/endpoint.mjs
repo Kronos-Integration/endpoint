@@ -205,12 +205,13 @@ export class InterceptedEndpoint extends Endpoint {
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
+ * @param {Function} [options.receive] reciever function
  */
 export class ReceiveEndpoint extends InterceptedEndpoint {
-  constructor(name, owner, options) {
+  constructor(name, owner, options={}) {
     super(name, owner, options);
 
-    this[RECEIVE] = rejectingReceiver;
+    this.receive = options.receive;
   }
 
   /**
@@ -259,6 +260,11 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Function} receive
    */
   set receive(receive = rejectingReceiver) {
+
+    /*if(!receive instanceof Function) {
+      return;
+    }*/
+
     const s = this.sender;
 
     if (s && receive === rejectingReceiver) {
@@ -332,6 +338,7 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
+ * @param {Endpoint} [options.connected] where te requests are delivered to
  * @param {Endpoint} [options.opposite] endpoint going into the opposite direction
  * @param {Function} [options.hasBeenConnected] called after connected
  * @param {Function} [options.hasBeenDisconected] called after disconnected
@@ -341,6 +348,10 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
 export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
+
+    if(isEndpoint(options.connected)) {
+      this.connected = options.connected;
+    }
 
     definePropertiesFromOptions(this, options, [
       "hasBeenConnected",
@@ -362,7 +373,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       if (o !== undefined && o.owner !== undefined) {
         const ei = o.owner.endpointIdentifier(o);
         if (ei !== undefined) {
-          json.target = ei;
+          json.connected = ei;
         }
       }
     }

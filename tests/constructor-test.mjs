@@ -57,13 +57,19 @@ const SendEndpointExpectations = {
 test(et, SendEndpoint, undefined, SendEndpointExpectations);
 test(et, SendEndpoint, {}, SendEndpointExpectations);
 
-/*
+const otherReceiver = new ReceiveEndpoint("c", nameIt("o"));
 test(
   et,
   SendEndpoint,
-  { connected: new ReceiveEndpoint("c", nameIt("o")) },
-  {...SendEndpointExpectations, connected: 'xx'}
-);*/
+  { connected: otherReceiver },
+  {
+    ...SendEndpointExpectations,
+    toJSON: { out: true, connected: "o.c" },
+    toString: "o.e(connected=true,open=false)",
+    isConnected: true,
+    otherEnd: otherReceiver
+  }
+);
 
 test(et, SendEndpointDefault, undefined, {
   ...SendEndpointExpectations,
@@ -78,6 +84,17 @@ const ReceiveEndpointExpectations = {
 
 test(et, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
 test(et, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
+test(
+  "with receiver",
+  et,
+  ReceiveEndpoint,
+  { receive: () => {} },
+  {
+    ...ReceiveEndpointExpectations,
+    isOpen: true,
+    toString: "o.e(connected=false,open=true)"
+  }
+);
 
 test(et, ReceiveEndpointDefault, undefined, {
   ...ReceiveEndpointExpectations,
