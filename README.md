@@ -65,8 +65,7 @@ Named communication (end)-points inside of kronos
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `options.opposite` **[Endpoint](#endpoint)?** opposite endpoint
-    -   `options.createOpposite` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true to auto create an opposite endpoint
+    -   `options.opposite` **([Endpoint](#endpoint) \| [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean))?** opposite endpoint
 
 ### isDefault
 

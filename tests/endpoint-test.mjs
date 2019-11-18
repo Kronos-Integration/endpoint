@@ -283,7 +283,7 @@ describe('endpoint', () => {
       let se, re;
 
       se = new endpoint.SendEndpoint('se', ss, {
-        createOpposite: true,
+        opposite: true,
         hasBeenOpened() {
           hasBeenOpened = true;
         },
@@ -292,7 +292,7 @@ describe('endpoint', () => {
         }
       });
       re = new endpoint.ReceiveEndpoint('re', rs, {
-        createOpposite: true
+        opposite: true
       });
 
       beforeEach(function() {

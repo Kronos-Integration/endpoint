@@ -18,8 +18,7 @@ const CONNECTED = "_connected";
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
- * @param {Endpoint} [options.opposite] opposite endpoint
- * @param {boolean} [options.createOpposite] true to auto create an opposite endpoint
+ * @param {Endpoint|boolean} [options.opposite] opposite endpoint
  */
 export class Endpoint {
   constructor(name, owner, options = {}) {
@@ -28,7 +27,13 @@ export class Endpoint {
       owner: { value: owner }
     };
 
-    if (options.opposite !== undefined) {
+    if (options.opposite === true) {
+      properties.opposite = {
+        value: new (this.isIn ? SendEndpoint : ReceiveEndpoint)(name, owner, {
+          opposite: this
+        })
+      };
+    } else if (isEndpoint(options.opposite)) {
       properties.opposite = {
         value: options.opposite
       };
@@ -36,12 +41,6 @@ export class Endpoint {
       Object.defineProperty(options.opposite, "opposite", {
         value: this
       });
-    } else if (options.createOpposite) {
-      properties.opposite = {
-        value: new (this.isIn ? SendEndpoint : ReceiveEndpoint)(name, owner, {
-          opposite: this
-        })
-      };
     }
 
     Object.defineProperties(this, properties);
@@ -208,7 +207,7 @@ export class InterceptedEndpoint extends Endpoint {
  * @param {Function} [options.receive] reciever function
  */
 export class ReceiveEndpoint extends InterceptedEndpoint {
-  constructor(name, owner, options={}) {
+  constructor(name, owner, options = {}) {
     super(name, owner, options);
 
     this.receive = options.receive;
@@ -260,11 +259,6 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Function} receive
    */
   set receive(receive = rejectingReceiver) {
-
-    /*if(!receive instanceof Function) {
-      return;
-    }*/
-
     const s = this.sender;
 
     if (s && receive === rejectingReceiver) {
@@ -349,7 +343,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
-    if(isEndpoint(options.connected)) {
+    if (isEndpoint(options.connected)) {
       this.connected = options.connected;
     }
 

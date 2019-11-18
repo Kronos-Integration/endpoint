@@ -57,6 +57,14 @@ const SendEndpointExpectations = {
 test(et, SendEndpoint, undefined, SendEndpointExpectations);
 test(et, SendEndpoint, {}, SendEndpointExpectations);
 
+const oppositeReceiver = new ReceiveEndpoint("c", nameIt("o"));
+test(
+  et,
+  SendEndpoint,
+  { opposite: oppositeReceiver },
+  { ...SendEndpointExpectations, opposite: oppositeReceiver }
+);
+
 const otherReceiver = new ReceiveEndpoint("c", nameIt("o"));
 test(
   et,
@@ -84,6 +92,16 @@ const ReceiveEndpointExpectations = {
 
 test(et, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
 test(et, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
+
+const oppositeSender = new SendEndpoint("c", nameIt("o"));
+
+test(
+  et,
+  ReceiveEndpoint,
+  { opposite: oppositeSender },
+  { ...ReceiveEndpointExpectations, opposite: oppositeSender }
+);
+
 test(
   "with receiver",
   et,
