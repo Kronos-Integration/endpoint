@@ -3,10 +3,21 @@ import { nameIt } from "./util.mjs";
 import { dummyResponseHandler } from "@kronos-integration/test-interceptor";
 import { Interceptor } from "@kronos-integration/interceptor";
 
-import {
-  SendEndpoint,
-  ReceiveEndpoint,
-} from "../src/endpoint.mjs";
+import { SendEndpoint, ReceiveEndpoint } from "../src/endpoint.mjs";
+
+test("connecting SendEndpoint to itself", t => {
+  const se = new SendEndpoint("se", nameIt("ss"));
+  t.throws(() => {
+    se.connected = se;
+  }, Error);
+});
+
+test.only("connecting ReceiveEndpoint to itself", t => {
+  const re = new ReceiveEndpoint("se", nameIt("ss"));
+  t.throws(() => {
+    re.connected = re;
+  }, Error);
+});
 
 test("SendEndpoint connecting with hasBeen...", t => {
   let hasBeenConnected, hasBeenDisConnected, oldConnection;

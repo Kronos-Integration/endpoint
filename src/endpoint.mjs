@@ -219,6 +219,9 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Endpoint} other endpoint to be connected to
    */
   set connected(other) {
+    if(other === this) {
+      throw new Error(`Can't connect to myself ${this.owner.name}.${this.name}`);
+    }
     other.connected = this;
   }
 
@@ -399,8 +402,14 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     }
   }
 
-  set connected(toBeConnected) {
-    let formerConnected;
+  set connected(toBeConnected) {    
+    if(toBeConnected === this.connected) {
+      return;
+    }
+
+    if(toBeConnected === this) {
+      throw new Error(`Can't connect to myself ${this.owner.name}.${this.name}`);
+    }
 
     if (toBeConnected !== undefined) {
       toBeConnected.sender = this;
@@ -410,6 +419,8 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
         delete this[OPEN_STATE];
       }
     }
+
+    let formerConnected;
 
     if (this.hasInterceptors) {
       formerConnected = this.lastInterceptor.connected;
