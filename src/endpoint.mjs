@@ -9,6 +9,7 @@ const LAST = Symbol("last");
 const RECEIVE = Symbol("receive");
 const SENDER = Symbol("sender");
 const ENDPOINT = Symbol("endpoint");
+const OPEN_STATE = Symbol("openState");
 
 // TODO why is this not working as a symbol
 const CONNECTED = "_connected";
@@ -93,7 +94,7 @@ export class Endpoint {
 
   hasBeenConnected() {}
   hasBeenDisConnected(formerConnected) {}
-  hasBeenOpened() {}
+  hasBeenOpened(openState) {}
   willBeClosed() {}
 
   /**
@@ -234,7 +235,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   }
 
   /**
-   * get the recive function
+   * get the receive function
    * @return {Function}
    */
   get receive() {
@@ -253,7 +254,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   }
 
   /**
-   * Set the recive function
+   * Set the recieve function
    * If we know the sender we will inform him about our open/close state
    * by calling willBeClosed() and hasBeenOpened()
    * @param {Function} receive
@@ -262,7 +263,8 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     const s = this.sender;
 
     if (s && receive === rejectingReceiver) {
-      s.willBeClosed();
+      s.willBeClosed(this[OPEN_STATE]);
+      delete this[OPEN_STATE];
     }
 
     if (this.hasInterceptors) {
@@ -272,7 +274,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     }
 
     if (s && s.isOpen) {
-      s.hasBeenOpened();
+      this[OPEN_STATE] = s.hasBeenOpened();
     }
   }
 
@@ -404,7 +406,8 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       toBeConnected.sender = this;
     } else {
       if (this.isOpen) {
-        this.willBeClosed();
+        this.willBeClosed(this[OPEN_STATE]);
+        delete this[OPEN_STATE];
       }
     }
 
@@ -434,7 +437,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       this.hasBeenConnected();
 
       if (this.isOpen) {
-        this.hasBeenOpened();
+        this[OPEN_STATE] = this.hasBeenOpened();
       }
     } else if (toBeConnected === undefined) {
       this.hasBeenDisConnected(formerConnected);
