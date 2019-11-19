@@ -25,6 +25,14 @@ function et(t, factory, options, expected) {
     ...expected
   };
 
+  if (options) {
+    options = {
+      ...options, willBeClosed: (value) => {
+        t.is(value, 77);
+      }, hasBeenOpened: () => { return 77; }
+    };
+  }
+
   const e = new factory("e", nameIt("o"), options);
 
   for (const [name, v] of Object.entries(expected)) {
@@ -42,7 +50,7 @@ function et(t, factory, options, expected) {
 }
 
 et.title = (providedTitle = "", factory, config) =>
-  `interceptor ${providedTitle} ${factory.name} ${JSON.stringify(
+  `endpoint ${providedTitle} ${factory.name} ${JSON.stringify(
     config
   )}`.trim();
 
@@ -106,7 +114,7 @@ test(
   "with receiver",
   et,
   ReceiveEndpoint,
-  { receive: () => {} },
+  { receive: () => { } },
   {
     ...ReceiveEndpointExpectations,
     isOpen: true,
