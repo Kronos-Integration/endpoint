@@ -16,7 +16,7 @@
 
 Named communication (end)-points inside of kronos
 
-![request forwarding](doc/images/requestForwarding.svg "Requests Forwading")
+![request forwarding](doc/images/requestForwarding.svg "Requests Forwading"){:height="310pt" width="325pt"}
 
 # API
 
@@ -60,7 +60,7 @@ Named communication (end)-points inside of kronos
 
 ## Endpoint
 
--   ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint")
+-   ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint"){:height="200pt" width="200pt"}
 
 ### Parameters
 
