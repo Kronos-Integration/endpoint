@@ -20,7 +20,7 @@ const CONNECTED = "_connected";
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service)
  * @param {Object} options
- * @param {Endpoint|boolean} [options.opposite] opposite endpoint
+ * @param {Endpoint|Object} [options.opposite] opposite endpoint
  */
 export class Endpoint {
   constructor(name, owner, options = {}) {
@@ -29,22 +29,28 @@ export class Endpoint {
       owner: { value: owner }
     };
 
-    if (options.opposite === true) {
+    const opposite = options.opposite;
+
+    if (isEndpoint(opposite)) {
       properties.opposite = {
-        value: new (this.isIn ? SendEndpoint : ReceiveEndpoint)(name, owner, {
-          opposite: this
-        })
-      };
-    } else if (isEndpoint(options.opposite)) {
-      properties.opposite = {
-        value: options.opposite
+        value: opposite
       };
 
-      Object.defineProperty(options.opposite, "opposite", {
+      Object.defineProperty(opposite, "opposite", {
         value: this
       });
+    } else if (opposite) {
+      properties.opposite = {
+        value: new (this.isIn ? SendEndpoint : ReceiveEndpoint)(
+          opposite.name || name,
+          owner,
+          {
+            ...opposite,
+            opposite: this
+          }
+        )
+      };
     }
-
     Object.defineProperties(this, properties);
   }
 
@@ -220,8 +226,10 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Endpoint} other endpoint to be connected to
    */
   set connected(other) {
-    if(other === this) {
-      throw new Error(`Can't connect to myself ${this.owner.name}.${this.name}`);
+    if (other === this) {
+      throw new Error(
+        `Can't connect to myself ${this.owner.name}.${this.name}`
+      );
     }
     other.connected = this;
   }
@@ -403,13 +411,15 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     }
   }
 
-  set connected(toBeConnected) {    
-    if(toBeConnected === this.connected) {
+  set connected(toBeConnected) {
+    if (toBeConnected === this.connected) {
       return;
     }
 
-    if(toBeConnected === this) {
-      throw new Error(`Can't connect to myself ${this.owner.name}.${this.name}`);
+    if (toBeConnected === this) {
+      throw new Error(
+        `Can't connect to myself ${this.owner.name}.${this.name}`
+      );
     }
 
     if (toBeConnected !== undefined) {

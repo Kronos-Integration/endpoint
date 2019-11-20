@@ -12,7 +12,7 @@ test("connecting SendEndpoint to itself", t => {
   }, Error);
 });
 
-test.only("connecting ReceiveEndpoint to itself", t => {
+test("connecting ReceiveEndpoint to itself", t => {
   const re = new ReceiveEndpoint("se", nameIt("ss"));
   t.throws(() => {
     re.connected = re;

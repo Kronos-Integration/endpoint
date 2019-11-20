@@ -12,3 +12,40 @@ export function nameIt(name) {
     }
   };
 }
+
+export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
+  expected = {
+    direction: undefined,
+    //opposite: undefined,
+    isConnected: false,
+    isOpen: false,
+    isDefault: false,
+    hasInterceptors: false,
+    firstInterceptor: undefined,
+    lastInterceptor: undefined,
+    ...expected
+  };
+
+  for (const [name, v] of Object.entries(expected)) {
+    const rv =
+      endpoint[name] instanceof Function ? endpoint[name]() : endpoint[name];
+    const ev = expected[name];
+
+    switch (name) {
+      case "opposite":
+        if (checkOpposite) {
+          checkEndpoint(t, rv, ev, false);
+        } else if(ev !== undefined){
+          t.truthy(rv);
+        }
+        break;
+
+      default:
+        if (Array.isArray(ev) || typeof ev === "object") {
+          t.deepEqual(rv, ev, name);
+        } else {
+          t.is(rv, ev, name);
+        }
+    }
+  }
+}

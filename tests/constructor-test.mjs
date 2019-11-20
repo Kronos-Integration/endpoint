@@ -1,5 +1,5 @@
 import test from "ava";
-import { nameIt } from "./util.mjs";
+import { nameIt, checkEndpoint } from "./util.mjs";
 
 import {
   Endpoint,
@@ -10,49 +10,20 @@ import {
 } from "../src/endpoint.mjs";
 
 function et(t, factory, options, expected) {
-  expected = {
-    toString: "o.e(connected=false,open=false)",
-    identifier: "o.e",
-    direction: undefined,
-    opposite: undefined,
-    isConnected: false,
-    isOpen: false,
-    isDefault: false,
-    // interceptors: [],
-    hasInterceptors: false,
-    firstInterceptor: undefined,
-    lastInterceptor: undefined,
-    ...expected
-  };
-
-  if (options) {
-    options = {
-      ...options, willBeClosed: (value) => {
-        t.is(value, 77);
-      }, hasBeenOpened: () => { return 77; }
-    };
-  }
-
-  const e = new factory("e", nameIt("o"), options);
-
-  for (const [name, v] of Object.entries(expected)) {
-    const rv = e[name] instanceof Function ? e[name]() : e[name];
-    const ev = expected[name];
-
-    if (Array.isArray(ev) || typeof ev === "object") {
-      // console.log(name, ev, typeof ev, rv);
-
-      t.deepEqual(rv, ev, name);
-    } else {
-      t.is(rv, ev, name);
-    }
-  }
+  checkEndpoint(
+    t,
+    new factory("e", nameIt("o"), options),
+    {
+      toString: "o.e(connected=false,open=false)",
+      identifier: "o.e",
+      ...expected
+    },
+    true
+  );
 }
 
 et.title = (providedTitle = "", factory, config) =>
-  `endpoint ${providedTitle} ${factory.name} ${JSON.stringify(
-    config
-  )}`.trim();
+  `endpoint ${providedTitle} ${factory.name} ${JSON.stringify(config)}`.trim();
 
 test(et, Endpoint, undefined, {});
 
@@ -65,12 +36,36 @@ const SendEndpointExpectations = {
 test(et, SendEndpoint, undefined, SendEndpointExpectations);
 test(et, SendEndpoint, {}, SendEndpointExpectations);
 
-const oppositeReceiver = new ReceiveEndpoint("c", nameIt("o"));
+
+function willBeClosed() {}
+function hasBeenOpened() {}
+
+test(
+  "opposite from options",
+  et,
+  SendEndpoint,
+  {
+    opposite: {
+      name: "c75"
+    }
+  },
+  {
+    ...SendEndpointExpectations,
+    opposite: { name: "c75", direction: "in" }
+  }
+);
+
 test(
   et,
   SendEndpoint,
-  { opposite: oppositeReceiver },
-  { ...SendEndpointExpectations, opposite: oppositeReceiver }
+  { opposite: new ReceiveEndpoint("c76", nameIt("o")) },
+  {
+    ...SendEndpointExpectations,
+    opposite: {
+      name: "c76",
+      direction: "in"
+    }
+  }
 );
 
 const otherReceiver = new ReceiveEndpoint("c", nameIt("o"));
@@ -101,20 +96,39 @@ const ReceiveEndpointExpectations = {
 test(et, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
 test(et, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
 
-const oppositeSender = new SendEndpoint("c", nameIt("o"));
+test(
+  et,
+  ReceiveEndpoint,
+  { opposite: new SendEndpoint("c77", nameIt("o")) },
+  {
+    ...ReceiveEndpointExpectations,
+    opposite: {
+      name: "c77",
+      direction: "out"
+    }
+  }
+);
 
 test(
   et,
   ReceiveEndpoint,
-  { opposite: oppositeSender },
-  { ...ReceiveEndpointExpectations, opposite: oppositeSender }
+  { opposite: { hasBeenOpened } },
+  {
+    ...ReceiveEndpointExpectations,
+    opposite: {
+      name: "e",
+      direction: "out",
+      //hasBeenOpened
+    }
+  }
 );
+
 
 test(
   "with receiver",
   et,
   ReceiveEndpoint,
-  { receive: () => { } },
+  { receive: () => {} },
   {
     ...ReceiveEndpointExpectations,
     isOpen: true,
