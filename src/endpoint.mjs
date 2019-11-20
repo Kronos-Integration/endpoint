@@ -16,8 +16,9 @@ const CONNECTED = "_connected";
 //const CONNECTED = Symbol("connected");
 
 /**
+ * - ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint")
  * @param {string} name endpoint name
- * @param {Object} owner of the endpoint (service or step)
+ * @param {Object} owner of the endpoint (service)
  * @param {Object} options
  * @param {Endpoint|boolean} [options.opposite] opposite endpoint
  */

@@ -60,10 +60,12 @@ Named communication (end)-points inside of kronos
 
 ## Endpoint
 
+-   ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint")
+
 ### Parameters
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
--   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.opposite` **([Endpoint](#endpoint) \| [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean))?** opposite endpoint
 
@@ -160,13 +162,13 @@ Returns **[SendEndpoint](#sendendpoint)** the sending side
 
 ### receive
 
-get the recive function
+get the receive function
 
 Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
 
 ### receive
 
-Set the recive function
+Set the recieve function
 If we know the sender we will inform him about our open/close state
 by calling willBeClosed() and hasBeenOpened()
 
