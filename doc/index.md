@@ -16,3 +16,10 @@ is present.
 Optionally each endpoint has an opposite one
 
 ![opposite endpoint](images/opposite.svg)
+
+connection states
+===
+when a working connection is established (isOpen)
+the result of hasBeenOpenend is preserved
+ans will be passed to willBeClosed(state)
+![connection states](images/states.svg)
