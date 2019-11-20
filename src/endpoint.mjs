@@ -99,10 +99,10 @@ export class Endpoint {
     return false;
   }
 
-  hasBeenConnected() {}
-  hasBeenDisConnected(formerConnected) {}
-  hasBeenOpened(openState) {}
-  willBeClosed() {}
+  hasBeenConnected(endpoint) {}
+  hasBeenDisConnected(endpoint, formerConnected) {}
+  hasBeenOpened(endpoint, openState) {}
+  willBeClosed(endpoint) {}
 
   /**
    * Deliver data flow direction
@@ -231,6 +231,11 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
         `Can't connect to myself ${this.owner.name}.${this.name}`
       );
     }
+    console.log("CONNECT", other.name, this.name);
+    if (other.connected === this) {
+      console.log("already connected");
+      return;
+    }
     other.connected = this;
   }
 
@@ -275,7 +280,8 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     const s = this.sender;
 
     if (s && receive === rejectingReceiver) {
-      s.willBeClosed(this[OPEN_STATE]);
+      this.willBeClosed(this, this[OPEN_STATE][0]);
+      s.willBeClosed(s, this[OPEN_STATE][1]);
       delete this[OPEN_STATE];
     }
 
@@ -286,7 +292,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     }
 
     if (s && s.isOpen) {
-      this[OPEN_STATE] = s.hasBeenOpened();
+      this[OPEN_STATE] = [this.hasBeenOpened(this), s.hasBeenOpened(s)];
     }
   }
 
@@ -422,15 +428,15 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       );
     }
 
-    if (toBeConnected !== undefined) {
-      toBeConnected.sender = this;
-    } else {
-      if (this.isOpen) {
-        this.willBeClosed(this[OPEN_STATE]);
-        delete this[OPEN_STATE];
-      }
+    if (this.isOpen) {
+      this.willBeClosed(this, this[OPEN_STATE][0]);
+      delete this[OPEN_STATE];
     }
 
+    if (toBeConnected !== undefined) {
+      toBeConnected.sender = this;
+    }
+    
     let formerConnected;
 
     if (this.hasInterceptors) {
@@ -456,13 +462,13 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
         toBeConnected.opposite.connected = this.opposite;
       }
 
-      this.hasBeenConnected();
+      this.hasBeenConnected(this);
 
       if (this.isOpen) {
-        this[OPEN_STATE] = this.hasBeenOpened();
+        this[OPEN_STATE] = [this.hasBeenOpened(this)];
       }
     } else if (toBeConnected === undefined) {
-      this.hasBeenDisConnected(formerConnected);
+      this.hasBeenDisConnected(this, formerConnected);
     }
   }
 

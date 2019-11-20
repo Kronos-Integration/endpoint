@@ -25,8 +25,8 @@ test("SendEndpoint connecting with hasBeen...", t => {
     hasBeenConnected() {
       hasBeenConnected = true;
     },
-    hasBeenDisConnected(endpoint) {
-      oldConnection = endpoint;
+    hasBeenDisConnected(endpoint, old) {
+      oldConnection = old;
       hasBeenDisConnected = true;
     }
   });
