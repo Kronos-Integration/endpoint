@@ -41,7 +41,7 @@ export class Endpoint {
       });
     } else if (opposite) {
       properties.opposite = {
-        value: new (this.isIn ? SendEndpoint : ReceiveEndpoint)(
+        value: new this.oppositeFactory(
           opposite.name || name,
           owner,
           {
@@ -332,6 +332,11 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   get isIn() {
     return true;
   }
+
+  get oppositeFactory()
+  {
+    return SendEndpoint;
+  }
 }
 
 /**
@@ -344,6 +349,11 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
    */
   get isDefault() {
     return true;
+  }
+
+  get oppositeFactory()
+  {
+    return SendEndpointDefault;
   }
 }
 
@@ -486,6 +496,11 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   get otherEnd() {
     return super.otherEnd;
   }
+
+  get oppositeFactory()
+  {
+    return ReceiveEndpoint;
+  }
 }
 
 /**
@@ -498,6 +513,11 @@ export class SendEndpointDefault extends SendEndpoint {
    */
   get isDefault() {
     return true;
+  }
+
+  get oppositeFactory()
+  {
+    return ReceiveEndpointDefault;
   }
 }
 
