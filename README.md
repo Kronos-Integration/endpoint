@@ -27,6 +27,7 @@ Named communication (end)-points inside of kronos
 -   [Endpoint](#endpoint)
     -   [Parameters](#parameters)
     -   [isDefault](#isdefault)
+    -   [toStringAttributes](#tostringattributes)
     -   [isIn](#isin)
     -   [isOut](#isout)
     -   [isOpen](#isopen)
@@ -76,6 +77,12 @@ Indicate whatever we are a default endpoint.
 Default means buildin.
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
+
+### toStringAttributes
+
+mapping of properties used in toString
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 ### isIn
 

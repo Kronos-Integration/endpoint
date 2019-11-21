@@ -491,15 +491,22 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     return this.isConnected && this.connected.isOpen;
   }
 
+  get isConnected()
+  {
+    if (this.hasInterceptors) {
+      return this.lastInterceptor.isConnected;
+    }
+
+    return super.isConnected;
+  }
+
   // TODO why is this required ?
   get connected() {
     return this[CONNECTED];
   }
+
   get interceptors() {
     return super.interceptors;
-  }
-  get otherEnd() {
-    return super.otherEnd;
   }
 
   get oppositeFactory() {

@@ -44,7 +44,6 @@ test(
   { interceptors: [new LimitingInterceptor()] },
   {
     ...SendEndpointExpectations,
-    toString: "o.e(connected=true,open=undefined)",
     toJSON: {
       out: true,
       interceptors: [
@@ -58,8 +57,6 @@ test(
         }
       ]
     },
-    isOpen: undefined,
-    isConnected: true,
     hasInterceptors: true,
     interceptors: [{ type: "request-limit" }]
   }
