@@ -1,6 +1,7 @@
 import {
   ConnectorMixin,
-  rejectingReceiver
+  rejectingReceiver,
+  CONNECTED
 } from "@kronos-integration/interceptor";
 import { definePropertiesFromOptions } from "./util.mjs";
 
@@ -10,10 +11,6 @@ const RECEIVE = Symbol("receive");
 const SENDER = Symbol("sender");
 const ENDPOINT = Symbol("endpoint");
 const OPEN_STATE = Symbol("openState");
-
-// TODO why is this not working as a symbol
-const CONNECTED = "_connected";
-//const CONNECTED = Symbol("connected");
 
 /**
  * - ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint")
@@ -41,14 +38,10 @@ export class Endpoint {
       });
     } else if (opposite) {
       properties.opposite = {
-        value: new this.oppositeFactory(
-          opposite.name || name,
-          owner,
-          {
-            ...opposite,
-            opposite: this
-          }
-        )
+        value: new this.oppositeFactory(opposite.name || name, owner, {
+          ...opposite,
+          opposite: this
+        })
       };
     }
     Object.defineProperties(this, properties);
@@ -143,6 +136,12 @@ export class Endpoint {
  * also provides fistInterceptor and lastInterceptor
  */
 export class InterceptedEndpoint extends Endpoint {
+  constructor(name, owner, options) {
+    super(name, owner, options);
+
+    this.interceptors = options.interceptors;
+  }
+
   /**
    * @return {boolean} true if there is at least one interceptor assigned
    */
@@ -231,12 +230,10 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
         `Can't connect to myself ${this.owner.name}.${this.name}`
       );
     }
-    console.log("CONNECT", other.name, this.name);
-    if (other.connected === this) {
-      console.log("already connected");
-      return;
+
+    if (other.connected !== this) {
+      other.connected = this;
     }
-    other.connected = this;
   }
 
   /**
@@ -333,8 +330,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     return true;
   }
 
-  get oppositeFactory()
-  {
+  get oppositeFactory() {
     return SendEndpoint;
   }
 }
@@ -351,8 +347,7 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
     return true;
   }
 
-  get oppositeFactory()
-  {
+  get oppositeFactory() {
     return SendEndpointDefault;
   }
 }
@@ -446,7 +441,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     if (toBeConnected !== undefined) {
       toBeConnected.sender = this;
     }
-    
+
     let formerConnected;
 
     if (this.hasInterceptors) {
@@ -497,8 +492,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     return super.otherEnd;
   }
 
-  get oppositeFactory()
-  {
+  get oppositeFactory() {
     return ReceiveEndpoint;
   }
 }
@@ -515,8 +509,7 @@ export class SendEndpointDefault extends SendEndpoint {
     return true;
   }
 
-  get oppositeFactory()
-  {
+  get oppositeFactory() {
     return ReceiveEndpointDefault;
   }
 }

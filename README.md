@@ -34,33 +34,34 @@ Named communication (end)-points inside of kronos
     -   [direction](#direction)
     -   [opposite](#opposite)
 -   [InterceptedEndpoint](#interceptedendpoint)
+    -   [Parameters](#parameters-1)
     -   [hasInterceptors](#hasinterceptors)
     -   [interceptors](#interceptors)
     -   [interceptors](#interceptors-1)
-        -   [Parameters](#parameters-1)
+        -   [Parameters](#parameters-2)
 -   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-2)
+    -   [Parameters](#parameters-3)
     -   [connected](#connected)
-        -   [Parameters](#parameters-3)
+        -   [Parameters](#parameters-4)
     -   [sender](#sender)
     -   [receive](#receive)
     -   [receive](#receive-1)
-        -   [Parameters](#parameters-4)
+        -   [Parameters](#parameters-5)
     -   [isOpen](#isopen-1)
     -   [isIn](#isin-1)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-5)
+    -   [Parameters](#parameters-6)
     -   [isOut](#isout-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-2)
 -   [isEndpoint](#isendpoint)
-    -   [Parameters](#parameters-6)
+    -   [Parameters](#parameters-7)
 
 ## Endpoint
 
--   ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint"){:height="200pt" width="200pt"}
+-   ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint")
 
 ### Parameters
 
@@ -110,6 +111,12 @@ Returns **[Endpoint](#endpoint)** representing the opposite direction
 
 Endpoint with a list of interceptors
 also provides fistInterceptor and lastInterceptor
+
+### Parameters
+
+-   `name`  
+-   `owner`  
+-   `options`  
 
 ### hasInterceptors
 

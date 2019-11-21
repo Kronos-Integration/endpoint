@@ -1,6 +1,8 @@
 import test from "ava";
 import { nameIt, checkEndpoint } from "./util.mjs";
 
+import { LimitingInterceptor } from "@kronos-integration/interceptor";
+
 import {
   Endpoint,
   SendEndpoint,
@@ -36,6 +38,20 @@ const SendEndpointExpectations = {
 test(et, SendEndpoint, undefined, SendEndpointExpectations);
 test(et, SendEndpoint, {}, SendEndpointExpectations);
 
+const is = [new LimitingInterceptor()];
+test.skip(
+  et,
+  SendEndpoint,
+  { interceptors: [new LimitingInterceptor()] },
+  {
+    ...SendEndpointExpectations,
+    isOpen: undefined,
+    isConnected: true,
+    hasInterceptors: true,
+    firstInterceptor: is[0],
+    interceptors: is
+  }
+);
 
 function willBeClosed() {}
 function hasBeenOpened() {}
@@ -117,12 +133,11 @@ test(
     ...ReceiveEndpointExpectations,
     opposite: {
       name: "e",
-      direction: "out",
+      direction: "out"
       //hasBeenOpened
     }
   }
 );
-
 
 test(
   "with receiver",

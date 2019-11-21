@@ -16,7 +16,6 @@ export function nameIt(name) {
 export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
   expected = {
     direction: undefined,
-    //opposite: undefined,
     isConnected: false,
     isOpen: false,
     isDefault: false,
@@ -38,6 +37,13 @@ export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
         } else if(ev !== undefined){
           t.truthy(rv);
         }
+        break;
+        case "firstInterceptor":
+        case "lastInterceptor":
+        break;
+
+      case "interceptors":
+          t.deepEqual(rv, ev, name);
         break;
 
       default:
