@@ -34,16 +34,18 @@ export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
       case "opposite":
         if (checkOpposite) {
           checkEndpoint(t, rv, ev, false);
-        } else if(ev !== undefined){
+        } else if (ev !== undefined) {
           t.truthy(rv);
         }
         break;
-        case "firstInterceptor":
-        case "lastInterceptor":
+      case "firstInterceptor":
+      case "lastInterceptor":
         break;
 
       case "interceptors":
-          t.deepEqual(rv, ev, name);
+        for (let i = 0; i < ev.length; i++) {
+          checkInterceptor(t, rv[i], ev[i], i);
+        }
         break;
 
       default:
@@ -54,4 +56,8 @@ export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
         }
     }
   }
+}
+
+export function checkInterceptor(t, interceptor, expected, i) {
+  t.is(interceptor.type, expected.type, `interceptor type [${i}]`);
 }

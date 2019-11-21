@@ -38,18 +38,30 @@ const SendEndpointExpectations = {
 test(et, SendEndpoint, undefined, SendEndpointExpectations);
 test(et, SendEndpoint, {}, SendEndpointExpectations);
 
-const is = [new LimitingInterceptor()];
-test.skip(
+test(
   et,
   SendEndpoint,
   { interceptors: [new LimitingInterceptor()] },
   {
     ...SendEndpointExpectations,
+    toString: "o.e(connected=true,open=undefined)",
+    toJSON: {
+      out: true,
+      interceptors: [
+        {
+          type: "request-limit",
+          limits: [
+            {
+              count: 10
+            }
+          ]
+        }
+      ]
+    },
     isOpen: undefined,
     isConnected: true,
     hasInterceptors: true,
-    firstInterceptor: is[0],
-    interceptors: is
+    interceptors: [{ type: "request-limit" }]
   }
 );
 
