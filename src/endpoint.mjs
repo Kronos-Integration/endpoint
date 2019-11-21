@@ -56,8 +56,18 @@ export class Endpoint {
     return false;
   }
 
+  /**
+   * mapping of properties used in toString
+   * @return {Object}
+   */
+  get toStringAttributes() {
+    return { connected: "isConnected", open: "isOpen" };
+  }
+
   toString() {
-    return `${this.owner}.${this.name}(connected=${this.isConnected},open=${this.isOpen})`;
+    return `${this.owner}.${this.name}(${Object.entries(this.toStringAttributes)
+      .map(([name, prop]) => `${name}=${this[prop]}`)
+      .join(",")})`;
   }
 
   get identifier() {
