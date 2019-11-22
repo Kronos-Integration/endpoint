@@ -41,7 +41,12 @@ test(et, SendEndpoint, {}, SendEndpointExpectations);
 test(
   et,
   SendEndpoint,
-  { interceptors: [new LimitingInterceptor()] },
+  {
+    interceptors: [
+      LimitingInterceptor,
+      { type: LimitingInterceptor, limits: [{ count: 5 }] }
+    ]
+  },
   {
     ...SendEndpointExpectations,
     toJSON: {
@@ -52,6 +57,14 @@ test(
           limits: [
             {
               count: 10
+            }
+          ]
+        },
+        {
+          type: "request-limit",
+          limits: [
+            {
+              count: 5
             }
           ]
         }

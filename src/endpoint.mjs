@@ -1,8 +1,10 @@
 import {
+  Interceptor,
   ConnectorMixin,
   rejectingReceiver,
   CONNECTED
 } from "@kronos-integration/interceptor";
+
 import { definePropertiesFromOptions } from "./util.mjs";
 
 const FIRST = Symbol("first");
@@ -149,7 +151,7 @@ export class InterceptedEndpoint extends Endpoint {
   constructor(name, owner, options) {
     super(name, owner, options);
 
-    this.interceptors = options.interceptors;
+    this.instanciateInterceptors(options.interceptors);
   }
 
   /**
@@ -201,6 +203,20 @@ export class InterceptedEndpoint extends Endpoint {
         this[FIRST]
       );
     }
+  }
+
+  instanciateInterceptors(interceptors) {
+    if (interceptors === undefined) return;
+
+    this.interceptors = interceptors.map(interceptor => {
+      if (interceptor instanceof Interceptor) {
+        return interceptor;
+      }
+      if (typeof interceptor === "function") {
+        return new interceptor(undefined, this);
+      }
+      return new interceptor.type(interceptor, this);
+    });
   }
 
   toJSON() {
@@ -491,8 +507,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     return this.isConnected && this.connected.isOpen;
   }
 
-  get isConnected()
-  {
+  get isConnected() {
     if (this.hasInterceptors) {
       return this.lastInterceptor.isConnected;
     }

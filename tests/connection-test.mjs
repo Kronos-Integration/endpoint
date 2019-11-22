@@ -4,21 +4,39 @@ import { dummyResponseHandler } from "@kronos-integration/test-interceptor";
 
 import { SendEndpoint, ReceiveEndpoint } from "../src/endpoint.mjs";
 
-
 import { Interceptor } from "@kronos-integration/interceptor";
 
+class PlusTenInterceptor extends Interceptor {
+    async receive(value)
+    {
+        return this.connected.receive(value + 10);
+    }
+}
 
-test("connecting with interceptor", t => {
-  const se = new SendEndpoint("se", nameIt("ss"));
-  const re = new ReceiveEndpoint("re", nameIt("rs"));
+test("connecting with interceptor", async t => {
+  let received;
+  const re = new ReceiveEndpoint("re", nameIt("rs"), {
+    receive: r => {
+      received = r;
+      return r + 1;
+    }
+  });
 
-  se.connected = re;
+  const se = new SendEndpoint("se", nameIt("ss"), {
+    connected: re
+  });
+
   t.is(se.isConnected, true);
+  t.is(se.isOpen, true);
   t.is(se.otherEnd, re);
   t.is(re.sender, se);
 
-  const in1 = new Interceptor(undefined, se);
+  t.is(await se.receive(1), 1+1);
+
+  const in1 = new PlusTenInterceptor(undefined, se);
+ // se.interceptors = [in1];
   se.injectNext(in1);
+  t.is(await se.receive(2), 2 + 10 + 1);
 
   t.is(se.isConnected, true);
   t.is(in1.isConnected, true);
@@ -26,56 +44,33 @@ test("connecting with interceptor", t => {
 
   se.removeNext();
   t.is(se.connected, re);
+  t.is(se.isOpen, true);
+  t.is(await se.receive(3), 3 + 1);
+
+  se.interceptors = [in1, new PlusTenInterceptor(undefined, se)];
+  t.is(await se.receive(4), 4 + 10 + 10 + 1);
 });
 
 test("interceptor send", async t => {
-    const ep1 = new SendEndpoint("ep1", nameIt("o1"));
-    const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"));
-  
-    ep2.receive = dummyResponseHandler;
-    ep1.connected = ep2;
-  
-    t.is(ep1.isConnected, true);
-    t.is(ep1.otherEnd, ep2);
-  
-    const response = await ep1.receive({
-      value: 1
-    });
-  
-    t.is(response.value, 1);
-  });
-  
+  const ep1 = new SendEndpoint("ep1", nameIt("o1"));
+  const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"));
 
-  /*
-  function testReceive(name, ep, value, hops, cb) {
-  describe(name, () => {
-    it(`interceptors ${hops ? hops : 'none'} passed`, done => {
-      ep
-        .receive({
-          value: value
-        })
-        .then(response => {
-          const exp = {
-            value: value
-          };
-          if (hops) {
-            exp.hops = hops;
-          }
-          assert.deepEqual(response, exp);
+  ep2.receive = dummyResponseHandler;
+  ep1.connected = ep2;
 
-          if (cb) {
-            cb(done);
-          } else {
-            done();
-          }
-        })
-        .catch(done);
-    });
+  t.is(ep1.isConnected, true);
+  t.is(ep1.otherEnd, ep2);
+
+  const response = await ep1.receive({
+    value: 1
   });
-}
+
+  t.is(response.value, 1);
+});
+
+/*
 /*
  * send receive request and check if we whent though some interceptors
-
 
 describe('endpoint', () => {
     describe('interceptors send', () => {
