@@ -213,9 +213,9 @@ export class InterceptedEndpoint extends Endpoint {
         return interceptor;
       }
       if (typeof interceptor === "function") {
-        return new interceptor(undefined, this);
+        return new interceptor(this);
       }
-      return new interceptor.type(interceptor, this);
+      return new interceptor.type(this, interceptor);
     });
   }
 

@@ -128,7 +128,6 @@ test(et, SendEndpointDefault, undefined, {
 const ReceiveEndpointExpectations = {
   direction: "in",
   toJSON: { in: true }
-  //  interceptors: []
 };
 
 test(et, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);

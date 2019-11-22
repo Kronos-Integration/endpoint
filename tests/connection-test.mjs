@@ -33,8 +33,7 @@ test("connecting with interceptor", async t => {
 
   t.is(await se.receive(1), 1+1);
 
-  const in1 = new PlusTenInterceptor(undefined, se);
- // se.interceptors = [in1];
+  const in1 = new PlusTenInterceptor(se);
   se.injectNext(in1);
   t.is(await se.receive(2), 2 + 10 + 1);
 
@@ -47,7 +46,7 @@ test("connecting with interceptor", async t => {
   t.is(se.isOpen, true);
   t.is(await se.receive(3), 3 + 1);
 
-  se.interceptors = [in1, new PlusTenInterceptor(undefined, se)];
+  se.interceptors = [in1, new PlusTenInterceptor(se)];
   t.is(await se.receive(4), 4 + 10 + 10 + 1);
 });
 
