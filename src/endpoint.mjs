@@ -146,6 +146,11 @@ export class Endpoint {
 /**
  * Endpoint with a list of interceptors
  * also provides fistInterceptor and lastInterceptor
+ * 
+ * @param {string} name endpoint name
+ * @param {Object} owner of the endpoint (service)
+ * @param {Object} options
+ * @param {Interceptor|Object[]} [options.interceptors] opposite endpoint
  */
 export class InterceptedEndpoint extends Endpoint {
   constructor(name, owner, options) {
@@ -549,7 +554,7 @@ export class SendEndpointDefault extends SendEndpoint {
 /**
  * check for Endpoint
  * @param {any} object
- * @return {boolean} true if object is a Endpoint
+ * @return {boolean} true if object is an Endpoint
  */
 export function isEndpoint(object) {
   return object instanceof Endpoint;
