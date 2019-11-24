@@ -7,10 +7,9 @@ import { SendEndpoint, ReceiveEndpoint } from "../src/endpoint.mjs";
 import { Interceptor } from "@kronos-integration/interceptor";
 
 class PlusTenInterceptor extends Interceptor {
-    async receive(value)
-    {
-        return this.connected.receive(value + 10);
-    }
+  async receive(value) {
+    return this.connected.receive(value + 10);
+  }
 }
 
 test("connecting with interceptor", async t => {
@@ -31,23 +30,24 @@ test("connecting with interceptor", async t => {
   t.is(se.otherEnd, re);
   t.is(re.sender, se);
 
-  t.is(await se.receive(1), 1+1);
+  t.is(await se.receive(1), 1 + 1);
+  se.interceptors = [];
+  t.is(await se.receive(2), 2 + 1);
 
-  const in1 = new PlusTenInterceptor(se);
-  se.injectNext(in1);
-  t.is(await se.receive(2), 2 + 10 + 1);
+  se.interceptors = [new PlusTenInterceptor(se)];
+  t.is(await se.receive(3), 3 + 10 + 1);
 
   t.is(se.isConnected, true);
-  t.is(in1.isConnected, true);
   t.is(se.otherEnd, re);
 
-  se.removeNext();
+  se.interceptors = [];
+
   t.is(se.connected, re);
   t.is(se.isOpen, true);
-  t.is(await se.receive(3), 3 + 1);
+  t.is(await se.receive(4), 4 + 1);
 
-  se.interceptors = [in1, new PlusTenInterceptor(se)];
-  t.is(await se.receive(4), 4 + 10 + 10 + 1);
+  se.interceptors = [new PlusTenInterceptor(se), new PlusTenInterceptor(se)];
+  t.is(await se.receive(5), 5 + 10 + 10 + 1);
 });
 
 test("interceptor send", async t => {
@@ -67,7 +67,6 @@ test("interceptor send", async t => {
   t.is(response.value, 1);
 });
 
-/*
 /*
  * send receive request and check if we whent though some interceptors
 

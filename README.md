@@ -47,10 +47,10 @@ Named communication (end)-points inside of kronos
     -   [connected](#connected)
         -   [Parameters](#parameters-4)
     -   [sender](#sender)
+    -   [isOpen](#isopen-1)
     -   [receive](#receive)
     -   [receive](#receive-1)
         -   [Parameters](#parameters-5)
-    -   [isOpen](#isopen-1)
     -   [isIn](#isin-1)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-1)
@@ -177,6 +177,12 @@ Deliver the sending side Endpoint
 
 Returns **[SendEndpoint](#sendendpoint)** the sending side
 
+### isOpen
+
+Are we able to receive requests
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we are able to receive requests
+
 ### receive
 
 get the receive function
@@ -185,19 +191,13 @@ Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference
 
 ### receive
 
-Set the recieve function
+Set the receive function
 If we know the sender we will inform him about our open/close state
 by calling willBeClosed() and hasBeenOpened()
 
 #### Parameters
 
 -   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)**  (optional, default `rejectingReceiver`)
-
-### isOpen
-
-Are we able to receive requests
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we are able to receive requests
 
 ### isIn
 
