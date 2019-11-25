@@ -135,12 +135,23 @@ export class Endpoint {
       json.out = true;
     }
 
+    const c = this.connected;
+    if(c) {
+      json.connected = c.identifier;
+    }
+
+    if (this.hasInterceptors) {
+      json.interceptors = this.interceptors.map(i => i.toJSON());
+    }
+
     return json;
   }
 
   get hasInterceptors() {
     return false;
   }
+
+  get interceptors() { return []; }
 }
 
 /**
@@ -221,17 +232,6 @@ export class InterceptedEndpoint extends Endpoint {
       }
       return new interceptor.type(this, interceptor);
     });
-  }
-
-  toJSON() {
-    const json = super.toJSON();
-    const its = this.interceptors;
-
-    if (its && its.length > 0) {
-      json.interceptors = its.map(i => i.toJSON());
-    }
-
-    return json;
   }
 }
 
@@ -414,22 +414,6 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     return this[FIRST].receive(...args);
   }
 
-  toJSON() {
-    const json = super.toJSON();
-
-    if (this.isConnected) {
-      const o = this.otherEnd;
-      if (o !== undefined && o.owner !== undefined) {
-        const ei = o.owner.endpointIdentifier(o);
-        if (ei !== undefined) {
-          json.connected = ei;
-        }
-      }
-    }
-
-    return json;
-  }
-
   /**
    * We are always _out_
    * @return {boolean} always true
@@ -458,8 +442,6 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       this.willBeClosed(this, this[OPEN_STATE][0]);
       delete this[OPEN_STATE];
     }
-
-    //console.log(this.identifier, "INTER", this[FIRST]);
 
     this[CONNECTED] = newConnected;
 
