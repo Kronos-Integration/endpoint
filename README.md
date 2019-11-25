@@ -116,7 +116,6 @@ Returns **[Endpoint](#endpoint)** representing the opposite direction
 **Extends Endpoint**
 
 Endpoint with a list of interceptors
-also provides fistInterceptor and lastInterceptor
 
 ### Parameters
 
@@ -140,7 +139,6 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 Set the interceptors
 a connected chain from array element 0 over all entries up to the last element
 in the array is formed.
-Additionally firstInterceptor and lastInterceptor are set.
 
 #### Parameters
 

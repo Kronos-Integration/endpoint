@@ -118,10 +118,6 @@ describe('endpoint', () => {
           it('ic1->ep2', () => assert.equal(ic2.connected, ep2));
         });
 
-        it('is firstInterceptor', () =>
-          assert.equal(ic1, ep1.firstInterceptor));
-        it('is lastInterceptor', () => assert.equal(ic2, ep1.lastInterceptor));
-
         describe('json with interceptor', () => {
           it('toJSON', () =>
             assert.deepEqual(ep1.toJSON(), {
@@ -160,10 +156,6 @@ describe('endpoint', () => {
           ep1.interceptors = [];
           it('empty interceptors', () =>
             assert.deepEqual(ep1.interceptors, []));
-          it('no firstInterceptor', () =>
-            assert.isUndefined(ep1.firstInterceptor));
-          it('no lastInterceptor', () =>
-            assert.isUndefined(ep1.lastInterceptor));
 
           describe('connected chain', () => {
             it('ep1->ic1', () => assert.equal(ep1.connected, ep2));

@@ -145,7 +145,6 @@ export class Endpoint {
 
 /**
  * Endpoint with a list of interceptors
- * also provides fistInterceptor and lastInterceptor
  *
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service)
@@ -164,14 +163,6 @@ export class InterceptedEndpoint extends Endpoint {
    */
   get hasInterceptors() {
     return this[LAST] !== undefined;
-  }
-
-  get firstInterceptor() {
-    return this[FIRST];
-  }
-
-  get lastInterceptor() {
-    return this[LAST];
   }
 
   /**
@@ -198,7 +189,6 @@ export class InterceptedEndpoint extends Endpoint {
    * Set the interceptors
    * a connected chain from array element 0 over all entries up to the last element
    * in the array is formed.
-   * Additionally firstInterceptor and lastInterceptor are set.
    * @param {Interceptor[]} newInterceptors replaces all interceptors
    */
   set interceptors(newInterceptors) {
@@ -355,8 +345,8 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
         });
       }
 
-      this.lastInterceptor.connected = this[ENDPOINT];
-      this[RECEIVE] = request => this.firstInterceptor.receive(request);
+      this[LAST].connected = this[ENDPOINT];
+      this[RECEIVE] = request => this[FIRST].receive(request);
     } else {
       this[RECEIVE] = lastReceive;
     }
@@ -508,9 +498,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
 
   get isConnected() {
     if (this.hasInterceptors) {
-      // console.log("isConnected",this.lastInterceptor===this[CONNECTED]);
-
-      return this.lastInterceptor.isConnected;
+      return this[LAST].isConnected;
     }
 
     return super.isConnected;

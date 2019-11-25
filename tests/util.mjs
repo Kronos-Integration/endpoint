@@ -20,8 +20,6 @@ export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
     isOpen: false,
     isDefault: false,
     hasInterceptors: false,
-    firstInterceptor: undefined,
-    lastInterceptor: undefined,
     ...expected
   };
 
@@ -37,9 +35,6 @@ export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
         } else if (ev !== undefined) {
           t.truthy(rv);
         }
-        break;
-      case "firstInterceptor":
-      case "lastInterceptor":
         break;
 
       case "interceptors":
