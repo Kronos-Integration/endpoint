@@ -104,8 +104,6 @@ export class Endpoint {
     return false;
   }
 
-  hasBeenConnected(endpoint) {}
-  hasBeenDisConnected(endpoint, formerConnected) {}
   hasBeenOpened(endpoint, openState) {}
   willBeClosed(endpoint) {}
 
@@ -389,8 +387,6 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
  * @param {Object} options
  * @param {Endpoint} [options.connected] where te requests are delivered to
  * @param {Endpoint} [options.opposite] endpoint going into the opposite direction
- * @param {Function} [options.hasBeenConnected] called after connected
- * @param {Function} [options.hasBeenDisconected] called after disconnected
  * @param {Function} [options.hasBeenOpened] called after receiver is open
  * @param {Function} [options.willBeClosed] called before receiver is closed
  */
@@ -403,8 +399,6 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     }
 
     definePropertiesFromOptions(this, options, [
-      "hasBeenConnected",
-      "hasBeenDisConnected",
       "hasBeenOpened",
       "willBeClosed"
     ]);
@@ -455,12 +449,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       oldConnected.sender = undefined;
     }
 
-    if (newConnected === undefined) {
-      this.hasBeenDisConnected(this, oldConnected);
-    }
-    else {
-      this.hasBeenConnected(this);
-
+    if (newConnected !== undefined) {
       newConnected.sender = this;
 
       const nco = newConnected.opposite;

@@ -14,30 +14,19 @@ test("connecting ReceiveEndpoint to itself", t => {
 });
 
 test("SendEndpoint connecting with hasBeen...", t => {
-  let hasBeenConnected, hasBeenDisConnected, oldConnection;
+  let oldConnection;
   const se = new SendEndpoint("se", nameIt("o1"), {
-    hasBeenConnected() {
-      hasBeenConnected = true;
-    },
-    hasBeenDisConnected(endpoint, old) {
-      oldConnection = old;
-      hasBeenDisConnected = true;
-    }
   });
 
   const re = new ReceiveEndpoint("re", nameIt("o2"));
 
   se.connected = re;
 
-  t.is(hasBeenConnected, true);
   t.is(se.isOpen, false);
   t.is(re.isOpen, false);
-  //it('hasBeenDisConnected was not already called', () => assert.isUndefined(hasBeenDisConnected));
 
   se.connected = undefined;
 
-  t.is(hasBeenDisConnected, true);
-  t.is(oldConnection, re);
   t.is(se.isOpen, false);
   t.is(re.isOpen, false);
 });
