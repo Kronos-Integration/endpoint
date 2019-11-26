@@ -12,7 +12,7 @@ const LAST = Symbol("last");
 const RECEIVE = Symbol("receive");
 const SENDER = Symbol("sender");
 const ENDPOINT = Symbol("endpoint");
-const OPEN_STATE = Symbol("openState");
+const OPENED_STATE = Symbol("openedState");
 
 /**
  * - ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint")
@@ -104,8 +104,8 @@ export class Endpoint {
     return false;
   }
 
-  hasBeenOpened(endpoint, openState) {}
-  willBeClosed(endpoint) {}
+  opened(endpoint) { }
+  close() { }
 
   /**
    * Deliver data flow direction
@@ -134,7 +134,7 @@ export class Endpoint {
     }
 
     const c = this.connected;
-    if(c) {
+    if (c) {
       json.connected = c.identifier;
     }
 
@@ -302,22 +302,18 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Function} receive
    */
   set receive(receive = rejectingReceiver) {
-    const s = this.sender;
 
-    if (s && receive === rejectingReceiver) {
-      this.willBeClosed(this, this[OPEN_STATE][0]);
-      s.willBeClosed(s, this[OPEN_STATE][1]);
-      delete this[OPEN_STATE];
+    if (receive === rejectingReceiver) {
+      const sender = this.sender;
+      if (sender) {
+        sender.close();
+      }
     }
 
     if (this.hasInterceptors) {
       this[ENDPOINT].receive = receive;
     } else {
       this[RECEIVE] = receive;
-    }
-
-    if (s && s.isOpen) {
-      this[OPEN_STATE] = [this.hasBeenOpened(this), s.hasBeenOpened(s)];
     }
   }
 
@@ -387,21 +383,19 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
  * @param {Object} options
  * @param {Endpoint} [options.connected] where te requests are delivered to
  * @param {Endpoint} [options.opposite] endpoint going into the opposite direction
- * @param {Function} [options.hasBeenOpened] called after receiver is open
- * @param {Function} [options.willBeClosed] called before receiver is closed
+ * @param {Function} [options.opened] called after receiver is present
  */
 export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
+    definePropertiesFromOptions(this, options, [
+      "opened",
+    ]);
+
     if (isEndpoint(options.connected)) {
       this.connected = options.connected;
     }
-
-    definePropertiesFromOptions(this, options, [
-      "hasBeenOpened",
-      "willBeClosed"
-    ]);
   }
 
   receive(...args) {
@@ -420,6 +414,13 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     this.updateInterceptors(newInterceptors, this[CONNECTED]);
   }
 
+  close() {
+    if (this[OPENED_STATE]) {
+      this[OPENED_STATE](this);
+      delete this[OPENED_STATE];
+    }
+  }
+
   set connected(newConnected) {
     const oldConnected = this.connected;
 
@@ -432,10 +433,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       );
     }
 
-    if (this.isOpen) {
-      this.willBeClosed(this, this[OPEN_STATE][0]);
-      delete this[OPEN_STATE];
-    }
+    this.close();
 
     this[CONNECTED] = newConnected;
 
@@ -445,7 +443,7 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       this[LAST].connected = newConnected;
     }
 
-    if(oldConnected) {
+    if (oldConnected) {
       oldConnected.sender = undefined;
     }
 
@@ -453,12 +451,12 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       newConnected.sender = this;
 
       const nco = newConnected.opposite;
-      if ( nco && this.opposite) {
+      if (nco && this.opposite) {
         nco.connected = this.opposite;
       }
 
       if (this.isOpen) {
-        this[OPEN_STATE] = [this.hasBeenOpened(this)];
+        this[OPENED_STATE] = this.opened(this);
       }
     }
   }

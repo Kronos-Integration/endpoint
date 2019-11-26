@@ -225,8 +225,7 @@ Sending Endpoint
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
     -   `options.opposite` **[Endpoint](#endpoint)?** endpoint going into the opposite direction
-    -   `options.hasBeenOpened` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is open
-    -   `options.willBeClosed` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called before receiver is closed
+    -   `options.opened` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
 
 ### isOut
 
