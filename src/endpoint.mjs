@@ -124,7 +124,29 @@ export class Endpoint {
   }
 
   toJSON() {
+    return this.toJSONWithOptions({
+      includeRuntimeInfo: false,
+      includeDefaults: false,
+      includeName: true,
+      includeConfig: false
+    });
+  }
+
+  /**
+   * additional Attributes to present in json output
+   */
+  get jsonAttributes() {
+    return [];
+  }
+
+  toJSONWithOptions(options) {
     const json = {};
+
+    for (const attr of this.jsonAttributes) {
+      if (this[attr] !== undefined) {
+        json[attr] = this[attr];
+      }
+    }
 
     if (this.isIn) {
       json.in = true;
