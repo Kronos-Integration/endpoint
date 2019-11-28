@@ -75,8 +75,8 @@ test(
   }
 );
 
-function willBeClosed() {}
-function hasBeenOpened() {}
+function willBeClosed() { }
+function hasBeenOpened() { }
 
 test(
   "opposite from options",
@@ -89,7 +89,13 @@ test(
   },
   {
     ...SendEndpointExpectations,
-    opposite: { name: "c75", direction: "in" }
+    opposite: { name: "c75", direction: "in" },
+    toJSON: {
+      out: true,
+      opposite: {
+        in: true
+      }
+    }
   }
 );
 
@@ -102,6 +108,12 @@ test(
     opposite: {
       name: "c76",
       direction: "in"
+    },
+    toJSON: {
+      out: true,
+      opposite: {
+        in: true
+      }
     }
   }
 );
@@ -142,6 +154,12 @@ test(
     opposite: {
       name: "c77",
       direction: "out"
+    },
+    toJSON: {
+      in: true,
+      opposite: {
+        out: true
+      }
     }
   }
 );
@@ -156,6 +174,12 @@ test(
       name: "e",
       direction: "out"
       //hasBeenOpened
+    },
+    toJSON: {
+      in: true,
+      opposite: {
+        out: true
+      }
     }
   }
 );
@@ -164,7 +188,7 @@ test(
   "with receiver",
   et,
   ReceiveEndpoint,
-  { receive: () => {} },
+  { receive: () => { } },
   {
     ...ReceiveEndpointExpectations,
     isOpen: true,

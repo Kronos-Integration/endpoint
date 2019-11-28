@@ -33,6 +33,7 @@ Named communication (end)-points inside of kronos
     -   [isConnected](#isconnected)
     -   [direction](#direction)
     -   [opposite](#opposite)
+    -   [jsonAttributes](#jsonattributes)
 -   [InterceptedEndpoint](#interceptedendpoint)
     -   [Parameters](#parameters-1)
     -   [hasInterceptors](#hasinterceptors)
@@ -110,6 +111,10 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 Deliver the opposite endpoint
 
 Returns **[Endpoint](#endpoint)** representing the opposite direction
+
+### jsonAttributes
+
+additional Attributes to present in json output
 
 ## InterceptedEndpoint
 

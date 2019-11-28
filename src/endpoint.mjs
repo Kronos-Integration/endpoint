@@ -127,8 +127,9 @@ export class Endpoint {
     return this.toJSONWithOptions({
       includeRuntimeInfo: false,
       includeDefaults: false,
-      includeName: true,
-      includeConfig: false
+     // includeName: true,
+      includeConfig: false,
+      includeOpposite: true
     });
   }
 
@@ -162,6 +163,10 @@ export class Endpoint {
 
     if (this.hasInterceptors) {
       json.interceptors = this.interceptors.map(i => i.toJSON());
+    }
+
+    if (this.opposite && options.includeOpposite) {
+      json.opposite = this.opposite.toJSONWithOptions({ ...options, includeOpposite: false  });
     }
 
     return json;
