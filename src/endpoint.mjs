@@ -125,7 +125,7 @@ export class Endpoint {
 
   toJSON() {
     return this.toJSONWithOptions({
-      includeRuntimeInfo: false,
+     // includeRuntimeInfo: false,
       includeDefaults: false,
      // includeName: true,
       includeConfig: false,
