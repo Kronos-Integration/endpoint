@@ -44,7 +44,7 @@ Named communication (end)-points inside of kronos
     -   [Parameters](#parameters-3)
     -   [connected](#connected)
         -   [Parameters](#parameters-4)
-    -   [sender](#sender)
+    -   [connected](#connected-1)
     -   [isOpen](#isopen-1)
     -   [receive](#receive)
     -   [receive](#receive-1)
@@ -171,7 +171,7 @@ Connect other side to us
 
 -   `other` **[Endpoint](#endpoint)** endpoint to be connected to
 
-### sender
+### connected
 
 Deliver the sending side Endpoint
 

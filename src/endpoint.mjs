@@ -10,7 +10,6 @@ import { definePropertiesFromOptions } from "./util.mjs";
 const FIRST = Symbol("first");
 const LAST = Symbol("last");
 const RECEIVE = Symbol("receive");
-const SENDER = Symbol("sender");
 const ENDPOINT = Symbol("endpoint");
 const OPENED_STATE = Symbol("openedState");
 
@@ -282,25 +281,23 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   set connected(other) {
     if (other === this) {
       throw new Error(
-        `Can't connect to myself ${this.owner.name}.${this.name}`
+        `Can't connect to myself ${this.identifier}`
       );
     }
 
-    if (other.connected !== this) {
+    if (other !== undefined && other.connected !== this) {
       other.connected = this;
     }
+
+    this[CONNECTED] = other;
   }
 
   /**
    * Deliver the sending side Endpoint
    * @return {SendEndpoint} the sending side
    */
-  get sender() {
-    return this[SENDER];
-  }
-
-  set sender(sender) {
-    this[SENDER] = sender;
+  get connected() {
+    return this[CONNECTED];
   }
 
   /**
@@ -331,9 +328,8 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   set receive(receive = rejectingReceiver) {
 
     if (receive === rejectingReceiver) {
-      const sender = this.sender;
-      if (sender) {
-        sender.close();
+      if (this.connected) {
+        this.connected.close();
       }
     }
 
@@ -471,11 +467,11 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     }
 
     if (oldConnected) {
-      oldConnected.sender = undefined;
+      oldConnected.connected = undefined;
     }
 
     if (newConnected !== undefined) {
-      newConnected.sender = this;
+      newConnected.connected = this;
 
       const nco = newConnected.opposite;
       if (nco && this.opposite) {

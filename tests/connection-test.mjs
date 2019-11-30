@@ -39,7 +39,7 @@ test("connecting with interceptor", async t => {
   t.is(se.isConnected, true);
   t.is(se.isOpen, true);
   t.is(se.otherEnd, re);
-  t.is(re.sender, se);
+  t.is(re.connected, se);
 
   t.is(await se.receive(1), 1 + 1);
   se.interceptors = [];
