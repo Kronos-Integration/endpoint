@@ -12,9 +12,17 @@ import {
 } from "../src/endpoint.mjs";
 
 function et(t, factory, options, expected) {
-  checkEndpoint(
-    t,
-    new factory("e", nameIt("o"), options),
+  let e;
+
+  try {
+    e = new factory("e", nameIt("o"), options);
+  }
+  catch (error) {
+    t.is(error.message,expected);
+    return;
+  }
+
+  checkEndpoint(t, e,
     {
       toString: "o.e(connected=false,open=false)",
       identifier: "o.e",
@@ -118,6 +126,14 @@ test(
   }
 );
 
+
+test(
+  et,
+  SendEndpoint,
+  { connected: new SendEndpoint("c", nameIt("o")) },
+  "Can't connect to none in: o.e = o.c"
+);
+
 const otherReceiver = new ReceiveEndpoint("c", nameIt("o"));
 test(
   et,
@@ -144,6 +160,13 @@ const ReceiveEndpointExpectations = {
 
 test(et, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
 test(et, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
+
+test(
+  et,
+  ReceiveEndpoint,
+  { connected: new ReceiveEndpoint("c", nameIt("o")) },
+  "Can't connect to none out: o.e = o.c"
+);
 
 test(
   et,

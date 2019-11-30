@@ -266,12 +266,17 @@ export class InterceptedEndpoint extends Endpoint {
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
  * @param {Function} [options.receive] reciever function
+ * @param {Endpoint} [options.connected] sending side
  */
 export class ReceiveEndpoint extends InterceptedEndpoint {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
     this.receive = options.receive;
+
+    if (isEndpoint(options.connected)) {
+      this.connected = options.connected;
+    }
   }
 
   /**
@@ -279,10 +284,18 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Endpoint} other endpoint to be connected to
    */
   set connected(other) {
-    if (other === this) {
-      throw new Error(
-        `Can't connect to myself ${this.identifier}`
-      );
+    if(other !== undefined) {
+      if (other === this) {
+        throw new Error(
+          `Can't connect to myself ${identifier}`
+        );
+      }  
+
+      if(!other.isOut) {
+        throw new Error(
+          `Can't connect to none out: ${this.identifier} = ${other.identifier}`
+        );  
+      }
     }
 
     if (other !== undefined && other.connected !== this) {
@@ -450,10 +463,19 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     if (newConnected === oldConnected) {
       return;
     }
-    if (newConnected === this) {
-      throw new Error(
-        `Can't connect to myself ${this.owner.name}.${this.name}`
-      );
+
+    if(newConnected !== undefined) {
+      if (newConnected === this) {
+        throw new Error(
+          `Can't connect to myself ${identifier}`
+        );
+      }  
+
+      if(!newConnected.isIn) {
+        throw new Error(
+          `Can't connect to none in: ${this.identifier} = ${newConnected.identifier}`
+        );  
+      }
     }
 
     this.close();

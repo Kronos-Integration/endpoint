@@ -14,7 +14,6 @@ test("connecting ReceiveEndpoint to itself", t => {
 });
 
 test("SendEndpoint connecting with hasBeen...", t => {
-  let oldConnection;
   const se = new SendEndpoint("se", nameIt("o1"), {
   });
 
