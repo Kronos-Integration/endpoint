@@ -13,8 +13,19 @@ class PlusTenInterceptor extends Interceptor {
 }
 
 test("connecting with interceptor", async t => {
+  const owner = nameIt("owner");
   let received;
-  const re = new ReceiveEndpoint("re", nameIt("rs"), {
+
+  let receiveOpenedCalled = 0;
+  let receiveClosedCalled = 0;
+
+  const re = new ReceiveEndpoint("re", owner, {
+    opened: endpoint => {
+      receiveOpenedCalled++;
+      return () => {
+        receiveClosedCalled++;
+      };
+    },
     receive: r => {
       received = r;
       return r + 1;
@@ -24,8 +35,8 @@ test("connecting with interceptor", async t => {
   let openedCalled = 0;
   let closedCalled = 0;
 
-  const se = new SendEndpoint("se", nameIt("ss"), {
-    opened:(endpoint) => {
+  const se = new SendEndpoint("se", owner, {
+    opened: endpoint => {
       openedCalled++;
       return () => {
         closedCalled++;
@@ -39,7 +50,10 @@ test("connecting with interceptor", async t => {
   t.is(se.isConnected, true);
   t.is(se.isOpen, true);
   t.is(se.otherEnd, re);
+  t.is(se.connected, re);
   t.is(re.connected, se);
+  t.is(re.isOpen, true);
+ // t.is(re.isConnected, true);
 
   t.is(await se.receive(1), 1 + 1);
   se.interceptors = [];
@@ -62,7 +76,7 @@ test("connecting with interceptor", async t => {
 
   se.connected = undefined;
   t.is(closedCalled, 1);
-  
+
   se.connected = re;
   t.is(openedCalled, 2);
 });
@@ -83,4 +97,3 @@ test("interceptor send", async t => {
 
   t.is(response.value, 1);
 });
-
