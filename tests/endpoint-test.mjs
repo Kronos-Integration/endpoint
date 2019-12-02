@@ -30,12 +30,12 @@ test("SendEndpoint connecting with hasBeen...", t => {
   t.is(re.isOpen, false);
 });
 
-test("connecting Receiver conveniance otherEnd", t => {
+test("connecting Receiver conveniance back connected", t => {
   const se = new SendEndpoint("se", nameIt("ss"));
   const re = new ReceiveEndpoint("re", nameIt("rs"));
 
   re.connected = se;
   t.is(se.isConnected, true);
-  t.is(se.otherEnd, re);
+  t.is(se.connected, re);
 });
 

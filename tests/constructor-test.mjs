@@ -143,8 +143,7 @@ test(
     ...SendEndpointExpectations,
     toJSON: { out: true, connected: "o.c" },
     toString: "o.e(connected=true,open=false)",
-    isConnected: true,
-    otherEnd: otherReceiver
+    isConnected: true
   }
 );
 

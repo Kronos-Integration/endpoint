@@ -7,10 +7,11 @@ import {
 
 import { definePropertiesFromOptions } from "./util.mjs";
 
+const ENDPOINT = Symbol("endpoint");
+
 const FIRST = Symbol("first");
 const LAST = Symbol("last");
 const RECEIVE = Symbol("receive");
-const ENDPOINT = Symbol("endpoint");
 const OPENED_STATE = Symbol("openedState");
 
 /**
@@ -103,7 +104,7 @@ export class Endpoint {
     return false;
   }
 
-  opened(endpoint) { }
+  opened() { }
   close() { }
 
   /**
@@ -124,9 +125,7 @@ export class Endpoint {
 
   toJSON() {
     return this.toJSONWithOptions({
-     // includeRuntimeInfo: false,
       includeDefaults: false,
-     // includeName: true,
       includeConfig: false,
       includeOpposite: true
     });
@@ -313,6 +312,12 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     return this[CONNECTED];
   }
 
+  
+  get isConnected() {
+    return this[CONNECTED] !== undefined;
+  }
+  
+
   /**
    * Are we able to receive requests
    * @return {boolean} true if we are able to receive requests
@@ -339,7 +344,6 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Function} receive
    */
   set receive(receive = rejectingReceiver) {
-
     if (receive === rejectingReceiver) {
       if (this.connected) {
         this.connected.close();
