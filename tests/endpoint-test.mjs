@@ -14,9 +14,7 @@ test("connecting ReceiveEndpoint to itself", t => {
 });
 
 test("SendEndpoint connecting with hasBeen...", t => {
-  const se = new SendEndpoint("se", nameIt("o1"), {
-  });
-
+  const se = new SendEndpoint("se", nameIt("o1"));
   const re = new ReceiveEndpoint("re", nameIt("o2"));
 
   se.connected = re;

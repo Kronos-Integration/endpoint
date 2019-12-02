@@ -5,8 +5,6 @@ import {
   CONNECTED
 } from "@kronos-integration/interceptor";
 
-import { definePropertiesFromOptions } from "./util.mjs";
-
 const ENDPOINT = Symbol("endpoint");
 
 const FIRST = Symbol("first");
@@ -47,9 +45,14 @@ export class Endpoint {
         })
       };
     }
-    Object.defineProperties(this, properties);
 
-    definePropertiesFromOptions(this, options, ["opened"]);
+    if(options.opened !== undefined) {
+      properties.opened = {
+        value: options.opened
+      };
+    }
+
+    Object.defineProperties(this, properties);
 
     if (isEndpoint(options.connected)) {
       this.connected = options.connected;
@@ -74,7 +77,7 @@ export class Endpoint {
   }
 
   toString() {
-    return `${this.owner}.${this.name}(${Object.entries(this.toStringAttributes)
+    return `${this.identifier}(${Object.entries(this.toStringAttributes)
       .map(([name, prop]) => `${name}=${this[prop]}`)
       .join(",")})`;
   }

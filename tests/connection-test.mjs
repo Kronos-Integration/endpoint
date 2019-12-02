@@ -21,6 +21,7 @@ test("connecting with interceptor", async t => {
 
   const re = new ReceiveEndpoint("re", owner, {
     opened: endpoint => {
+      //console.log("opened", endpoint);
       receiveOpenedCalled++;
       return () => {
         receiveClosedCalled++;
@@ -59,7 +60,6 @@ test("connecting with interceptor", async t => {
   se.interceptors = [];
   t.is(await se.receive(2), 2 + 1);
 
-  
   se.interceptors = [new PlusTenInterceptor(se)];
   t.is(await se.receive(3), 3 + 10 + 1);
 
@@ -71,11 +71,13 @@ test("connecting with interceptor", async t => {
   t.is(se.isOpen, true);
   t.is(await se.receive(4), 4 + 1);
 
-  
   se.interceptors = [new PlusTenInterceptor(se), new PlusTenInterceptor(se)];
   t.is(await se.receive(5), 5 + 10 + 10 + 1);
 
   se.connected = undefined;
+
+ // t.is(receiveOpenedCalled, 1);
+
   t.is(sendClosedCalled, 1);
   t.is(receiveClosedCalled, 1);
 
