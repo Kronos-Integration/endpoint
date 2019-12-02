@@ -123,6 +123,12 @@ export class Endpoint {
     }
   }
 
+  open() {
+    if (this.isOpen) {
+      this[OPENED_STATE] = this.opened(this);
+    }
+  }
+
   /**
    *
    * @param {Endpoint} other
@@ -316,9 +322,7 @@ export class ReceiveEndpoint extends Endpoint {
 
       this[CONNECTED] = other;
 
-      if (this.isOpen) {
-        this[OPENED_STATE] = this.opened(this);
-      }
+      this.open();
     }
   }
 
@@ -466,9 +470,7 @@ export class SendEndpoint extends ConnectorMixin(Endpoint) {
           nco.connected = this.opposite;
         }
 
-        if (this.isOpen) {
-          this[OPENED_STATE] = this.opened(this);
-        }
+        this.open();
       }
     }
   }
