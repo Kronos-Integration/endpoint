@@ -12,7 +12,7 @@ class PlusTenInterceptor extends Interceptor {
   }
 }
 
-test.only("connecting with interceptor", async t => {
+test("connecting with interceptor", async t => {
   const owner = nameIt("owner");
   let received;
 
@@ -32,20 +32,21 @@ test.only("connecting with interceptor", async t => {
     }
   });
 
-  let openedCalled = 0;
-  let closedCalled = 0;
+  let sendOpenedCalled = 0;
+  let sendClosedCalled = 0;
 
   const se = new SendEndpoint("se", owner, {
     opened: endpoint => {
-      openedCalled++;
+      sendOpenedCalled++;
       return () => {
-        closedCalled++;
+        sendClosedCalled++;
       };
     },
     connected: re
   });
 
-  t.is(openedCalled, 1);
+  t.is(sendOpenedCalled, 1);
+  t.is(receiveOpenedCalled, 1);
 
   t.is(se.isOpen, true);
   t.is(se.isConnected, true);
@@ -54,7 +55,6 @@ test.only("connecting with interceptor", async t => {
   t.is(re.isOpen, true);
   t.is(re.isConnected, true);
 
- 
   t.is(await se.receive(1), 1 + 1);
   se.interceptors = [];
   t.is(await se.receive(2), 2 + 1);
@@ -63,12 +63,10 @@ test.only("connecting with interceptor", async t => {
   se.interceptors = [new PlusTenInterceptor(se)];
   t.is(await se.receive(3), 3 + 10 + 1);
 
-  
   t.is(se.isConnected, true);
 
   se.interceptors = [];
 
-  
   t.is(se.connected, re);
   t.is(se.isOpen, true);
   t.is(await se.receive(4), 4 + 1);
@@ -78,11 +76,12 @@ test.only("connecting with interceptor", async t => {
   t.is(await se.receive(5), 5 + 10 + 10 + 1);
 
   se.connected = undefined;
-  t.is(closedCalled, 1);
+  t.is(sendClosedCalled, 1);
+  t.is(receiveClosedCalled, 1);
 
   se.connected = re;
-  t.is(openedCalled, 2);
-  
+  t.is(sendOpenedCalled, 2);
+  //t.is(receiveOpenedCalled, 2);
 });
 
 test("interceptor send", async t => {

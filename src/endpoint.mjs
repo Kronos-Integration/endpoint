@@ -20,6 +20,7 @@ const OPENED_STATE = Symbol("openedState");
  * @param {Object} owner of the endpoint (service)
  * @param {Object} options
  * @param {Endpoint|Object} [options.opposite] opposite endpoint
+ * @param {Function} [options.opened] called after receiver is present
  */
 export class Endpoint {
   constructor(name, owner, options = {}) {
@@ -47,6 +48,12 @@ export class Endpoint {
       };
     }
     Object.defineProperties(this, properties);
+
+    definePropertiesFromOptions(this, options, ["opened"]);
+
+    if (isEndpoint(options.connected)) {
+      this.connected = options.connected;
+    }
   }
 
   /**
@@ -104,8 +111,14 @@ export class Endpoint {
     return false;
   }
 
-  opened() { }
-  close() { }
+  opened() {}
+
+  close() {
+    if (this[OPENED_STATE]) {
+      this[OPENED_STATE](this);
+      delete this[OPENED_STATE];
+    }
+  }
 
   /**
    * Deliver data flow direction
@@ -164,7 +177,10 @@ export class Endpoint {
     }
 
     if (this.opposite && options.includeOpposite) {
-      json.opposite = this.opposite.toJSONWithOptions({ ...options, includeOpposite: false  });
+      json.opposite = this.opposite.toJSONWithOptions({
+        ...options,
+        includeOpposite: false
+      });
     }
 
     return json;
@@ -174,7 +190,9 @@ export class Endpoint {
     return false;
   }
 
-  get interceptors() { return []; }
+  get interceptors() {
+    return [];
+  }
 }
 
 /**
@@ -186,7 +204,7 @@ export class Endpoint {
  * @param {Interceptor|Object[]} [options.interceptors] opposite endpoint
  */
 export class InterceptedEndpoint extends Endpoint {
-  constructor(name, owner, options) {
+  constructor(name, owner, options = {}) {
     super(name, owner, options);
 
     this.instanciateInterceptors(options.interceptors);
@@ -272,10 +290,6 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     super(name, owner, options);
 
     this.receive = options.receive;
-
-    if (isEndpoint(options.connected)) {
-      this.connected = options.connected;
-    }
   }
 
   /**
@@ -283,25 +297,29 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Endpoint} other endpoint to be connected to
    */
   set connected(other) {
-    if(other !== undefined) {
+    if (other !== undefined) {
       if (other === this) {
-        throw new Error(
-          `Can't connect to myself ${identifier}`
-        );
-      }  
+        throw new Error(`Can't connect to myself ${identifier}`);
+      }
 
-      if(!other.isOut) {
+      if (!other.isOut) {
         throw new Error(
           `Can't connect to none out: ${this.identifier} = ${other.identifier}`
-        );  
+        );
       }
     }
+
+    this.close();
 
     if (other !== undefined && other.connected !== this) {
       other.connected = this;
     }
 
     this[CONNECTED] = other;
+
+    if (this.isOpen) {
+      this[OPENED_STATE] = this.opened(this);
+    }
   }
 
   /**
@@ -312,11 +330,9 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
     return this[CONNECTED];
   }
 
-  
   get isConnected() {
     return this[CONNECTED] !== undefined;
   }
-  
 
   /**
    * Are we able to receive requests
@@ -340,13 +356,14 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
   /**
    * Set the receive function
    * If we know the sender we will inform him about our open/close state
-   * by calling willBeClosed() and hasBeenOpened()
+   * by calling close() and opened()
    * @param {Function} receive
    */
   set receive(receive = rejectingReceiver) {
     if (receive === rejectingReceiver) {
       if (this.connected) {
         this.connected.close();
+        this.close();
       }
     }
 
@@ -426,18 +443,6 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
  * @param {Function} [options.opened] called after receiver is present
  */
 export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
-  constructor(name, owner, options = {}) {
-    super(name, owner, options);
-
-    definePropertiesFromOptions(this, options, [
-      "opened",
-    ]);
-
-    if (isEndpoint(options.connected)) {
-      this.connected = options.connected;
-    }
-  }
-
   receive(...args) {
     return this[FIRST].receive(...args);
   }
@@ -454,13 +459,6 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
     this.updateInterceptors(newInterceptors, this[CONNECTED]);
   }
 
-  close() {
-    if (this[OPENED_STATE]) {
-      this[OPENED_STATE](this);
-      delete this[OPENED_STATE];
-    }
-  }
-
   set connected(newConnected) {
     const oldConnected = this.connected;
 
@@ -468,17 +466,15 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
       return;
     }
 
-    if(newConnected !== undefined) {
+    if (newConnected !== undefined) {
       if (newConnected === this) {
-        throw new Error(
-          `Can't connect to myself ${identifier}`
-        );
-      }  
+        throw new Error(`Can't connect to myself ${identifier}`);
+      }
 
-      if(!newConnected.isIn) {
+      if (!newConnected.isIn) {
         throw new Error(
           `Can't connect to none in: ${this.identifier} = ${newConnected.identifier}`
-        );  
+        );
       }
     }
 
