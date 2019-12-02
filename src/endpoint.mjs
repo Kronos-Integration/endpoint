@@ -1,15 +1,12 @@
 import {
   Interceptor,
   ConnectorMixin,
-  rejectingReceiver,
-  CONNECTED
+  CONNECTED,
+  rejectingReceiver
 } from "@kronos-integration/interceptor";
-
-const ENDPOINT = Symbol("endpoint");
 
 const FIRST = Symbol("first");
 const LAST = Symbol("last");
-const RECEIVE = Symbol("receive");
 const OPENED_STATE = Symbol("openedState");
 
 /**
@@ -19,6 +16,7 @@ const OPENED_STATE = Symbol("openedState");
  * @param {Object} options
  * @param {Endpoint|Object} [options.opposite] opposite endpoint
  * @param {Function} [options.opened] called after receiver is present
+ * @param {Interceptor|Object[]} [options.interceptors] opposite endpoint
  */
 export class Endpoint {
   constructor(name, owner, options = {}) {
@@ -53,6 +51,8 @@ export class Endpoint {
     }
 
     Object.defineProperties(this, properties);
+
+    this.instanciateInterceptors(options.interceptors);
 
     if (isEndpoint(options.connected)) {
       this.connected = options.connected;
@@ -114,7 +114,7 @@ export class Endpoint {
     return false;
   }
 
-  opened() {}
+  opened() { }
 
   close() {
     if (this[OPENED_STATE]) {
@@ -219,30 +219,6 @@ export class Endpoint {
     return json;
   }
 
-  get hasInterceptors() {
-    return false;
-  }
-
-  get interceptors() {
-    return [];
-  }
-}
-
-/**
- * Endpoint with a list of interceptors
- *
- * @param {string} name endpoint name
- * @param {Object} owner of the endpoint (service)
- * @param {Object} options
- * @param {Interceptor|Object[]} [options.interceptors] opposite endpoint
- */
-export class InterceptedEndpoint extends Endpoint {
-  constructor(name, owner, options = {}) {
-    super(name, owner, options);
-
-    this.instanciateInterceptors(options.interceptors);
-  }
-
   /**
    * @return {boolean} true if there is at least one interceptor assigned
    */
@@ -309,6 +285,9 @@ export class InterceptedEndpoint extends Endpoint {
   }
 }
 
+const RECEIVE = Symbol("receive");
+const ENDPOINT = Symbol("endpoint");
+
 /**
  * Receiving Endpoint
  * by default a dummy rejecting receiver is assigned
@@ -318,7 +297,7 @@ export class InterceptedEndpoint extends Endpoint {
  * @param {Function} [options.receive] reciever function
  * @param {Endpoint} [options.connected] sending side
  */
-export class ReceiveEndpoint extends InterceptedEndpoint {
+export class ReceiveEndpoint extends Endpoint {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
@@ -330,7 +309,7 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Endpoint} other endpoint to be connected to
    */
   set connected(other) {
-    if (this.prepareConnection(other, other => other.isOut ? undefined : "none out" )) {
+    if (this.prepareConnection(other, other => other.isOut ? undefined : "none out")) {
       if (other !== undefined) {
         other.connected = this;
       }
@@ -438,23 +417,6 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
 }
 
 /**
- * Receive Endpoint acting as a default endpoints
- */
-export class ReceiveEndpointDefault extends ReceiveEndpoint {
-  /**
-   * We are a default endpoint
-   * @return {boolean} always true
-   */
-  get isDefault() {
-    return true;
-  }
-
-  get oppositeFactory() {
-    return SendEndpointDefault;
-  }
-}
-
-/**
  * Sending Endpoint
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
@@ -463,7 +425,7 @@ export class ReceiveEndpointDefault extends ReceiveEndpoint {
  * @param {Endpoint} [options.opposite] endpoint going into the opposite direction
  * @param {Function} [options.opened] called after receiver is present
  */
-export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
+export class SendEndpoint extends ConnectorMixin(Endpoint) {
   receive(...args) {
     return this[FIRST].receive(...args);
   }
@@ -538,6 +500,23 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
 }
 
 /**
+* Receive Endpoint acting as a default endpoints
+*/
+export class ReceiveEndpointDefault extends ReceiveEndpoint {
+  /**
+   * We are a default endpoint
+   * @return {boolean} always true
+   */
+  get isDefault() {
+    return true;
+  }
+
+  get oppositeFactory() {
+    return SendEndpointDefault;
+  }
+}
+
+/**
  * Send Endpoint acting as a default endpoints
  */
 export class SendEndpointDefault extends SendEndpoint {
@@ -562,3 +541,4 @@ export class SendEndpointDefault extends SendEndpoint {
 export function isEndpoint(object) {
   return object instanceof Endpoint;
 }
+

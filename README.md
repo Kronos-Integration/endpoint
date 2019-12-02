@@ -31,11 +31,11 @@ Named communication (end)-points inside of kronos
     -   [isOut](#isout)
     -   [isOpen](#isopen)
     -   [isConnected](#isconnected)
+    -   [prepareConnection](#prepareconnection)
+        -   [Parameters](#parameters-1)
     -   [direction](#direction)
     -   [opposite](#opposite)
     -   [jsonAttributes](#jsonattributes)
--   [InterceptedEndpoint](#interceptedendpoint)
-    -   [Parameters](#parameters-1)
     -   [hasInterceptors](#hasinterceptors)
     -   [interceptors](#interceptors)
     -   [interceptors](#interceptors-1)
@@ -50,11 +50,11 @@ Named communication (end)-points inside of kronos
     -   [receive](#receive-1)
         -   [Parameters](#parameters-5)
     -   [isIn](#isin-1)
--   [ReceiveEndpointDefault](#receiveendpointdefault)
-    -   [isDefault](#isdefault-1)
 -   [SendEndpoint](#sendendpoint)
     -   [Parameters](#parameters-6)
     -   [isOut](#isout-1)
+-   [ReceiveEndpointDefault](#receiveendpointdefault)
+    -   [isDefault](#isdefault-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-2)
 -   [isEndpoint](#isendpoint)
@@ -71,6 +71,7 @@ Named communication (end)-points inside of kronos
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.opposite` **([Endpoint](#endpoint) \| [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object))?** opposite endpoint
     -   `options.opened` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
+    -   `options.interceptors` **(Interceptor | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>)?** opposite endpoint
 
 ### isDefault
 
@@ -101,6 +102,15 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
 
+### prepareConnection
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+-   `requires` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** additionsl checks
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if connection can continue
+
 ### direction
 
 Deliver data flow direction
@@ -116,19 +126,6 @@ Returns **[Endpoint](#endpoint)** representing the opposite direction
 ### jsonAttributes
 
 additional Attributes to present in json output
-
-## InterceptedEndpoint
-
-**Extends Endpoint**
-
-Endpoint with a list of interceptors
-
-### Parameters
-
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
--   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `options.interceptors` **(Interceptor | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>)?** opposite endpoint
 
 ### hasInterceptors
 
@@ -152,7 +149,7 @@ in the array is formed.
 
 ## ReceiveEndpoint
 
-**Extends InterceptedEndpoint**
+**Extends Endpoint**
 
 Receiving Endpoint
 by default a dummy rejecting receiver is assigned
@@ -207,21 +204,9 @@ We are always _in_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
-## ReceiveEndpointDefault
-
-**Extends ReceiveEndpoint**
-
-Receive Endpoint acting as a default endpoints
-
-### isDefault
-
-We are a default endpoint
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
-
 ## SendEndpoint
 
-**Extends ConnectorMixin(InterceptedEndpoint)**
+**Extends ConnectorMixin(Endpoint)**
 
 Sending Endpoint
 
@@ -237,6 +222,18 @@ Sending Endpoint
 ### isOut
 
 We are always _out_
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## ReceiveEndpointDefault
+
+**Extends ReceiveEndpoint**
+
+Receive Endpoint acting as a default endpoints
+
+### isDefault
+
+We are a default endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
