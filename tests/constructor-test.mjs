@@ -83,9 +83,6 @@ test(
   }
 );
 
-function willBeClosed() { }
-function hasBeenOpened() { }
-
 test(
   "opposite from options",
   et,
@@ -125,7 +122,6 @@ test(
     }
   }
 );
-
 
 test(
   et,
@@ -189,13 +185,12 @@ test(
 test(
   et,
   ReceiveEndpoint,
-  { opposite: { hasBeenOpened } },
+  { opposite: { }},
   {
     ...ReceiveEndpointExpectations,
     opposite: {
       name: "e",
       direction: "out"
-      //hasBeenOpened
     },
     toJSON: {
       in: true,
