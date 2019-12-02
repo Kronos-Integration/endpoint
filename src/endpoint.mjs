@@ -46,7 +46,7 @@ export class Endpoint {
       };
     }
 
-    if(options.opened !== undefined) {
+    if (options.opened !== undefined) {
       properties.opened = {
         value: options.opened
       };
@@ -121,6 +121,36 @@ export class Endpoint {
       this[OPENED_STATE](this);
       delete this[OPENED_STATE];
     }
+  }
+
+  /**
+   *
+   * @param {Endpoint} other
+   * @param {Function} requires additionsl checks
+   * @returns {boolean} true if connection can continue
+   */
+  prepareConnection(other, requires) {
+    if (other === this.connected) {
+      return false;
+    }
+
+    if (other !== undefined) {
+      if (other === this) {
+        throw new Error(`Can't connect to myself ${this.identifier}`);
+      }
+
+      const err = requires(other);
+
+      if (err) {
+        throw new Error(
+          `Can't connect to ${err}: ${this.identifier} = ${other.identifier}`
+        );
+      }
+    }
+
+    this.close();
+
+    return true;
   }
 
   /**
@@ -300,28 +330,16 @@ export class ReceiveEndpoint extends InterceptedEndpoint {
    * @param {Endpoint} other endpoint to be connected to
    */
   set connected(other) {
-    if (other !== undefined) {
-      if (other === this) {
-        throw new Error(`Can't connect to myself ${identifier}`);
+    if (this.prepareConnection(other, other => other.isOut ? undefined : "none out" )) {
+      if (other !== undefined) {
+        other.connected = this;
       }
 
-      if (!other.isOut) {
-        throw new Error(
-          `Can't connect to none out: ${this.identifier} = ${other.identifier}`
-        );
+      this[CONNECTED] = other;
+
+      if (this.isOpen) {
+        this[OPENED_STATE] = this.opened(this);
       }
-    }
-
-    this.close();
-
-    if (other !== undefined && other.connected !== this) {
-      other.connected = this;
-    }
-
-    this[CONNECTED] = other;
-
-    if (this.isOpen) {
-      this[OPENED_STATE] = this.opened(this);
     }
   }
 
@@ -463,48 +481,32 @@ export class SendEndpoint extends ConnectorMixin(InterceptedEndpoint) {
   }
 
   set connected(newConnected) {
-    const oldConnected = this.connected;
+    if (this.prepareConnection(newConnected, other => other.isIn ? undefined : "none in")) {
+      const oldConnected = this.connected;
 
-    if (newConnected === oldConnected) {
-      return;
-    }
+      this[CONNECTED] = newConnected;
 
-    if (newConnected !== undefined) {
-      if (newConnected === this) {
-        throw new Error(`Can't connect to myself ${identifier}`);
+      if (this[FIRST] === oldConnected) {
+        this[FIRST] = newConnected;
+      } else {
+        this[LAST].connected = newConnected;
       }
 
-      if (!newConnected.isIn) {
-        throw new Error(
-          `Can't connect to none in: ${this.identifier} = ${newConnected.identifier}`
-        );
-      }
-    }
-
-    this.close();
-
-    this[CONNECTED] = newConnected;
-
-    if (this[FIRST] === oldConnected) {
-      this[FIRST] = newConnected;
-    } else {
-      this[LAST].connected = newConnected;
-    }
-
-    if (oldConnected) {
-      oldConnected.connected = undefined;
-    }
-
-    if (newConnected !== undefined) {
-      newConnected.connected = this;
-
-      const nco = newConnected.opposite;
-      if (nco && this.opposite) {
-        nco.connected = this.opposite;
+      if (oldConnected) {
+        oldConnected.connected = undefined;
       }
 
-      if (this.isOpen) {
-        this[OPENED_STATE] = this.opened(this);
+      if (newConnected !== undefined) {
+        newConnected.connected = this;
+
+        const nco = newConnected.opposite;
+        if (nco && this.opposite) {
+          nco.connected = this.opposite;
+        }
+
+        if (this.isOpen) {
+          this[OPENED_STATE] = this.opened(this);
+        }
       }
     }
   }
