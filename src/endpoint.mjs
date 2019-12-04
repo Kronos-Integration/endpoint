@@ -246,7 +246,7 @@ export class Endpoint {
   }
 
   async send(...args) {
-    if (this.connected === undefined) {
+    if (this.connected === undefined || this.connected.receive === undefined) {
       console.log(
         "SEND",
         this.identifier,
