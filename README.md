@@ -29,49 +29,38 @@ Named communication (end)-points inside of kronos
     -   [toStringAttributes](#tostringattributes)
     -   [isIn](#isin)
     -   [isOut](#isout)
-    -   [isOpen](#isopen)
     -   [isConnected](#isconnected)
     -   [prepareConnection](#prepareconnection)
         -   [Parameters](#parameters-1)
     -   [direction](#direction)
-    -   [opposite](#opposite)
     -   [jsonAttributes](#jsonattributes)
     -   [hasInterceptors](#hasinterceptors)
-    -   [interceptors](#interceptors)
-    -   [interceptors](#interceptors-1)
+    -   [receive](#receive)
+    -   [receive](#receive-1)
         -   [Parameters](#parameters-2)
 -   [ReceiveEndpoint](#receiveendpoint)
     -   [Parameters](#parameters-3)
-    -   [connected](#connected)
-        -   [Parameters](#parameters-4)
-    -   [connected](#connected-1)
-    -   [isOpen](#isopen-1)
-    -   [receive](#receive)
-    -   [receive](#receive-1)
-        -   [Parameters](#parameters-5)
     -   [isIn](#isin-1)
 -   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-6)
+    -   [Parameters](#parameters-4)
     -   [isOut](#isout-1)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-2)
 -   [isEndpoint](#isendpoint)
-    -   [Parameters](#parameters-7)
+    -   [Parameters](#parameters-5)
 
 ## Endpoint
-
--   ![Opposite Endbpoint](doc/images/opposite.svg "Opposite Endbpoint")
 
 ### Parameters
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `options.opposite` **([Endpoint](#endpoint) \| [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object))?** opposite endpoint
-    -   `options.opened` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
-    -   `options.interceptors` **(Interceptor | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>)?** opposite endpoint
+    -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
+    -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
+    -   `options.interceptors` **(Interceptor | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>)?** interceptors
 
 ### isDefault
 
@@ -94,10 +83,6 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
 
-### isOpen
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
-
 ### isConnected
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
@@ -107,7 +92,6 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 #### Parameters
 
 -   `other` **[Endpoint](#endpoint)** 
--   `requires` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** additionsl checks
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if connection can continue
 
@@ -115,13 +99,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Deliver data flow direction
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** delivers data flow direction 'in', 'out' or undefined
-
-### opposite
-
-Deliver the opposite endpoint
-
-Returns **[Endpoint](#endpoint)** representing the opposite direction
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** delivers data flow direction 'in', 'out', 'inout' or undefined
 
 ### jsonAttributes
 
@@ -131,21 +109,19 @@ additional Attributes to present in json output
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is at least one interceptor assigned
 
-### interceptors
+### receive
 
-Deliver array of all assigned interceptors
+get the receive function
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Interceptor>** the interceptors or empty array if none are present
+Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
 
-### interceptors
+### receive
 
-Set the interceptors
-a connected chain from array element 0 over all entries up to the last element
-in the array is formed.
+Set the receive function
 
 #### Parameters
 
--   `newInterceptors` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Interceptor>** replaces all interceptors
+-   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
 
 ## ReceiveEndpoint
 
@@ -158,45 +134,9 @@ by default a dummy rejecting receiver is assigned
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
     -   `options.connected` **[Endpoint](#endpoint)?** sending side
-
-### connected
-
-Connect other side to us
-
-#### Parameters
-
--   `other` **[Endpoint](#endpoint)** endpoint to be connected to
-
-### connected
-
-Deliver the sending side Endpoint
-
-Returns **[SendEndpoint](#sendendpoint)** the sending side
-
-### isOpen
-
-Are we able to receive requests
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we are able to receive requests
-
-### receive
-
-get the receive function
-
-Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-
-### receive
-
-Set the receive function
-If we know the sender we will inform him about our open/close state
-by calling close() and opened()
-
-#### Parameters
-
--   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)**  (optional, default `rejectingReceiver`)
 
 ### isIn
 
@@ -206,7 +146,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ## SendEndpoint
 
-**Extends ConnectorMixin(Endpoint)**
+**Extends Endpoint**
 
 Sending Endpoint
 
@@ -216,8 +156,7 @@ Sending Endpoint
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
-    -   `options.opposite` **[Endpoint](#endpoint)?** endpoint going into the opposite direction
-    -   `options.opened` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
+    -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
 
 ### isOut
 

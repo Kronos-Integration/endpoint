@@ -17,7 +17,6 @@ export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
   expected = {
     direction: undefined,
     isConnected: false,
-    isOpen: false,
     isDefault: false,
     hasInterceptors: false,
     ...expected
@@ -29,14 +28,6 @@ export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
     const ev = expected[name];
 
     switch (name) {
-      case "opposite":
-        if (checkOpposite) {
-          checkEndpoint(t, rv, ev, false);
-        } else if (ev !== undefined) {
-          t.truthy(rv);
-        }
-        break;
-
       case "interceptors":
         for (let i = 0; i < ev.length; i++) {
           checkInterceptor(t, rv[i], ev[i], i);

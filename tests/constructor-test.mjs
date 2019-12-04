@@ -24,8 +24,8 @@ function et(t, factory, options, expected) {
 
   checkEndpoint(t, e,
     {
-      toString: "o.e(connected=false,open=false)",
-      identifier: "o.e",
+      toString: "service(o).e",
+      identifier: "service(o).e",
       ...expected
     },
     true
@@ -39,6 +39,7 @@ test(et, Endpoint, undefined, {});
 
 const SendEndpointExpectations = {
   direction: "out",
+  toString: "service(o).e(out)",
   toJSON: { out: true },
   interceptors: []
 };
@@ -84,50 +85,10 @@ test(
 );
 
 test(
-  "opposite from options",
-  et,
-  SendEndpoint,
-  {
-    opposite: {
-      name: "c75"
-    }
-  },
-  {
-    ...SendEndpointExpectations,
-    opposite: { name: "c75", direction: "in" },
-    toJSON: {
-      out: true,
-      opposite: {
-        in: true
-      }
-    }
-  }
-);
-
-test(
-  et,
-  SendEndpoint,
-  { opposite: new ReceiveEndpoint("c76", nameIt("o")) },
-  {
-    ...SendEndpointExpectations,
-    opposite: {
-      name: "c76",
-      direction: "in"
-    },
-    toJSON: {
-      out: true,
-      opposite: {
-        in: true
-      }
-    }
-  }
-);
-
-test(
   et,
   SendEndpoint,
   { connected: new SendEndpoint("c", nameIt("o")) },
-  "Can't connect to none in: o.e = o.c"
+  "Can't connect out to out: service(o).e = service(o).c"
 );
 
 const otherReceiver = new ReceiveEndpoint("c", nameIt("o"));
@@ -137,8 +98,8 @@ test(
   { connected: otherReceiver },
   {
     ...SendEndpointExpectations,
-    toJSON: { out: true, connected: "o.c" },
-    toString: "o.e(connected=true,open=false)",
+    toJSON: { out: true, connected: "service(o).c" },
+    toString: "service(o).e(connected=service(o).c,out)",
     isConnected: true
   }
 );
@@ -150,7 +111,8 @@ test(et, SendEndpointDefault, undefined, {
 
 const ReceiveEndpointExpectations = {
   direction: "in",
-  toJSON: { in: true }
+  toJSON: { in: true },
+  toString: "service(o).e(in)"
 };
 
 test(et, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
@@ -160,56 +122,17 @@ test(
   et,
   ReceiveEndpoint,
   { connected: new ReceiveEndpoint("c", nameIt("o")) },
-  "Can't connect to none out: o.e = o.c"
-);
-
-test(
-  et,
-  ReceiveEndpoint,
-  { opposite: new SendEndpoint("c77", nameIt("o")) },
-  {
-    ...ReceiveEndpointExpectations,
-    opposite: {
-      name: "c77",
-      direction: "out"
-    },
-    toJSON: {
-      in: true,
-      opposite: {
-        out: true
-      }
-    }
-  }
-);
-
-test(
-  et,
-  ReceiveEndpoint,
-  { opposite: { }},
-  {
-    ...ReceiveEndpointExpectations,
-    opposite: {
-      name: "e",
-      direction: "out"
-    },
-    toJSON: {
-      in: true,
-      opposite: {
-        out: true
-      }
-    }
-  }
+  "Can't connect in to in: service(o).e = service(o).c"
 );
 
 test(
   "with receiver",
   et,
   ReceiveEndpoint,
-  { receive: () => { } },
+  { receive: async x => { } },
   {
     ...ReceiveEndpointExpectations,
-    isOpen: true,
-    toString: "o.e(connected=false,open=true)"
+    toString: "service(o).e(in)"
   }
 );
 
