@@ -111,3 +111,20 @@ test("connect to myself", async t => {
 
   t.is(response.value, 1);
 });
+
+
+test.skip("connect several send to one receive", async t => {
+  const s1 = new SendEndpoint("s1", nameIt("o"));
+ // const s2 = new SendEndpoint("s1", nameIt("o"));
+
+  const r1 = new ReceiveEndpoint("r1", nameIt("o"));
+  r1.receive = async arg => arg*arg;
+
+  s1.connected = r1;
+  //s2.connected = r1;
+
+  t.true(s1.isConnected);
+  //t.true(s2.isConnected);
+
+  t.is(await s1.send(2), 4);
+});

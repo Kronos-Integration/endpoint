@@ -31,11 +31,11 @@ export class Endpoint {
         }
       },
       connected: {
-        set(value) {
-          if (this.prepareConnection(value)) {
-            connected = value;
-            if (value !== undefined) {
-              value.connected = this;
+        set(other) {
+          if (this.prepareConnection(other)) {
+            connected = other;
+            if (other !== undefined) {
+              other.connected = this;
               if (this[OPEN]) {
                 throw new Error(`Has still open state ${this.identifier}`);
               }
