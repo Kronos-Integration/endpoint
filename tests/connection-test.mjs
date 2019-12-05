@@ -96,3 +96,18 @@ test("interceptor send", async t => {
 
   t.is(response.value, 1);
 });
+
+test.skip("connect to myself", async t => {
+  const e = new ReceiveEndpoint("e", nameIt("o"));
+  e.receive = async arg => arg;
+
+  e.connected = e;
+
+  t.is(e.isConnected, true);
+
+  const response = await e.send({
+    value: 1
+  });
+
+  t.is(response.value, 1);
+});

@@ -145,10 +145,6 @@ export class Endpoint {
     }
 
     if (other !== undefined) {
-      if (other === this) {
-        throw new Error(`Can't connect to myself ${this.identifier}`);
-      }
-
       if (!this.connectable(other)) {
         throw new Error(
           `Can't connect ${this.direction} to ${other.direction}: ${this.identifier} = ${other.identifier}`
