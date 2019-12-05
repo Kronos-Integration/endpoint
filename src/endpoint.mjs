@@ -1,6 +1,4 @@
-import {
-  Interceptor,
-} from "@kronos-integration/interceptor";
+import { Interceptor } from "@kronos-integration/interceptor";
 
 const OPEN = Symbol("open");
 const DISCONNECTING = Symbol("disconnecting");
@@ -30,12 +28,13 @@ export class Endpoint {
           return interceptors;
         }
       },
-      connected: {
+      _connected: {
         set(other) {
           if (this.prepareConnection(other)) {
             connected = other;
             if (other !== undefined) {
-              other.connected = this;
+              other.addConnection(this);
+              
               if (this[OPEN]) {
                 throw new Error(`Has still open state ${this.identifier}`);
               }
@@ -64,7 +63,7 @@ export class Endpoint {
     }
 
     if (isEndpoint(options.connected)) {
-      this.connected = options.connected;
+      this.addConnection(options.connected);
     }
   }
 
@@ -90,8 +89,8 @@ export class Endpoint {
       ([name, prop]) => `${name}=${this[prop]}`
     );
 
-    if (this.connected) {
-      entries.push(`connected=${this.connected.identifier}`);
+    if (this._connected) {
+      entries.push(`connected=${this._connected.identifier}`);
     }
 
     if (this.direction) {
@@ -128,6 +127,33 @@ export class Endpoint {
     return this.connected !== undefined;
   }
 
+  set connected(value)
+  {
+    throw new Error("no longer supported use addConnection/removeConnection");
+  }
+
+  get connected()
+  {
+    throw new Error("no longer supported use isConnected");
+   // return undefined;
+  }
+
+
+  addConnection(other) {
+    this._connected = other;
+  }
+
+  removeConnection(other) {
+    if (this._connected === other) {
+      this._connected = undefined;
+    }
+  }
+
+  isConnected(other)
+  {
+    return this._connected === other;
+  }
+
   didConnect() {}
 
   connectable(other) {
@@ -140,7 +166,7 @@ export class Endpoint {
    * @returns {boolean} true if connection can continue
    */
   prepareConnection(other) {
-    if (other === this.connected || this[DISCONNECTING]) {
+    if (this.isConnected(other) || this[DISCONNECTING]) {
       return false;
     }
 
@@ -152,9 +178,9 @@ export class Endpoint {
       }
     }
 
-    if (this.connected) {
+    if (this._connected) {
       this[DISCONNECTING] = true;
-      this.connected.connected = undefined;
+      this._connected.removeConnection(this);
       delete this[DISCONNECTING];
     }
 
@@ -208,7 +234,7 @@ export class Endpoint {
       json.out = true;
     }
 
-    const c = this.connected;
+    const c = this._connected;
     if (c) {
       json.connected = c.identifier;
     }
@@ -242,13 +268,13 @@ export class Endpoint {
   }
 
   async send(...args) {
-    if (this.connected === undefined || this.connected.receive === undefined) {
+    if (this._connected === undefined || this._connected.receive === undefined) {
       console.log(
         "SEND",
         this.identifier,
         this.isOut,
         this.isIn,
-        this.connected
+        this._connected
       );
       return;
     }
@@ -257,7 +283,7 @@ export class Endpoint {
 
     const next = async (...args) =>
       c >= interceptors.length
-        ? this.connected.receive(...args)
+        ? this._connected.receive(...args)
         : interceptors[c++].receive(this, next, ...args);
 
     return next(...args);

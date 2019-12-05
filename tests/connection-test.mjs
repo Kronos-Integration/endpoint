@@ -47,10 +47,8 @@ test("connecting with interceptor", async t => {
   t.is(sendOpenedCalled, 1);
   t.is(receiveOpenedCalled, 1);
 
-  t.is(se.isConnected, true);
-  t.is(se.connected, re);
-  t.is(re.isConnected, true);
-  t.is(re.connected, se);
+  t.true(se.isConnected(re));
+  t.true(re.isConnected(se));
 
   t.is(await se.send(1), 1 + 1);
   se.interceptors = [];
@@ -59,24 +57,24 @@ test("connecting with interceptor", async t => {
   se.interceptors = [new PlusTenInterceptor()];
   t.is(await se.send(3), 3 + 10 + 1);
 
-  t.is(se.isConnected, true);
+  t.true(se.isConnected(re));
 
   se.interceptors = [];
 
-  t.is(se.connected, re);
+  t.true(se.isConnected(re));
   t.is(await se.send(4), 4 + 1);
 
   se.interceptors = [new PlusTenInterceptor(), new PlusTenInterceptor()];
   t.is(await se.send(5), 5 + 10 + 10 + 1);
 
-  se.connected = undefined;
+  se.removeConnection(re);
 
   t.is(receiveOpenedCalled, 1);
 
   t.is(sendClosedCalled, 1);
   t.is(receiveClosedCalled, 1);
 
-  se.connected = re;
+  se.addConnection(re);
   t.is(sendOpenedCalled, 2);
   t.is(receiveOpenedCalled, 2);
 });
@@ -86,9 +84,9 @@ test("interceptor send", async t => {
   const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"));
 
   ep2.receive = async arg => arg;
-  ep1.connected = ep2;
+  ep1.addConnection(ep2);
 
-  t.is(ep1.isConnected, true);
+  t.true(ep1.isConnected(ep2));
 
   const response = await ep1.send({
     value: 1
@@ -97,13 +95,29 @@ test("interceptor send", async t => {
   t.is(response.value, 1);
 });
 
+
+test("SendEndpoint connecting", t => {
+  const se = new SendEndpoint("se", nameIt("o1"));
+  const re = new ReceiveEndpoint("re", nameIt("o2"));
+
+  t.false(se.isConnected(re));
+
+  se.addConnection(re);
+
+  t.true(se.isConnected(re));
+
+  se.removeConnection(re);
+
+  t.false(se.isConnected(re));
+});
+
 test("connect to myself", async t => {
   const e = new SendEndpoint("e", nameIt("o"));
   e.receive = async arg => arg;
 
-  e.connected = e;
+  e.addConnection(e);
 
-  t.is(e.isConnected, true);
+  t.true(e.isConnected(e));
 
   const response = await e.send({
     value: 1
@@ -115,15 +129,15 @@ test("connect to myself", async t => {
 
 test.skip("connect several send to one receive", async t => {
   const s1 = new SendEndpoint("s1", nameIt("o"));
- // const s2 = new SendEndpoint("s1", nameIt("o"));
+  const s2 = new SendEndpoint("s1", nameIt("o"));
 
   const r1 = new ReceiveEndpoint("r1", nameIt("o"));
   r1.receive = async arg => arg*arg;
 
-  s1.connected = r1;
-  //s2.connected = r1;
+  s1.addConnection(r1);
+  //s2.addConnection(r1);
 
-  t.true(s1.isConnected);
+  //t.true(s1.isConnected(r1));
   //t.true(s2.isConnected);
 
   t.is(await s1.send(2), 4);
