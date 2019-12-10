@@ -16,7 +16,7 @@ export function nameIt(name) {
 export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
   expected = {
     direction: undefined,
-    isConnected: false,
+   // isConnected: false,
     isDefault: false,
     hasInterceptors: false,
     ...expected

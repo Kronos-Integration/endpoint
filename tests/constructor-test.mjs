@@ -99,8 +99,7 @@ test(
   {
     ...SendEndpointExpectations,
     toJSON: { out: true, connected: "service(o).c" },
-    toString: "service(o).e(connected=service(o).c,out)",
-    isConnected: true
+    toString: "service(o).e(connected=service(o).c,out)"
   }
 );
 
