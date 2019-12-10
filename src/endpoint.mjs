@@ -1,7 +1,5 @@
 import { Interceptor } from "@kronos-integration/interceptor";
 
-const OPEN = Symbol("open");
-const DISCONNECTING = Symbol("disconnecting");
 const RECEIVE = Symbol("receive");
 
 /**
@@ -13,39 +11,12 @@ const RECEIVE = Symbol("receive");
  * @param {Interceptor|Object[]} [options.interceptors] interceptors
  */
 export class Endpoint {
-  constructor(name, owner, options = {}) {
-    let connected;
-    let interceptors = [];
+  interceptors = [];
 
+  constructor(name, owner, options = {}) {
     const properties = {
       name: { value: name },
-      owner: { value: owner },
-      interceptors: {
-        set(value) {
-          interceptors = value;
-        },
-        get() {
-          return interceptors;
-        }
-      },
-      _connected: {
-        set(other) {
-          if (this.prepareConnection(other)) {
-            connected = other;
-            if (other !== undefined) {
-              other.addConnection(this);
-              
-              if (this[OPEN]) {
-                throw new Error(`Has still open state ${this.identifier}`);
-              }
-              this[OPEN] = this.didConnect(this);
-            }
-          }
-        },
-        get() {
-          return connected;
-        }
-      }
+      owner: { value: owner }
     };
 
     if (options.didConnect !== undefined) {
@@ -60,10 +31,6 @@ export class Endpoint {
 
     if (options.receive) {
       this.receive = options.receive;
-    }
-
-    if (isEndpoint(options.connected)) {
-      this.addConnection(options.connected);
     }
   }
 
@@ -89,8 +56,10 @@ export class Endpoint {
       ([name, prop]) => `${name}=${this[prop]}`
     );
 
-    if (this._connected) {
-      entries.push(`connected=${this._connected.identifier}`);
+    const is = [...this.connections()].map(c => c.identifier);
+
+    if (is.length) {
+      entries.push(`connected=${is}`);
     }
 
     if (this.direction) {
@@ -118,78 +87,6 @@ export class Endpoint {
    */
   get isOut() {
     return false;
-  }
-
-  /**
-   * @return {boolean} false
-   */
-  get isConnected() {
-    return this.connected !== undefined;
-  }
-
-  set connected(value)
-  {
-    throw new Error("no longer supported use addConnection/removeConnection");
-  }
-
-  get connected()
-  {
-    throw new Error("no longer supported use isConnected");
-   // return undefined;
-  }
-
-
-  addConnection(other) {
-    this._connected = other;
-  }
-
-  removeConnection(other) {
-    if (this._connected === other) {
-      this._connected = undefined;
-    }
-  }
-
-  isConnected(other)
-  {
-    return this._connected === other;
-  }
-
-  didConnect() {}
-
-  connectable(other) {
-    return (this.isIn && other.isOut) || (this.isOut && other.isIn);
-  }
-
-  /**
-   *
-   * @param {Endpoint} other
-   * @returns {boolean} true if connection can continue
-   */
-  prepareConnection(other) {
-    if (this.isConnected(other) || this[DISCONNECTING]) {
-      return false;
-    }
-
-    if (other !== undefined) {
-      if (!this.connectable(other)) {
-        throw new Error(
-          `Can't connect ${this.direction} to ${other.direction}: ${this.identifier} = ${other.identifier}`
-        );
-      }
-    }
-
-    if (this._connected) {
-      this[DISCONNECTING] = true;
-      this._connected.removeConnection(this);
-      delete this[DISCONNECTING];
-    }
-
-    if (this[OPEN]) {
-      this[OPEN](this);
-      delete this[OPEN];
-    }
-
-    return true;
   }
 
   /**
@@ -234,9 +131,16 @@ export class Endpoint {
       json.out = true;
     }
 
-    const c = this._connected;
-    if (c) {
-      json.connected = c.identifier;
+    const is = [...this.connections()].map(c => c.identifier);
+
+    switch (is.length) {
+      case 0:
+        break;
+      case 1:
+        json.connected = is[0];
+        break;
+      default:
+        json.connected = is;
     }
 
     if (this.interceptors.length > 0) {
@@ -267,28 +171,6 @@ export class Endpoint {
     });
   }
 
-  async send(...args) {
-    if (this._connected === undefined || this._connected.receive === undefined) {
-      console.log(
-        "SEND",
-        this.identifier,
-        this.isOut,
-        this.isIn,
-        this._connected
-      );
-      return;
-    }
-    const interceptors = this.interceptors;
-    let c = 0;
-
-    const next = async (...args) =>
-      c >= interceptors.length
-        ? this._connected.receive(...args)
-        : interceptors[c++].receive(this, next, ...args);
-
-    return next(...args);
-  }
-
   /**
    * get the receive function
    * @return {Function}
@@ -304,6 +186,36 @@ export class Endpoint {
   set receive(receive) {
     this[RECEIVE] = receive;
   }
+
+  connectable(other) {
+    return (this.isIn && other.isOut) || (this.isOut && other.isIn);
+  }
+
+  get hasConnections() {
+    for (const c of this.connections()) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isConnected(other) {
+    for (const c of this.connections()) {
+      if (c === other) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  *connections() {}
+
+  addConnection() {}
+
+  removeConnection() {}
+
+  didConnect() {}
 }
 
 /**
@@ -316,12 +228,60 @@ export class Endpoint {
  * @param {Endpoint} [options.connected] sending side
  */
 export class ReceiveEndpoint extends Endpoint {
+  _connections = new Map();
+
+  constructor(name, owner, options={}) {
+    super(name, owner, options);
+    if (isEndpoint(options.connected)) {
+      this.addConnection(options.connected);
+    }
+  }
+
   /**
    * We are always _in_
    * @return {boolean} always true
    */
   get isIn() {
     return true;
+  }
+
+  addConnection(other, backpointer) {
+    if (!this.connectable(other)) {
+      throw new Error(
+        `Can't connect ${this.direction} to ${other.direction}: ${this.identifier} = ${other.identifier}`
+      );
+    }
+
+    if (!this._connections.get(other)) {
+      this._connections.set(other, this.didConnect(this, other));
+      if (!backpointer) {
+        other.addConnection(this, true);
+      }
+    }
+  }
+
+  removeConnection(other,backpointer) {
+    const state = this._connections.get(other);
+    if (state) {
+      this._connections.delete(other);
+      state();
+    }
+
+    if(!backpointer) {
+      other.removeConnection(this,true);
+    }
+}
+
+  isConnected(other) {
+    return this._connections.get(other) !== undefined;
+  }
+
+  get hasConnections() {
+    return this._connections.size > 0;
+  }
+
+  *connections() {
+    yield* this._connections.values();
   }
 }
 
@@ -334,12 +294,78 @@ export class ReceiveEndpoint extends Endpoint {
  * @param {Function} [options.didConnect] called after receiver is present
  */
 export class SendEndpoint extends Endpoint {
+  constructor(name, owner, options={}) {
+    super(name, owner, options);
+    if (isEndpoint(options.connected)) {
+      this.addConnection(options.connected);
+    }
+  }
+
   /**
    * We are always _out_
    * @return {boolean} always true
    */
   get isOut() {
     return true;
+  }
+
+  _connection;
+  _state;
+
+  addConnection(other, backpointer) {
+    if (this._connection === other) {
+      return;
+    }
+
+    if (!this.connectable(other)) {
+      throw new Error(
+        `Can't connect ${this.direction} to ${other.direction}: ${this.identifier} = ${other.identifier}`
+      );
+    }
+
+    if (this._state !== undefined) {
+      this._state();
+      this._state = undefined;
+    }
+
+    this._connection = other;
+
+    if (!backpointer) {
+      other.addConnection(this, true);
+    }
+
+    this._state = this.didConnect(this, other);
+  }
+
+  removeConnection(other,backpointer) {
+    if (this._connection === other) {
+      if (this._state) {
+        this._state();
+        this._state = undefined;
+      }
+      if(!backpointer) {
+        other.removeConnection(this,true);
+      }
+      this._connection = undefined;
+    }
+  }
+
+  *connections() {
+    if (this._connection) {
+      yield this._connection;
+    }
+  }
+
+  async send(...args) {
+    const interceptors = this.interceptors;
+    let c = 0;
+
+    const next = async (...args) =>
+      c >= interceptors.length
+        ? this._connection.receive(...args)
+        : interceptors[c++].receive(this, next, ...args);
+
+    return next(...args);
   }
 }
 
