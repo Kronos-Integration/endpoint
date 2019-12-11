@@ -47,3 +47,7 @@ export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
 export function checkInterceptor(t, interceptor, expected, i) {
   t.is(interceptor.type, expected.type, `interceptor type [${i}]`);
 }
+
+export async function wait(msecs = 1000) {
+  return new Promise((resolve, reject) => setTimeout(() => resolve(), msecs));
+}

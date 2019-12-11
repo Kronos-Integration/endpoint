@@ -253,10 +253,15 @@ export class ReceiveEndpoint extends Endpoint {
     }
 
     if (!this._connections.get(other)) {
-      this._connections.set(other, this.didConnect(this, other));
       if (!backpointer) {
         other.addConnection(this, true);
       }
+
+      this._connections.set(other, undefined); // dummy
+
+      process.nextTick(() => {
+        this._connections.set(other, this.didConnect(this, other));
+      });
     }
   }
 
@@ -334,7 +339,9 @@ export class SendEndpoint extends Endpoint {
       other.addConnection(this, true);
     }
 
-    this._state = this.didConnect(this, other);
+    process.nextTick(() => {
+      this._state = this.didConnect(this, other);
+    });
   }
 
   removeConnection(other,backpointer) {

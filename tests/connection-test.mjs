@@ -1,5 +1,5 @@
 import test from "ava";
-import { nameIt } from "./util.mjs";
+import { nameIt, wait } from "./util.mjs";
 
 import { SendEndpoint, ReceiveEndpoint } from "../src/endpoint.mjs";
 
@@ -44,6 +44,8 @@ test("connecting with interceptor", async t => {
     connected: re
   });
 
+  await wait(1);
+
   t.is(sendOpenedCalled, 1);
   t.is(receiveOpenedCalled, 1);
 
@@ -69,12 +71,16 @@ test("connecting with interceptor", async t => {
 
   se.removeConnection(re);
 
-  t.is(receiveOpenedCalled, 1);
+  await wait(1);
 
+  t.is(receiveOpenedCalled, 1);
   t.is(sendClosedCalled, 1);
   t.is(receiveClosedCalled, 1);
 
   se.addConnection(re);
+
+  await wait(1);
+
   t.is(sendOpenedCalled, 2);
   t.is(receiveOpenedCalled, 2);
 });
