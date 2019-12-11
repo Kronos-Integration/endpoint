@@ -367,6 +367,9 @@ export class SendEndpoint extends Endpoint {
     if(this._connection === undefined) {
       throw new Error(`${this.identifier} is not connected`);
     }
+    if(this._connection.receive === undefined) {
+      throw new Error(`${this._connection.identifier} has no receiver`);
+    }
 
     const interceptors = this.interceptors;
     let c = 0;
