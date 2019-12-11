@@ -357,6 +357,10 @@ export class SendEndpoint extends Endpoint {
   }
 
   async send(...args) {
+    if(this._connection === undefined) {
+      throw new Error(`${this.identifier} is not connected`);
+    }
+
     const interceptors = this.interceptors;
     let c = 0;
 
