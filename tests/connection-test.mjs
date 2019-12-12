@@ -110,13 +110,18 @@ test("SendEndpoint connecting", t => {
   t.false(se.isConnected(re));
 });
 
-test("connect to myself", async t => {
+test("send connect to itself", async t => {
   const e = new SendEndpoint("e", nameIt("o"),{ receive: async arg => arg*arg });
 
   e.addConnection(e);
 
   t.true(e.isConnected(e));
   t.is(await e.send(3), 9);
+});
+
+test("receive connect to itself -> exception", async t => {
+  const e = new ReceiveEndpoint("e", nameIt("o"), { receive: async arg => arg*arg });
+  t.throws(() => e.addConnection(e),"Can\'t connect in to in: service(o).e = service(o).e");
 });
 
 
@@ -136,9 +141,3 @@ test("connect several send to one receive", async t => {
   t.is(await s2.send(2), 4);
 });
 
-test.skip("receive connect to itself", async t => {
-  const r1 = new ReceiveEndpoint("r1", nameIt("o"), { });
-
-  r1.addConnection(r1);
-  t.true(r1.isConnected(r1));
-});
