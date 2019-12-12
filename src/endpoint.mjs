@@ -1,5 +1,4 @@
 import { Interceptor } from "@kronos-integration/interceptor";
-import { triggerAsyncId } from "async_hooks";
 
 const RECEIVE = Symbol("receive");
 
@@ -49,7 +48,7 @@ export class Endpoint {
    * @return {Object}
    */
   get toStringAttributes() {
-    return { };
+    return {};
   }
 
   toString() {
@@ -68,7 +67,7 @@ export class Endpoint {
     }
 
     if (this.isOpen) {
-      entries.push('open');
+      entries.push("open");
     }
 
     return entries.length
@@ -194,15 +193,9 @@ export class Endpoint {
    */
   set receive(receive) {
     this[RECEIVE] = receive;
-
-    /*for(const c of this.connections()) {
-      state = this.connectionState(c);
-      if(receive) c.didConnect(this);
-    }*/
   }
 
-  get isOpen()
-  {
+  get isOpen() {
     return this[RECEIVE] !== undefined;
   }
 
@@ -228,13 +221,15 @@ export class Endpoint {
     return false;
   }
 
-  * connections() {}
-
-  connectionState() {}
+  *connections() {}
 
   addConnection() {}
 
   removeConnection() {}
+
+  openConnection() {}
+
+  closeConnection() {}
 
   didConnect() {}
 }
@@ -251,7 +246,7 @@ export class Endpoint {
 export class ReceiveEndpoint extends Endpoint {
   _connections = new Map();
 
-  constructor(name, owner, options={}) {
+  constructor(name, owner, options = {}) {
     super(name, owner, options);
     if (isEndpoint(options.connected)) {
       this.addConnection(options.connected);
@@ -264,6 +259,22 @@ export class ReceiveEndpoint extends Endpoint {
    */
   get isIn() {
     return true;
+  }
+
+  openConnection(other) {
+    const state = this._connections.get(other);
+
+    if (state === undefined) {
+      this._connections.set(other, this.didConnect(this, other));
+    }
+  }
+
+  closeConnection(other) {
+    const state = this._connections.get(other);
+    if (state !== undefined) {
+      state();
+      this._connections.set(other, undefined);
+    }
   }
 
   addConnection(other, backpointer) {
@@ -280,25 +291,20 @@ export class ReceiveEndpoint extends Endpoint {
 
       this._connections.set(other, undefined); // dummy
 
-      if(this.isOpen) {
-        process.nextTick(() => {
-          this._connections.set(other, this.didConnect(this, other));
-        });
+      if (this.isOpen) {
+        process.nextTick(() => this.openConnection(other));
       }
     }
   }
 
-  removeConnection(other,backpointer) {
-    const state = this._connections.get(other);
-    if (state) {
-      this._connections.delete(other);
-      state();
-    }
+  removeConnection(other, backpointer) {
+    this.closeConnection(other);
+    this._connections.delete(other);
 
-    if(!backpointer) {
-      other.removeConnection(this,true);
+    if (!backpointer) {
+      other.removeConnection(this, true);
     }
-}
+  }
 
   isConnected(other) {
     return this._connections.get(other) !== undefined;
@@ -311,10 +317,6 @@ export class ReceiveEndpoint extends Endpoint {
   *connections() {
     yield* this._connections.values();
   }
-
-  connectionState(other) {
-    return this._connections.get(other);
-  }
 }
 
 /**
@@ -326,7 +328,7 @@ export class ReceiveEndpoint extends Endpoint {
  * @param {Function} [options.didConnect] called after receiver is present
  */
 export class SendEndpoint extends Endpoint {
-  constructor(name, owner, options={}) {
+  constructor(name, owner, options = {}) {
     super(name, owner, options);
     if (isEndpoint(options.connected)) {
       this.addConnection(options.connected);
@@ -344,6 +346,19 @@ export class SendEndpoint extends Endpoint {
   _connection;
   _state;
 
+  openConnection(other) {
+    if (this._connection === other && this._state === undefined) {
+      this._state = this.didConnect(this, other);
+    }
+  }
+
+  closeConnection(other) {
+    if (this._connection === other && this._state !== undefined) {
+      this._state();
+      this._state = undefined;
+    }
+  }
+
   addConnection(other, backpointer) {
     if (this._connection === other) {
       return;
@@ -355,10 +370,7 @@ export class SendEndpoint extends Endpoint {
       );
     }
 
-    if (this._state !== undefined) {
-      this._state();
-      this._state = undefined;
-    }
+    this.removeConnection(this._connection, backpointer);
 
     this._connection = other;
 
@@ -366,26 +378,16 @@ export class SendEndpoint extends Endpoint {
       other.addConnection(this, true);
     }
 
-    process.nextTick(() => {
-      this._state = this.didConnect(this, other);
-    });
+    process.nextTick(() => this.openConnection(other));
   }
 
-  removeConnection(other,backpointer) {
-    if (this._connection === other) {
-      if (this._state) {
-        this._state();
-        this._state = undefined;
-      }
-      if(!backpointer) {
-        other.removeConnection(this,true);
-      }
-      this._connection = undefined;
-    }
-  }
+  removeConnection(other, backpointer) {
+    this.closeConnection(other);
 
-  connectionState(other) {
-    return other === this._connection ? this._state : undefined;
+    if (!backpointer && other !== undefined) {
+        other.removeConnection(this, true);
+      }
+    this._connection = undefined;
   }
 
   *connections() {
@@ -395,10 +397,10 @@ export class SendEndpoint extends Endpoint {
   }
 
   async send(...args) {
-    if(this._connection === undefined) {
+    if (this._connection === undefined) {
       throw new Error(`${this.identifier} is not connected`);
     }
-    if(!this._connection.isOpen) {
+    if (!this._connection.isOpen) {
       throw new Error(`${this._connection.identifier} is not open`);
     }
 
