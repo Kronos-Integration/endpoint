@@ -1,9 +1,8 @@
 import test from "ava";
 import { nameIt, wait } from "./util.mjs";
-
+import { Interceptor } from "@kronos-integration/interceptor";
 import { SendEndpoint, ReceiveEndpoint } from "../src/module.mjs";
 
-import { Interceptor } from "@kronos-integration/interceptor";
 
 class PlusTenInterceptor extends Interceptor {
   async receive(endpoint, next, value) {
@@ -87,16 +86,12 @@ test("connecting with interceptor", async t => {
 
 test("interceptor send", async t => {
   const ep1 = new SendEndpoint("ep1", nameIt("o1"));
-  const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"));
+  const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"),{ receive: async arg => arg*arg });
 
-  ep2.receive = async arg => arg*arg;
   ep1.addConnection(ep2);
 
   t.true(ep1.isConnected(ep2));
-
-  const response = await ep1.send(4);
-
-  t.is(response, 16);
+  t.is(await ep1.send(4), 16);
 });
 
 
@@ -116,16 +111,12 @@ test("SendEndpoint connecting", t => {
 });
 
 test("connect to myself", async t => {
-  const e = new SendEndpoint("e", nameIt("o"));
-  e.receive = async arg => arg*arg;
+  const e = new SendEndpoint("e", nameIt("o"),{ receive: async arg => arg*arg });
 
   e.addConnection(e);
 
   t.true(e.isConnected(e));
-
-  const response = await e.send(3);
-
-  t.is(response, 9);
+  t.is(await e.send(3), 9);
 });
 
 
@@ -133,8 +124,7 @@ test("connect several send to one receive", async t => {
   const s1 = new SendEndpoint("s1", nameIt("o"));
   const s2 = new SendEndpoint("s1", nameIt("o"));
 
-  const r1 = new ReceiveEndpoint("r1", nameIt("o"));
-  r1.receive = async arg => arg*arg;
+  const r1 = new ReceiveEndpoint("r1", nameIt("o"),{receive: async arg => arg*arg});
 
   s1.addConnection(r1);
   s2.addConnection(r1);
@@ -144,4 +134,11 @@ test("connect several send to one receive", async t => {
 
   t.is(await s1.send(2), 4);
   t.is(await s2.send(2), 4);
+});
+
+test.skip("receive connect to itself", async t => {
+  const r1 = new ReceiveEndpoint("r1", nameIt("o"), { });
+
+  r1.addConnection(r1);
+  t.true(r1.isConnected(r1));
 });
