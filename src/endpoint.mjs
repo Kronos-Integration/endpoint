@@ -401,7 +401,7 @@ export class SendEndpoint extends Endpoint {
       throw new Error(`${this.identifier} is not connected`);
     }
     if (!this._connection.isOpen) {
-      throw new Error(`${this._connection.identifier} is not open`);
+      throw new Error(`${this.identifier}: ${this._connection.identifier} is not open`);
     }
 
     const interceptors = this.interceptors;
