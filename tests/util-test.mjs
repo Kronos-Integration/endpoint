@@ -6,7 +6,7 @@ import {
   SendEndpointDefault,
   ReceiveEndpoint,
   ReceiveEndpointDefault
-} from "../src/endpoint.mjs";
+} from "../src/module.mjs";
 
 function tis(t, object, expected) {
   t.is(isEndpoint(object), expected);

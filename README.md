@@ -23,8 +23,10 @@ Named communication (end)-points inside of kronos
 
 ### Table of Contents
 
--   [Endpoint](#endpoint)
+-   [isEndpoint](#isendpoint)
     -   [Parameters](#parameters)
+-   [Endpoint](#endpoint)
+    -   [Parameters](#parameters-1)
     -   [isDefault](#isdefault)
     -   [toStringAttributes](#tostringattributes)
     -   [isIn](#isin)
@@ -34,19 +36,27 @@ Named communication (end)-points inside of kronos
     -   [hasInterceptors](#hasinterceptors)
     -   [receive](#receive)
     -   [receive](#receive-1)
-        -   [Parameters](#parameters-1)
--   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-2)
-    -   [isIn](#isin-1)
+        -   [Parameters](#parameters-2)
 -   [SendEndpoint](#sendendpoint)
     -   [Parameters](#parameters-3)
     -   [isOut](#isout-1)
--   [ReceiveEndpointDefault](#receiveendpointdefault)
-    -   [isDefault](#isdefault-1)
--   [SendEndpointDefault](#sendendpointdefault)
-    -   [isDefault](#isdefault-2)
--   [isEndpoint](#isendpoint)
+-   [ReceiveEndpoint](#receiveendpoint)
     -   [Parameters](#parameters-4)
+    -   [isIn](#isin-1)
+-   [SendEndpointDefault](#sendendpointdefault)
+    -   [isDefault](#isdefault-1)
+-   [ReceiveEndpointDefault](#receiveendpointdefault)
+    -   [isDefault](#isdefault-2)
+
+## isEndpoint
+
+check for Endpoint
+
+### Parameters
+
+-   `object` **any** 
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if object is an Endpoint
 
 ## Endpoint
 
@@ -108,6 +118,26 @@ Set the receive function
 
 -   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
 
+## SendEndpoint
+
+**Extends Endpoint**
+
+Sending Endpoint
+
+### Parameters
+
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+    -   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
+    -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
+
+### isOut
+
+We are always _out_
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
 ## ReceiveEndpoint
 
 **Extends Endpoint**
@@ -129,23 +159,15 @@ We are always _in_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
-## SendEndpoint
+## SendEndpointDefault
 
-**Extends Endpoint**
+**Extends SendEndpoint**
 
-Sending Endpoint
+Send Endpoint acting as a default endpoints
 
-### Parameters
+### isDefault
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
--   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
-    -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
-
-### isOut
-
-We are always _out_
+We are a default endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
@@ -160,28 +182,6 @@ Receive Endpoint acting as a default endpoints
 We are a default endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
-
-## SendEndpointDefault
-
-**Extends SendEndpoint**
-
-Send Endpoint acting as a default endpoints
-
-### isDefault
-
-We are a default endpoint
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
-
-## isEndpoint
-
-check for Endpoint
-
-### Parameters
-
--   `object` **any** 
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if object is an Endpoint
 
 # install
 

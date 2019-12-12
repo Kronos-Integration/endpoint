@@ -1,0 +1,100 @@
+import { Endpoint } from "./endpoint.mjs";
+import { isEndpoint } from "./util.mjs";
+
+/**
+ * Sending Endpoint
+ * @param {string} name endpoint name
+ * @param {Object} owner of the endpoint (service or step)
+ * @param {Object} options
+ * @param {Endpoint} [options.connected] where te requests are delivered to
+ * @param {Function} [options.didConnect] called after receiver is present
+ */
+export class SendEndpoint extends Endpoint {
+  constructor(name, owner, options = {}) {
+    super(name, owner, options);
+    if (isEndpoint(options.connected)) {
+      this.addConnection(options.connected);
+    }
+  }
+
+  /**
+   * We are always _out_
+   * @return {boolean} always true
+   */
+  get isOut() {
+    return true;
+  }
+
+  _connection;
+  _state;
+
+  openConnection(other) {
+    if (this._connection === other && this._state === undefined) {
+      this._state = this.didConnect(this, other);
+    }
+  }
+
+  closeConnection(other) {
+    if (this._connection === other && this._state !== undefined) {
+      this._state();
+      this._state = undefined;
+    }
+  }
+
+  addConnection(other, backpointer) {
+    if (this._connection === other) {
+      return;
+    }
+
+    if (!this.connectable(other)) {
+      throw new Error(
+        `Can't connect ${this.direction} to ${other.direction}: ${this.identifier} = ${other.identifier}`
+      );
+    }
+
+    this.removeConnection(this._connection, backpointer);
+
+    this._connection = other;
+
+    if (!backpointer) {
+      other.addConnection(this, true);
+    }
+
+    process.nextTick(() => this.openConnection(other));
+  }
+
+  removeConnection(other, backpointer) {
+    this.closeConnection(other);
+
+    if (!backpointer && other !== undefined) {
+        other.removeConnection(this, true);
+      }
+    this._connection = undefined;
+  }
+
+  *connections() {
+    if (this._connection) {
+      yield this._connection;
+    }
+  }
+
+  async send(...args) {
+    if (this._connection === undefined) {
+      throw new Error(`${this.identifier} is not connected`);
+    }
+    if (!this._connection.isOpen) {
+      throw new Error(`${this.identifier}: ${this._connection.identifier} is not open`);
+    }
+
+    const interceptors = this.interceptors;
+    let c = 0;
+
+    const next = async (...args) =>
+      c >= interceptors.length
+        ? this._connection.receive(...args)
+        : interceptors[c++].receive(this, next, ...args);
+
+    return next(...args);
+  }
+}
+

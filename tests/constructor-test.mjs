@@ -9,7 +9,7 @@ import {
   SendEndpointDefault,
   ReceiveEndpoint,
   ReceiveEndpointDefault
-} from "../src/endpoint.mjs";
+} from "../src/module.mjs";
 
 function et(t, factory, options, expected) {
   let e;
