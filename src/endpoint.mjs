@@ -1,4 +1,5 @@
 import { Interceptor } from "@kronos-integration/interceptor";
+import { triggerAsyncId } from "async_hooks";
 
 const RECEIVE = Symbol("receive");
 
@@ -48,7 +49,7 @@ export class Endpoint {
    * @return {Object}
    */
   get toStringAttributes() {
-    return {};
+    return { };
   }
 
   toString() {
@@ -64,6 +65,10 @@ export class Endpoint {
 
     if (this.direction) {
       entries.push(this.direction);
+    }
+
+    if (this.isOpen) {
+      entries.push('open');
     }
 
     return entries.length
@@ -131,6 +136,10 @@ export class Endpoint {
       json.out = true;
     }
 
+    if (this.isOpen) {
+      json.open = true;
+    }
+
     const is = [...this.connections()].map(c => c.identifier);
 
     switch (is.length) {
@@ -185,6 +194,16 @@ export class Endpoint {
    */
   set receive(receive) {
     this[RECEIVE] = receive;
+
+    /*for(const c of this.connections()) {
+      state = this.connectionState(c);
+      if(receive) c.didConnect(this);
+    }*/
+  }
+
+  get isOpen()
+  {
+    return this[RECEIVE] !== undefined;
   }
 
   connectable(other) {
@@ -209,7 +228,9 @@ export class Endpoint {
     return false;
   }
 
-  *connections() {}
+  * connections() {}
+
+  connectionState() {}
 
   addConnection() {}
 
@@ -259,9 +280,11 @@ export class ReceiveEndpoint extends Endpoint {
 
       this._connections.set(other, undefined); // dummy
 
-      process.nextTick(() => {
-        this._connections.set(other, this.didConnect(this, other));
-      });
+      if(this.isOpen) {
+        process.nextTick(() => {
+          this._connections.set(other, this.didConnect(this, other));
+        });
+      }
     }
   }
 
@@ -287,6 +310,10 @@ export class ReceiveEndpoint extends Endpoint {
 
   *connections() {
     yield* this._connections.values();
+  }
+
+  connectionState(other) {
+    return this._connections.get(other);
   }
 }
 
@@ -357,6 +384,10 @@ export class SendEndpoint extends Endpoint {
     }
   }
 
+  connectionState(other) {
+    return other === this._connection ? this._state : undefined;
+  }
+
   *connections() {
     if (this._connection) {
       yield this._connection;
@@ -367,8 +398,8 @@ export class SendEndpoint extends Endpoint {
     if(this._connection === undefined) {
       throw new Error(`${this.identifier} is not connected`);
     }
-    if(this._connection.receive === undefined) {
-      throw new Error(`${this._connection.identifier} has no receiver`);
+    if(!this._connection.isOpen) {
+      throw new Error(`${this._connection.identifier} is not open`);
     }
 
     const interceptors = this.interceptors;

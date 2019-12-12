@@ -29,27 +29,24 @@ Named communication (end)-points inside of kronos
     -   [toStringAttributes](#tostringattributes)
     -   [isIn](#isin)
     -   [isOut](#isout)
-    -   [isConnected](#isconnected)
-    -   [prepareConnection](#prepareconnection)
-        -   [Parameters](#parameters-1)
     -   [direction](#direction)
     -   [jsonAttributes](#jsonattributes)
     -   [hasInterceptors](#hasinterceptors)
     -   [receive](#receive)
     -   [receive](#receive-1)
-        -   [Parameters](#parameters-2)
+        -   [Parameters](#parameters-1)
 -   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-3)
+    -   [Parameters](#parameters-2)
     -   [isIn](#isin-1)
 -   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-4)
+    -   [Parameters](#parameters-3)
     -   [isOut](#isout-1)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-2)
 -   [isEndpoint](#isendpoint)
-    -   [Parameters](#parameters-5)
+    -   [Parameters](#parameters-4)
 
 ## Endpoint
 
@@ -82,18 +79,6 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 ### isOut
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
-
-### isConnected
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
-
-### prepareConnection
-
-#### Parameters
-
--   `other` **[Endpoint](#endpoint)** 
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if connection can continue
 
 ### direction
 
@@ -134,7 +119,7 @@ by default a dummy rejecting receiver is assigned
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
     -   `options.connected` **[Endpoint](#endpoint)?** sending side
 
@@ -154,7 +139,7 @@ Sending Endpoint
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
     -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
 

@@ -16,13 +16,14 @@ function et(t, factory, options, expected) {
 
   try {
     e = new factory("e", nameIt("o"), options);
-  }
-  catch (error) {
-    t.is(error.message,expected);
+  } catch (error) {
+    t.is(error.message, expected);
     return;
   }
 
-  checkEndpoint(t, e,
+  checkEndpoint(
+    t,
+    e,
     {
       toString: "service(o).e",
       identifier: "service(o).e",
@@ -59,7 +60,7 @@ test(
   {
     ...SendEndpointExpectations,
     toJSON: {
-      out: true,
+      ...SendEndpointExpectations.toJSON,
       interceptors: [
         {
           type: "request-limit",
@@ -98,7 +99,7 @@ test(
   { connected: otherReceiver },
   {
     ...SendEndpointExpectations,
-    toJSON: { out: true, connected: "service(o).c" },
+    toJSON: { ...SendEndpointExpectations.toJSON, connected: "service(o).c" },
     toString: "service(o).e(connected=service(o).c,out)"
   }
 );
@@ -128,10 +129,11 @@ test(
   "with receiver",
   et,
   ReceiveEndpoint,
-  { receive: async x => { } },
+  { receive: async x => {} },
   {
     ...ReceiveEndpointExpectations,
-    toString: "service(o).e(in)"
+    toString: "service(o).e(in,open)",
+    toJSON: { ...ReceiveEndpointExpectations.toJSON, open: true }
   }
 );
 
