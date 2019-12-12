@@ -47,6 +47,7 @@ Named communication (end)-points inside of kronos
     -   [isDefault](#isdefault-1)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-2)
+-   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
 
 ## isEndpoint
 
@@ -182,6 +183,12 @@ Receive Endpoint acting as a default endpoints
 We are a default endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## ReceiveEndpointSelfConnectedDefault
+
+**Extends ReceiveEndpointDefault**
+
+Receiving endpoint wich can also send to itself
 
 # install
 

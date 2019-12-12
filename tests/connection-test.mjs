@@ -1,8 +1,11 @@
 import test from "ava";
 import { nameIt, wait } from "./util.mjs";
 import { Interceptor } from "@kronos-integration/interceptor";
-import { SendEndpoint, ReceiveEndpoint } from "../src/module.mjs";
-
+import {
+  SendEndpoint,
+  ReceiveEndpoint,
+  ReceiveEndpointSelfConnectedDefault
+} from "../src/module.mjs";
 
 class PlusTenInterceptor extends Interceptor {
   async receive(endpoint, next, value) {
@@ -86,14 +89,15 @@ test("connecting with interceptor", async t => {
 
 test("interceptor send", async t => {
   const ep1 = new SendEndpoint("ep1", nameIt("o1"));
-  const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"),{ receive: async arg => arg*arg });
+  const ep2 = new ReceiveEndpoint("ep2", nameIt("o2"), {
+    receive: async arg => arg * arg
+  });
 
   ep1.addConnection(ep2);
 
   t.true(ep1.isConnected(ep2));
   t.is(await ep1.send(4), 16);
 });
-
 
 test("SendEndpoint connecting", t => {
   const se = new SendEndpoint("se", nameIt("o1"));
@@ -111,7 +115,9 @@ test("SendEndpoint connecting", t => {
 });
 
 test("send connect to itself", async t => {
-  const e = new SendEndpoint("e", nameIt("o"),{ receive: async arg => arg*arg });
+  const e = new SendEndpoint("e", nameIt("o1"), {
+    receive: async arg => arg * arg
+  });
 
   e.addConnection(e);
 
@@ -119,17 +125,42 @@ test("send connect to itself", async t => {
   t.is(await e.send(3), 9);
 });
 
-test("receive connect to itself -> exception", async t => {
-  const e = new ReceiveEndpoint("e", nameIt("o"), { receive: async arg => arg*arg });
-  t.throws(() => e.addConnection(e),"Can\'t connect in to in: service(o).e = service(o).e");
+test("receive self connected", async t => {
+  const e = new ReceiveEndpointSelfConnectedDefault("e", nameIt("o1"), {
+    receive: async arg => arg * arg
+  });
+
+  //console.log([...e.connections()]);
+  //t.true(e.isConnected(e));
+  
+  t.is(await e.send(3), 9);
+
+  const s2 = new SendEndpoint("s2", nameIt("o2"));
+  s2.addConnection(e);  
+  t.true(s2.isConnected(e));
+  //console.log([...e.connections()]);
+
+  //t.true(e.isConnected(e));
+  t.is(await s2.send(3), 9);
 });
 
+test("receive connect to itself -> exception", async t => {
+  const e = new ReceiveEndpoint("e", nameIt("o"), {
+    receive: async arg => arg * arg
+  });
+  t.throws(
+    () => e.addConnection(e),
+    "Can't connect in to in: service(o).e = service(o).e"
+  );
+});
 
 test("connect several send to one receive", async t => {
   const s1 = new SendEndpoint("s1", nameIt("o"));
   const s2 = new SendEndpoint("s1", nameIt("o"));
 
-  const r1 = new ReceiveEndpoint("r1", nameIt("o"),{receive: async arg => arg*arg});
+  const r1 = new ReceiveEndpoint("r1", nameIt("o"), {
+    receive: async arg => arg * arg
+  });
 
   s1.addConnection(r1);
   s2.addConnection(r1);
@@ -140,4 +171,3 @@ test("connect several send to one receive", async t => {
   t.is(await s1.send(2), 4);
   t.is(await s2.send(2), 4);
 });
-
