@@ -9,6 +9,11 @@ export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault 
     yield * super.connections();
   }
 
+  isConnected(other) {
+    if(this === other) { return true; }
+    return super.isConnected(other);
+  }
+
   get isOut() {
     return true;
   }
@@ -24,5 +29,4 @@ export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault 
 
     return next(...args);
   }
-
 }

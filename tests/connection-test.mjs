@@ -125,22 +125,19 @@ test("send connect to itself", async t => {
   t.is(await e.send(3), 9);
 });
 
-test("receive self connected", async t => {
+test.only("receive self connected", async t => {
   const e = new ReceiveEndpointSelfConnectedDefault("e", nameIt("o1"), {
     receive: async arg => arg * arg
   });
 
-  //console.log([...e.connections()]);
-  //t.true(e.isConnected(e));
-  
+  t.true(e.isConnected(e));
   t.is(await e.send(3), 9);
 
   const s2 = new SendEndpoint("s2", nameIt("o2"));
   s2.addConnection(e);  
   t.true(s2.isConnected(e));
-  //console.log([...e.connections()]);
 
-  //t.true(e.isConnected(e));
+  t.true(e.isConnected(e));
   t.is(await s2.send(3), 9);
 });
 
