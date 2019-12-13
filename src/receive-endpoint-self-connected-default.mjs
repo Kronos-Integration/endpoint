@@ -9,6 +9,10 @@ export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault 
     yield * super.connections();
   }
 
+  get isOut() {
+    return true;
+  }
+
   async send(...args) {
     const interceptors = this.interceptors;
     let c = 0;

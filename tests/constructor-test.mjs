@@ -8,7 +8,8 @@ import {
   SendEndpoint,
   SendEndpointDefault,
   ReceiveEndpoint,
-  ReceiveEndpointDefault
+  ReceiveEndpointDefault,
+  ReceiveEndpointSelfConnectedDefault
 } from "../src/module.mjs";
 
 function et(t, factory, options, expected) {
@@ -139,5 +140,17 @@ test(
 
 test(et, ReceiveEndpointDefault, undefined, {
   ...ReceiveEndpointExpectations,
+  isDefault: true
+});
+
+test(et, ReceiveEndpointSelfConnectedDefault, undefined, {
+  ...ReceiveEndpointExpectations,
+  direction: "inout",
+  toString: "service(o).e(connected=service(o).e,inout)",
+  toJSON: {
+    ...ReceiveEndpointExpectations.toJSON,
+    out: true,
+    connected: "service(o).e"
+  },
   isDefault: true
 });
