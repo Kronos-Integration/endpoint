@@ -131,6 +131,11 @@ test("receive self connected", async t => {
   });
 
   t.true(e.isConnected(e));
+  e.addConnection(e);
+  t.true(e.isConnected(e));
+  e.removeConnection(e);
+  t.true(e.isConnected(e));
+
   t.is(await e.send(3), 9);
 
   const s2 = new SendEndpoint("s2", nameIt("o2"));

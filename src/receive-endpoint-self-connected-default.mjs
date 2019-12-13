@@ -9,6 +9,16 @@ export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault 
     yield * super.connections();
   }
 
+  addConnection(other, backpointer) {
+    if(other === this) { return; }
+    return super.addConnection(other, backpointer);
+  }
+
+  removeConnection(other, backpointer) {
+    if(other === this) { return; }
+    return super.removeConnection(other, backpointer);
+  }
+
   isConnected(other) {
     if(this === other) { return true; }
     return super.isConnected(other);
