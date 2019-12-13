@@ -82,7 +82,7 @@ export class ReceiveEndpoint extends Endpoint {
   }
 
   *connections() {
-    yield* this._connections.values();
+    yield* this._connections.keys();
   }
 }
 
