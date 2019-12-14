@@ -28,20 +28,12 @@ export class ReceiveEndpoint extends Endpoint {
     return true;
   }
 
-  openConnection(other) {
-    const state = this._connections.get(other);
-
-    if (state === undefined) {
-      this._connections.set(other, this.didConnect(this, other));
-    }
+  getConnectionState(other) {
+    return this._connections.get(other);
   }
 
-  closeConnection(other) {
-    const state = this._connections.get(other);
-    if (state !== undefined) {
-      state();
-      this._connections.set(other, undefined);
-    }
+  setConnectionState(other,state) {
+    this._connections.set(other,state);
   }
 
   addConnection(other, backpointer) {
@@ -75,10 +67,6 @@ export class ReceiveEndpoint extends Endpoint {
 
   isConnected(other) {
     return this._connections.get(other) !== undefined;
-  }
-
-  get hasConnections() {
-    return this._connections.size > 0;
   }
 
   *connections() {

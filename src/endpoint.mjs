@@ -56,7 +56,7 @@ export class Endpoint {
       ([name, prop]) => `${name}=${this[prop]}`
     );
 
-    const is = [...this.connections()].map(c => c.identifier);
+    const is = [...this.connections()].map(c => c.identifier).sort();
 
     if (is.length) {
       entries.push(`connected=${is}`);
@@ -139,7 +139,7 @@ export class Endpoint {
       json.open = true;
     }
 
-    const is = [...this.connections()].map(c => c.identifier);
+    const is = [...this.connections()].map(c => c.identifier).sort();
 
     switch (is.length) {
       case 0:
@@ -221,15 +221,40 @@ export class Endpoint {
     return false;
   }
 
+  openConnection(other) {
+    const state = this.getConnectionState(other);
+
+    if (state === undefined) {
+      if(other.isOpen) {
+        this.setConnectionState(other, this.didConnect(this, other));
+      }
+      else {
+        if(this.owner) {
+          this.owner.warn(
+            `Opening ${this} connected is not open`
+          );    
+        }
+      }
+    }
+  }
+
+  closeConnection(other) {
+    const state = this.getConnectionState(other);
+    if (state !== undefined) {
+      state();
+      this.setConnectionState(other, undefined);
+    }
+  }
+  
   *connections() {}
 
   addConnection() {}
 
   removeConnection() {}
 
-  openConnection() {}
+  getConnectionState() {}
 
-  closeConnection() {}
+  setConnectionState() {}
 
   didConnect() {}
 }

@@ -25,19 +25,20 @@ export class SendEndpoint extends Endpoint {
     return true;
   }
 
+  get isOpen() {
+    return this._connection !== undefined;
+  }
+
   _connection;
   _state;
 
-  openConnection(other) {
-    if (this._connection === other && this._state === undefined) {
-      this._state = this.didConnect(this, other);
-    }
+  getConnectionState(other) {
+    return other === this._connection ? this._state : undefined;
   }
 
-  closeConnection(other) {
-    if (this._connection === other && this._state !== undefined) {
-      this._state();
-      this._state = undefined;
+  setConnectionState(other,state) {
+    if(other === this._connection) {
+      this._state = state;
     }
   }
 
@@ -67,8 +68,8 @@ export class SendEndpoint extends Endpoint {
     this.closeConnection(other);
 
     if (!backpointer && other !== undefined) {
-        other.removeConnection(this, true);
-      }
+      other.removeConnection(this, true);
+    }
     this._connection = undefined;
   }
 
@@ -83,7 +84,9 @@ export class SendEndpoint extends Endpoint {
       throw new Error(`${this.identifier} is not connected`);
     }
     if (!this._connection.isOpen) {
-      throw new Error(`${this.identifier}: ${this._connection.identifier} is not open`);
+      throw new Error(
+        `${this.identifier}: ${this._connection.identifier} is not open`
+      );
     }
 
     const interceptors = this.interceptors;
@@ -97,4 +100,3 @@ export class SendEndpoint extends Endpoint {
     return next(...args);
   }
 }
-

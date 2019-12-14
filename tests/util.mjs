@@ -1,5 +1,6 @@
 export function nameIt(name) {
   return {
+    warn(...args) { console.log(...args);},
     toString() {
       return name;
     },
@@ -16,7 +17,6 @@ export function nameIt(name) {
 export function checkEndpoint(t, endpoint, expected, checkOpposite = false) {
   expected = {
     direction: undefined,
-   // isConnected: false,
     isDefault: false,
     hasInterceptors: false,
     ...expected

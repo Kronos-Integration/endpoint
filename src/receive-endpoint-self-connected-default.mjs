@@ -4,6 +4,10 @@ import { ReceiveEndpointDefault } from "./receive-endpoint-default.mjs";
  * Receiving endpoint wich can also send to itself
  */
 export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault {
+  get isOut() {
+    return true;
+  }
+
   *connections() {
     yield this;
     yield * super.connections();
@@ -24,9 +28,6 @@ export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault 
     return super.isConnected(other);
   }
 
-  get isOut() {
-    return true;
-  }
 
   async send(...args) {
     const interceptors = this.interceptors;

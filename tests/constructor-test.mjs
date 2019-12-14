@@ -100,8 +100,8 @@ test(
   { connected: otherReceiver },
   {
     ...SendEndpointExpectations,
-    toJSON: { ...SendEndpointExpectations.toJSON, connected: "service(o).c" },
-    toString: "service(o).e(connected=service(o).c,out)"
+    toJSON: { ...SendEndpointExpectations.toJSON, connected: "service(o).c", open: true },
+    toString: "service(o).e(connected=service(o).c,out,open)"
   }
 );
 
