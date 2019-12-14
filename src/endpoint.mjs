@@ -51,9 +51,12 @@ export class Endpoint {
     return {};
   }
 
-  get connectionNamesWithStates() {
+  connectionNamesWithStates(options={includeRuntimeInfo:true}) {
     return [...this.connections()]
       .map(c => {
+        if(!options.includeRuntimeInfo) {
+          return c.identifier;
+        }
         const states = [];
         if(this.getConnectionState(c)) states.push('T');
         if(c.getConnectionState(this)) states.push('C');
@@ -68,7 +71,7 @@ export class Endpoint {
       ([name, prop]) => `${name}=${this[prop]}`
     );
 
-    const cs = this.connectionNamesWithStates;
+    const cs = this.connectionNamesWithStates();
 
     if (cs.length) {
       entries.push(`connected=${cs}`);
@@ -119,8 +122,9 @@ export class Endpoint {
 
   toJSON() {
     return this.toJSONWithOptions({
-      includeDefaults: false,
-      includeConfig: false
+      includeRuntimeInfo: true,
+      includeDefaults: true,
+      includeConfig: true
     });
   }
 
@@ -151,7 +155,7 @@ export class Endpoint {
       json.open = true;
     }
 
-    const cs = this.connectionNamesWithStates;
+    const cs = this.connectionNamesWithStates(options);
 
     switch (cs.length) {
       case 0:
