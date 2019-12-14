@@ -51,15 +51,27 @@ export class Endpoint {
     return {};
   }
 
+  get connectionNamesWithStates() {
+    return [...this.connections()]
+      .map(c => {
+        const states = [];
+        if(this.getConnectionState(c)) states.push('T');
+        if(c.getConnectionState(this)) states.push('C');
+        return states.length ? `${c.identifier}[${states.join('')}]` : c.identifier;
+      }
+      )
+      .sort();
+  }
+
   toString() {
     const entries = Object.entries(this.toStringAttributes).map(
       ([name, prop]) => `${name}=${this[prop]}`
     );
 
-    const is = [...this.connections()].map(c => c.identifier).sort();
+    const cs = this.connectionNamesWithStates;
 
-    if (is.length) {
-      entries.push(`connected=${is}`);
+    if (cs.length) {
+      entries.push(`connected=${cs}`);
     }
 
     if (this.direction) {
@@ -139,16 +151,16 @@ export class Endpoint {
       json.open = true;
     }
 
-    const is = [...this.connections()].map(c => c.identifier).sort();
+    const cs = this.connectionNamesWithStates;
 
-    switch (is.length) {
+    switch (cs.length) {
       case 0:
         break;
       case 1:
-        json.connected = is[0];
+        json.connected = cs[0];
         break;
       default:
-        json.connected = is;
+        json.connected = cs;
     }
 
     if (this.interceptors.length > 0) {
@@ -225,14 +237,11 @@ export class Endpoint {
     const state = this.getConnectionState(other);
 
     if (state === undefined) {
-      if(other.isOpen) {
+      if (other.isOpen) {
         this.setConnectionState(other, this.didConnect(this, other));
-      }
-      else {
-        if(this.owner) {
-          this.owner.warn(
-            `Opening ${this} connected is not open`
-          );    
+      } else {
+        if (this.owner) {
+          this.owner.warn(`Opening ${this} connected is not open`);
         }
       }
     }
@@ -245,7 +254,7 @@ export class Endpoint {
       this.setConnectionState(other, undefined);
     }
   }
-  
+
   *connections() {}
 
   addConnection() {}

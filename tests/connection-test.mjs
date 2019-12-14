@@ -51,6 +51,9 @@ test("connecting with interceptor", async t => {
   t.is(sendOpenedCalled, 1);
   t.is(receiveOpenedCalled, 1);
 
+  t.is(`${se}`,'service(owner).se(connected=service(owner).re[TC],out,open)');
+  t.is(`${re}`,'service(owner).re(connected=service(owner).se[TC],in,open)');
+
   t.true(se.isConnected(re));
   t.true(re.isConnected(se));
 
