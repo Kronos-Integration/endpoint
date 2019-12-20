@@ -99,6 +99,7 @@ test("interceptor send", async t => {
   ep1.addConnection(ep2);
 
   t.true(ep1.isConnected(ep2));
+  t.true(ep2.isConnected(ep1));
   t.is(await ep1.send(4), 16);
 });
 
@@ -111,6 +112,7 @@ test("SendEndpoint connecting", t => {
   se.addConnection(re);
 
   t.true(se.isConnected(re));
+  t.true(re.isConnected(se));
 
   se.removeConnection(re);
 
@@ -144,6 +146,7 @@ test("receive self connected", async t => {
   const s2 = new SendEndpoint("s2", nameIt("o2"));
   s2.addConnection(e);  
   t.true(s2.isConnected(e));
+  t.true(e.isConnected(s2));
 
   t.true(e.isConnected(e));
   t.is(await s2.send(3), 9);
@@ -171,7 +174,9 @@ test("connect several send to one receive", async t => {
   s2.addConnection(r1);
 
   t.true(s1.isConnected(r1));
+  t.true(r1.isConnected(s1));
   t.true(s2.isConnected(r1));
+  t.true(r1.isConnected(s2));
 
   t.is(await s1.send(2), 4);
   t.is(await s2.send(2), 4);

@@ -66,7 +66,7 @@ export class ReceiveEndpoint extends Endpoint {
   }
 
   isConnected(other) {
-    return this._connections.get(other) !== undefined;
+    return this._connections.has(other);
   }
 
   *connections() {
