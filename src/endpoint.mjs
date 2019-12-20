@@ -168,7 +168,7 @@ export class Endpoint {
     }
 
     if (this.interceptors.length > 0) {
-      json.interceptors = this.interceptors.map(i => i.toJSON());
+      json.interceptors = this.interceptors.map(i => i.toJSONWithOptions(options));
     }
 
     return json;
