@@ -183,14 +183,10 @@ test("connect several send to one receive", async t => {
 });
 
 
-test.skip("connect several receive to one send", async t => {
+test.only("connect several receive to one send but only feeding 1st.", async t => {
   const o = nameIt("o");
-  const r1 = new ReceiveEndpoint("r1", o, {
-    receive: async arg => arg * arg
-  });
-  const r2 = new ReceiveEndpoint("r2", o, {
-  });
-
+  const r1 = new ReceiveEndpoint("r1", o, { receive: async arg => arg * arg });
+  const r2 = new ReceiveEndpoint("r2", o);
   const s1 = new SendEndpoint("s1", o);
 
   r1.addConnection(s1);
@@ -200,9 +196,8 @@ test.skip("connect several receive to one send", async t => {
   
   r2.addConnection(s1);
 
-  //t.true(s2.isConnected(r1));
-  //t.true(r1.isConnected(s2));
+  t.false(s1.isConnected(r2), "s2 not connected to r2 only the other way around");
+  t.true(r2.isConnected(s1));
 
   t.is(await s1.send(2), 4);
-  //t.is(await s2.send(2), 4);
 });

@@ -123,7 +123,9 @@ Set the receive function
 
 **Extends Endpoint**
 
-Sending Endpoint
+Sending Endpoint.
+Can only hold one connection.
+Back connections to any further endpoints will not be established
 
 ### Parameters
 

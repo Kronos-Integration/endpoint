@@ -2,7 +2,9 @@ import { Endpoint } from "./endpoint.mjs";
 import { isEndpoint } from "./util.mjs";
 
 /**
- * Sending Endpoint
+ * Sending Endpoint.
+ * Can only hold one connection.
+ * Back connections to any further endpoints will not be established
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
@@ -51,6 +53,11 @@ export class SendEndpoint extends Endpoint {
       throw new Error(
         `Can't connect ${this.direction} to ${other.direction}: ${this.identifier} = ${other.identifier}`
       );
+    }
+
+    // do not break standing connection if only setting backpinter
+    if(backpointer && this._connection) {
+      return;
     }
 
     this.removeConnection(this._connection, backpointer);
