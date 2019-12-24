@@ -51,18 +51,19 @@ export class Endpoint {
     return {};
   }
 
-  connectionNamesWithStates(options={includeRuntimeInfo:true}) {
+  connectionNamesWithStates(options = { includeRuntimeInfo: true }) {
     return [...this.connections()]
       .map(c => {
-        if(!options.includeRuntimeInfo) {
+        if (!options.includeRuntimeInfo) {
           return c.identifier;
         }
         const states = [];
-        if(this.getConnectionState(c)) states.push('T');
-        if(c.getConnectionState(this)) states.push('C');
-        return states.length ? `${c.identifier}[${states.join('')}]` : c.identifier;
-      }
-      )
+        if (this.getConnectionState(c)) states.push("T");
+        if (c.getConnectionState(this)) states.push("C");
+        return states.length
+          ? `${c.identifier}[${states.join("")}]`
+          : c.identifier;
+      })
       .sort();
   }
 
@@ -168,7 +169,9 @@ export class Endpoint {
     }
 
     if (this.interceptors.length > 0) {
-      json.interceptors = this.interceptors.map(i => i.toJSONWithOptions(options));
+      json.interceptors = this.interceptors.map(i =>
+        i.toJSONWithOptions(options)
+      );
     }
 
     return json;
@@ -237,25 +240,37 @@ export class Endpoint {
     return false;
   }
 
-  openConnection(other) {
-    const state = this.getConnectionState(other);
+  openConnection(other, backpointer) {
+    if (other !== undefined) {
+      const state = this.getConnectionState(other);
 
-    if (state === undefined) {
-      if (other.isOpen) {
-        this.setConnectionState(other, this.didConnect(this, other));
-      } else {
-        if (this.owner) {
-          this.owner.warn(`Opening ${this} connected is not open`);
+      if (state === undefined) {
+        if (other.isOpen) {
+          this.setConnectionState(other, this.didConnect(this, other));
+        } else {
+          if (this.owner) {
+            this.owner.warn(`Opening ${this} connected is not open`);
+          }
         }
+      }
+
+      if (!backpointer) {
+        other.openConnection(this, true);
       }
     }
   }
 
-  closeConnection(other) {
-    const state = this.getConnectionState(other);
-    if (state !== undefined) {
-      state();
-      this.setConnectionState(other, undefined);
+  closeConnection(other, backpointer) {
+    if (other !== undefined) {
+      const state = this.getConnectionState(other);
+      if (state !== undefined) {
+        state();
+        this.setConnectionState(other, undefined);
+      }
+
+      if (!backpointer) {
+        other.closeConnection(this, true);
+      }
     }
   }
 
