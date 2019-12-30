@@ -1,7 +1,7 @@
 [![Build Status](https://secure.travis-ci.org/Kronos-Integration/endpoint.png)](http://travis-ci.org/Kronos-Integration/endpoint)
 [![codecov.io](http://codecov.io/github/Kronos-Integration/endpoint/coverage.svg?branch=master)](http://codecov.io/github/Kronos-Integration/endpoint?branch=master)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![downloads](http://img.shields.io/npm/dm/endpoint.svg?style=flat-square)](https://npmjs.org/package/endpoint)
+[![downloads](http://img.shields.io/npm/dm/@kronos-integration/endpoint.svg?style=flat-square)](https://npmjs.org/package/@kronos-integration/endpoint)
 [![GitHub Issues](https://img.shields.io/github/issues/Kronos-Integration/endpoint.svg?style=flat-square)](https://github.com/Kronos-Integration/endpoint/issues)
 [![Greenkeeper](https://badges.greenkeeper.io/Kronos-Integration/endpoint.svg)](https://greenkeeper.io/)
 [![Known Vulnerabilities](https://snyk.io/test/github/Kronos-Integration/endpoint/badge.svg)](https://snyk.io/test/github/Kronos-Integration/endpoint)
