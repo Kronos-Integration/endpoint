@@ -1,0 +1,10 @@
+{
+  "name": "@kronos-integration/endpoint",
+  "description": "named communication (end)-points inside of kronos",
+  "icons": [
+    {
+      "src": "facicon.ico",
+      "sizes": "16x16"
+    }
+  ]
+}
