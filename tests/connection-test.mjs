@@ -1,5 +1,5 @@
 import test from "ava";
-import { nameIt, wait } from "./util.mjs";
+import { nameIt, wait } from "./helpers/util.mjs";
 import { Interceptor } from "@kronos-integration/interceptor";
 import {
   SendEndpoint,

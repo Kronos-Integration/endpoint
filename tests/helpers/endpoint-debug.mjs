@@ -1,4 +1,4 @@
-import { SendEndpoint, ReceiveEndpoint } from "../src/module.mjs";
+import { SendEndpoint, ReceiveEndpoint } from "../../src/module.mjs";
 
 const owner = { name: "o" };
 const r = new ReceiveEndpoint("r", owner);

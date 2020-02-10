@@ -1,5 +1,5 @@
 import test from "ava";
-import { nameIt, checkEndpoint } from "./util.mjs";
+import { nameIt, checkEndpoint } from "./helpers/util.mjs";
 
 import { LimitingInterceptor } from "@kronos-integration/interceptor";
 
