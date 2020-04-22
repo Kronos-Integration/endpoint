@@ -1,4 +1,4 @@
-import { SendEndpoint } from './send-endpoint.mjs';
+import { SendEndpoint } from "./send-endpoint.mjs";
 
 /**
  * Send Endpoint acting as a default endpoints

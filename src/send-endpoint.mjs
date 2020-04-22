@@ -38,8 +38,8 @@ export class SendEndpoint extends Endpoint {
     return other === this._connection ? this._state : undefined;
   }
 
-  setConnectionState(other,state) {
-    if(other === this._connection) {
+  setConnectionState(other, state) {
+    if (other === this._connection) {
       this._state = state;
     }
   }
@@ -56,7 +56,7 @@ export class SendEndpoint extends Endpoint {
     }
 
     // do not break standing connection if only setting backpinter
-    if(backpointer && this._connection) {
+    if (backpointer && this._connection) {
       return;
     }
 

@@ -1,5 +1,5 @@
 import test from "ava";
-import { nameIt, checkEndpoint } from "./helpers/util.mjs";
+import { nameIt, ept } from "./helpers/util.mjs";
 
 import { LimitingInterceptor } from "@kronos-integration/interceptor";
 
@@ -12,32 +12,7 @@ import {
   ReceiveEndpointSelfConnectedDefault
 } from "../src/module.mjs";
 
-function et(t, factory, options, expected) {
-  let e;
-
-  try {
-    e = new factory("e", nameIt("o"), options);
-  } catch (error) {
-    t.is(error.message, expected);
-    return;
-  }
-
-  checkEndpoint(
-    t,
-    e,
-    {
-      toString: "service(o).e",
-      identifier: "service(o).e",
-      ...expected
-    },
-    true
-  );
-}
-
-et.title = (providedTitle = "", factory, config) =>
-  `endpoint ${providedTitle} ${factory.name} ${JSON.stringify(config)}`.trim();
-
-test(et, Endpoint, undefined, {});
+test(ept, Endpoint, undefined, {});
 
 const SendEndpointExpectations = {
   direction: "out",
@@ -46,11 +21,11 @@ const SendEndpointExpectations = {
   interceptors: []
 };
 
-test(et, SendEndpoint, undefined, SendEndpointExpectations);
-test(et, SendEndpoint, {}, SendEndpointExpectations);
+test(ept, SendEndpoint, undefined, SendEndpointExpectations);
+test(ept, SendEndpoint, {}, SendEndpointExpectations);
 
 test(
-  et,
+  ept,
   SendEndpoint,
   {
     interceptors: [
@@ -87,7 +62,7 @@ test(
 );
 
 test(
-  et,
+  ept,
   SendEndpoint,
   { connected: new SendEndpoint("c", nameIt("o")) },
   "Can't connect out to out: service(o).e = service(o).c"
@@ -95,17 +70,21 @@ test(
 
 const otherReceiver = new ReceiveEndpoint("c", nameIt("o"));
 test(
-  et,
+  ept,
   SendEndpoint,
   { connected: otherReceiver },
   {
     ...SendEndpointExpectations,
-    toJSON: { ...SendEndpointExpectations.toJSON, connected: "service(o).c", open: true },
+    toJSON: {
+      ...SendEndpointExpectations.toJSON,
+      connected: "service(o).c",
+      open: true
+    },
     toString: "service(o).e(connected=service(o).c,out,open)"
   }
 );
 
-test(et, SendEndpointDefault, undefined, {
+test(ept, SendEndpointDefault, undefined, {
   ...SendEndpointExpectations,
   isDefault: true
 });
@@ -116,11 +95,11 @@ const ReceiveEndpointExpectations = {
   toString: "service(o).e(in)"
 };
 
-test(et, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
-test(et, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
+test(ept, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
+test(ept, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
 
 test(
-  et,
+  ept,
   ReceiveEndpoint,
   { connected: new ReceiveEndpoint("c", nameIt("o")) },
   "Can't connect in to in: service(o).e = service(o).c"
@@ -128,7 +107,7 @@ test(
 
 test(
   "with receiver",
-  et,
+  ept,
   ReceiveEndpoint,
   { receive: async x => {} },
   {
@@ -138,12 +117,13 @@ test(
   }
 );
 
-test(et, ReceiveEndpointDefault, undefined, {
+test(ept, ReceiveEndpointDefault, undefined, {
   ...ReceiveEndpointExpectations,
-  isDefault: true
+  isDefault: true,
+  hasConnections: false
 });
 
-test(et, ReceiveEndpointSelfConnectedDefault, undefined, {
+test(ept, ReceiveEndpointSelfConnectedDefault, undefined, {
   ...ReceiveEndpointExpectations,
   direction: "inout",
   toString: "service(o).e(connected=service(o).e,inout)",

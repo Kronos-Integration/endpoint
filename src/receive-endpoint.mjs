@@ -43,8 +43,8 @@ export class ReceiveEndpoint extends Endpoint {
    * @param {Entpoint} other
    * @param {any} state for the connection to other
    */
-  setConnectionState(other,state) {
-    this._connections.set(other,state);
+  setConnectionState(other, state) {
+    this._connections.set(other, state);
   }
 
   /**
@@ -104,4 +104,3 @@ export class ReceiveEndpoint extends Endpoint {
     yield* this._connections.keys();
   }
 }
-

@@ -51,3 +51,29 @@ export function checkInterceptor(t, interceptor, expected, i) {
 export async function wait(msecs = 1000) {
   return new Promise((resolve, reject) => setTimeout(() => resolve(), msecs));
 }
+
+
+export function ept(t, factory, options, expected) {
+  let e;
+
+  try {
+    e = new factory("e", nameIt("o"), options);
+  } catch (error) {
+    t.is(error.message, expected);
+    return;
+  }
+
+  checkEndpoint(
+    t,
+    e,
+    {
+      toString: "service(o).e",
+      identifier: "service(o).e",
+      ...expected
+    },
+    true
+  );
+}
+
+ept.title = (providedTitle = "", factory, config) =>
+  `endpoint ${providedTitle} ${factory.name} ${JSON.stringify(config)}`.trim();

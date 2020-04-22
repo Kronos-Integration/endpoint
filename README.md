@@ -43,6 +43,17 @@ Named communication (end)-points inside of kronos
 -   [ReceiveEndpoint](#receiveendpoint)
     -   [Parameters](#parameters-4)
     -   [isIn](#isin-1)
+    -   [getConnectionState](#getconnectionstate)
+        -   [Parameters](#parameters-5)
+    -   [setConnectionState](#setconnectionstate)
+        -   [Parameters](#parameters-6)
+    -   [addConnection](#addconnection)
+        -   [Parameters](#parameters-7)
+    -   [removeConnection](#removeconnection)
+        -   [Parameters](#parameters-8)
+    -   [isConnected](#isconnected)
+        -   [Parameters](#parameters-9)
+    -   [connections](#connections)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
@@ -145,8 +156,9 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Extends Endpoint**
 
-Receiving Endpoint
-by default a dummy rejecting receiver is assigned
+Receiving Endpoint.
+Can receive from several endpoints.
+By default a dummy rejecting receiver is assigned
 
 ### Parameters
 
@@ -161,6 +173,59 @@ by default a dummy rejecting receiver is assigned
 We are always _in_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+### getConnectionState
+
+Deliver connection state
+
+#### Parameters
+
+-   `other` **Entpoint** 
+
+Returns **any** our state for the connection to other
+
+### setConnectionState
+
+Set connection state
+
+#### Parameters
+
+-   `other` **Entpoint** 
+-   `state` **any** for the connection to other
+
+### addConnection
+
+Add connection to other.
+if backpointer is false the opposite connection will be added to
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+-   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+### removeConnection
+
+Remove connection to other.
+if backpointer is false the opposite connection will be removed to
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+-   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+### isConnected
+
+Check connectivity
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we are connected with other
+
+### connections
+
+All connections
 
 ## SendEndpointDefault
 
