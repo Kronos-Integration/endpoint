@@ -2,8 +2,9 @@ import { Endpoint } from "./endpoint.mjs";
 import { isEndpoint } from "./util.mjs";
 
 /**
- * Receiving Endpoint
- * by default a dummy rejecting receiver is assigned
+ * Receiving Endpoint.
+ * Can receive from several endpoints.
+ * By default a dummy rejecting receiver is assigned
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service or step)
  * @param {Object} options
@@ -28,14 +29,30 @@ export class ReceiveEndpoint extends Endpoint {
     return true;
   }
 
+  /**
+   * Deliver connection state
+   * @param {Entpoint} other
+   * @return {any} our state for the connection to other
+   */
   getConnectionState(other) {
     return this._connections.get(other);
   }
 
+  /**
+   * Set connection state
+   * @param {Entpoint} other
+   * @param {any} state for the connection to other
+   */
   setConnectionState(other,state) {
     this._connections.set(other,state);
   }
 
+  /**
+   * Add connection to other.
+   * if backpointer is false the opposite connection will be added to
+   * @param {Endpoint} other
+   * @param {boolean} backpointer
+   */
   addConnection(other, backpointer) {
     if (!this.connectable(other)) {
       throw new Error(
@@ -56,6 +73,12 @@ export class ReceiveEndpoint extends Endpoint {
     }
   }
 
+  /**
+   * Remove connection to other.
+   * if backpointer is false the opposite connection will be removed to
+   * @param {Endpoint} other
+   * @param {boolean} backpointer
+   */
   removeConnection(other, backpointer) {
     this.closeConnection(other);
     this._connections.delete(other);
@@ -65,10 +88,18 @@ export class ReceiveEndpoint extends Endpoint {
     }
   }
 
+  /**
+   * Check connectivity
+   * @param {Endpoint} other
+   * @return {boolean} true if we are connected with other
+   */
   isConnected(other) {
     return this._connections.has(other);
   }
 
+  /**
+   * All connections
+   */
   *connections() {
     yield* this._connections.keys();
   }
