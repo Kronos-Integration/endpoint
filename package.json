@@ -7,6 +7,9 @@
   "sideEffects": false,
   "type": "module",
   "main": "src/module.mjs",
+  "exports": {
+    ".": "./src/module.mjs"
+  },
   "description": "named communication (end)-points inside of kronos",
   "keywords": [
     "endpoint"
@@ -53,8 +56,5 @@
       "arlac77/template-kronos-module",
       "arlac77/template-github"
     ]
-  },
-  "exports": {
-    ".": "./src/module.mjs"
   }
 }
