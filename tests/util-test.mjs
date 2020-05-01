@@ -6,7 +6,7 @@ import {
   SendEndpointDefault,
   ReceiveEndpoint,
   ReceiveEndpointDefault
-} from "../src/module.mjs";
+} from "@kronos-integration/endpoint";
 
 function tis(t, object, expected) {
   t.is(isEndpoint(object), expected);

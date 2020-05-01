@@ -10,7 +10,7 @@ import {
   ReceiveEndpoint,
   ReceiveEndpointDefault,
   ReceiveEndpointSelfConnectedDefault
-} from "../src/module.mjs";
+} from "@kronos-integration/endpoint";
 
 test(ept, Endpoint, undefined, {});
 

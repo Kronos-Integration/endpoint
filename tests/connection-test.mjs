@@ -5,7 +5,7 @@ import {
   SendEndpoint,
   ReceiveEndpoint,
   ReceiveEndpointSelfConnectedDefault
-} from "../src/module.mjs";
+} from "@kronos-integration/endpoint";
 
 class PlusTenInterceptor extends Interceptor {
   async receive(endpoint, next, value) {
