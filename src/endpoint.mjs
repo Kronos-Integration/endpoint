@@ -130,7 +130,7 @@ export class Endpoint {
   }
 
   /**
-   * additional Attributes to present in json output
+   * additional attributes to present in json output
    */
   get jsonAttributes() {
     return [];
@@ -218,10 +218,18 @@ export class Endpoint {
     return this[RECEIVE] !== undefined;
   }
 
+  /**
+   * in to out and out to in
+   * @param {Endpoint} other
+   * @return {boolean} true if we can be connected to the other endpoint
+   */
   connectable(other) {
     return (this.isIn && other.isOut) || (this.isOut && other.isIn);
   }
 
+  /**
+   * @return {boolean} true if there is at least one connection
+   */
   get hasConnections() {
     for (const c of this.connections()) {
       return true;
@@ -230,6 +238,11 @@ export class Endpoint {
     return false;
   }
 
+  /**
+   * Are we connected to a endpoint
+   * @param {Endpoint} other
+   * @return {boolean} true if there is a connection to the other endpoint
+   */
   isConnected(other) {
     for (const c of this.connections()) {
       if (c === other) {

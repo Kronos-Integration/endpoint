@@ -37,22 +37,27 @@ Named communication (end)-points inside of kronos
     -   [receive](#receive)
     -   [receive](#receive-1)
         -   [Parameters](#parameters-2)
+    -   [connectable](#connectable)
+        -   [Parameters](#parameters-3)
+    -   [hasConnections](#hasconnections)
+    -   [isConnected](#isconnected)
+        -   [Parameters](#parameters-4)
 -   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-3)
+    -   [Parameters](#parameters-5)
     -   [isOut](#isout-1)
 -   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-4)
+    -   [Parameters](#parameters-6)
     -   [isIn](#isin-1)
     -   [getConnectionState](#getconnectionstate)
-        -   [Parameters](#parameters-5)
-    -   [setConnectionState](#setconnectionstate)
-        -   [Parameters](#parameters-6)
-    -   [addConnection](#addconnection)
         -   [Parameters](#parameters-7)
-    -   [removeConnection](#removeconnection)
+    -   [setConnectionState](#setconnectionstate)
         -   [Parameters](#parameters-8)
-    -   [isConnected](#isconnected)
+    -   [addConnection](#addconnection)
         -   [Parameters](#parameters-9)
+    -   [removeConnection](#removeconnection)
+        -   [Parameters](#parameters-10)
+    -   [isConnected](#isconnected-1)
+        -   [Parameters](#parameters-11)
     -   [connections](#connections)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
@@ -110,7 +115,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ### jsonAttributes
 
-additional Attributes to present in json output
+additional attributes to present in json output
 
 ### hasInterceptors
 
@@ -129,6 +134,30 @@ Set the receive function
 #### Parameters
 
 -   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+
+### connectable
+
+in to out and out to in
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we can be connected to the other endpoint
+
+### hasConnections
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is at least one connection
+
+### isConnected
+
+Are we connected to a endpoint
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is a connection to the other endpoint
 
 ## SendEndpoint
 
