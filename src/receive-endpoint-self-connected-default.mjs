@@ -33,7 +33,7 @@ export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault 
     }
     return super.isConnected(other);
   }
-
+  
   async send(...args) {
     const interceptors = this.interceptors;
     let c = 0;

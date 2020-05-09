@@ -106,4 +106,20 @@ export class SendEndpoint extends Endpoint {
 
     return next(...args);
   }
+ 
+  async sendIfOpen(...args) {
+    if (this._connection === undefined || !this._connection.isOpen) {
+      return;
+    }
+
+    const interceptors = this.interceptors;
+    let c = 0;
+
+    const next = async (...args) =>
+      c >= interceptors.length
+        ? this._connection.receive(...args)
+        : interceptors[c++].receive(this, next, ...args);
+
+    return next(...args);
+  }
 }
