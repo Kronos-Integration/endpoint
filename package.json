@@ -33,7 +33,7 @@
     "lint": "documentation lint ./src/module.mjs"
   },
   "dependencies": {
-    "@kronos-integration/interceptor": "^9.1.0"
+    "@kronos-integration/interceptor": "^9.2.0"
   },
   "devDependencies": {
     "ava": "^3.8.2",
