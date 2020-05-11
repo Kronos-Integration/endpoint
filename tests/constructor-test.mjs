@@ -7,6 +7,7 @@ import {
   Endpoint,
   SendEndpoint,
   SendEndpointDefault,
+  MultiSendEndpoint,
   ReceiveEndpoint,
   ReceiveEndpointDefault,
   ReceiveEndpointSelfConnectedDefault
@@ -23,6 +24,9 @@ const SendEndpointExpectations = {
 
 test(ept, SendEndpoint, undefined, SendEndpointExpectations);
 test(ept, SendEndpoint, {}, SendEndpointExpectations);
+
+test(ept, MultiSendEndpoint, undefined, SendEndpointExpectations);
+test(ept, MultiSendEndpoint, {}, SendEndpointExpectations);
 
 test(
   ept,
