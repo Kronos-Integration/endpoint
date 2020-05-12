@@ -1,5 +1,6 @@
 export * from "./util.mjs";
 export * from "./endpoint.mjs";
+export * from './multi-connection-endpoint.mjs';
 export * from './send-endpoint.mjs';
 export * from './receive-endpoint.mjs';
 export * from './send-endpoint-default.mjs';
