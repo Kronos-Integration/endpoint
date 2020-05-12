@@ -1,4 +1,4 @@
-import { MultiConnectionEndpoint } from "./endpoint.mjs";
+import { MultiConnectionEndpoint } from "./multi-connection-endpoint.mjs";
 import { isEndpoint } from "./util.mjs";
 
 /**
@@ -12,6 +12,10 @@ import { isEndpoint } from "./util.mjs";
  * @param {Function} [options.didConnect] called after receiver is present
  */
 export class MultiSendEndpoint extends MultiConnectionEndpoint {
+
+  get isOpen() {
+    return this._connections.length > 0;
+  }
 
   /**
    * We are always _out_

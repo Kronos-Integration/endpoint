@@ -1,4 +1,4 @@
-import { MultiConnectionEndpoint } from "./endpoint.mjs";
+import { MultiConnectionEndpoint } from "./multi-connection-endpoint.mjs";
 import { isEndpoint } from "./util.mjs";
 
 /**

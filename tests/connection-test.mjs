@@ -157,8 +157,8 @@ test("receive connect to itself -> exception", async t => {
     receive: async arg => arg * arg
   });
   t.throws(
-    () => e.addConnection(e),
-    "Can't connect in to in: service(o).e = service(o).e"
+    () => e.addConnection(e)
+    //"Can't connect in to in: service(o).e = service(o).e"
   );
 });
 
@@ -183,7 +183,7 @@ test("connect several send to one receive", async t => {
 });
 
 
-test.only("connect several receive to one send but only feeding 1st.", async t => {
+test("connect several receive to one send but only feeding 1st.", async t => {
   const o = nameIt("o");
   const r1 = new ReceiveEndpoint("r1", o, { receive: async arg => arg * arg });
   const r2 = new ReceiveEndpoint("r2", o);

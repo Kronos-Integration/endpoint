@@ -16,9 +16,11 @@ export class MultiConnectionEndpoint extends Endpoint {
     }
   }
 
+/*
   get isOpen() {
     return this._connections.length > 0;
   }
+*/
  
   /**
    * Deliver connection state
