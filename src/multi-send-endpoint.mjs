@@ -12,7 +12,6 @@ import { isEndpoint } from "./util.mjs";
  * @param {Function} [options.didConnect] called after receiver is present
  */
 export class MultiSendEndpoint extends MultiConnectionEndpoint {
-
   get isOpen() {
     return this._connections.length > 0;
   }
@@ -25,22 +24,21 @@ export class MultiSendEndpoint extends MultiConnectionEndpoint {
     return true;
   }
 
+  // TODO what to return ?
   async send(...args) {
     const interceptors = this.interceptors;
 
     for (const connection of this.connections()) {
-      if (!connection.isOpen) {
-        throw new Error(`${this.identifier}: ${connection.identifier} is not open`);
+      if (connection.isOpen) {
+        let c = 0;
+
+        const next = async (...args) =>
+          c >= interceptors.length
+            ? connection.receive(...args)
+            : interceptors[c++].receive(this, next, ...args);
+
+        next(...args);
       }
-
-      let c = 0;
-
-      const next = async (...args) =>
-        c >= interceptors.length
-          ? connection.receive(...args)
-          : interceptors[c++].receive(this, next, ...args);
-
-      next(...args);
     }
   }
 }

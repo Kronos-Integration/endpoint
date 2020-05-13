@@ -2,6 +2,7 @@ import test from "ava";
 import { nameIt, wait } from "./helpers/util.mjs";
 import { Interceptor } from "@kronos-integration/interceptor";
 import {
+  MultiSendEndpoint,
   SendEndpoint,
   ReceiveEndpoint,
   ReceiveEndpointSelfConnectedDefault
@@ -119,6 +120,27 @@ test("SendEndpoint connecting", t => {
   t.false(se.isConnected(re));
 });
 
+test("MultiSendEndpoint connecting", t => {
+  const se = new MultiSendEndpoint("se", nameIt("o1"));
+  const re1 = new ReceiveEndpoint("re1", nameIt("o2"));
+  const re2 = new ReceiveEndpoint("re3", nameIt("o3"));
+
+  t.false(se.isConnected(re1));
+  t.false(se.isConnected(re2));
+
+  se.addConnection(re1);
+
+  t.true(se.isConnected(re1));
+  t.true(re1.isConnected(se));
+
+  se.addConnection(re2);
+  t.true(se.isConnected(re2));
+
+  se.removeConnection(re1);
+
+  t.false(se.isConnected(re1));
+});
+
 test("send connect to itself", async t => {
   const e = new SendEndpoint("e", nameIt("o1"), {
     receive: async arg => arg * arg
@@ -200,4 +222,29 @@ test("connect several receive to one send but only feeding 1st.", async t => {
   t.true(r2.isConnected(s1));
 
   t.is(await s1.send(2), 4);
+});
+
+
+test("connect multi send to severl receive", async t => {
+  const s1 = new MultiSendEndpoint("s1", nameIt("o"));
+
+  const r1 = new ReceiveEndpoint("r1", nameIt("o"), {
+    receive: async arg => arg * arg
+  });
+
+  const r2 = new ReceiveEndpoint("r2", nameIt("o"), {
+    receive: async arg => arg * arg
+  });
+
+  s1.addConnection(r1);
+  s1.addConnection(r2);
+
+  t.true(s1.isConnected(r1));
+  t.true(r1.isConnected(s1));
+  t.true(s1.isConnected(r2));
+  t.true(r2.isConnected(s1));
+
+  const x = await s1.send(2);
+
+  //t.is(await s1.send(2), 4);
 });

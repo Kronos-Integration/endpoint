@@ -42,25 +42,26 @@ Named communication (end)-points inside of kronos
     -   [hasConnections](#hasconnections)
     -   [isConnected](#isconnected)
         -   [Parameters](#parameters-4)
--   [SendEndpoint](#sendendpoint)
+-   [MultiConnectionEndpoint](#multiconnectionendpoint)
     -   [Parameters](#parameters-5)
+    -   [getConnectionState](#getconnectionstate)
+        -   [Parameters](#parameters-6)
+    -   [setConnectionState](#setconnectionstate)
+        -   [Parameters](#parameters-7)
+    -   [isConnected](#isconnected-1)
+        -   [Parameters](#parameters-8)
+    -   [connections](#connections)
+-   [SendEndpoint](#sendendpoint)
+    -   [Parameters](#parameters-9)
     -   [isOut](#isout-1)
 -   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-6)
+    -   [Parameters](#parameters-10)
     -   [isIn](#isin-1)
-    -   [getConnectionState](#getconnectionstate)
-        -   [Parameters](#parameters-7)
-    -   [setConnectionState](#setconnectionstate)
-        -   [Parameters](#parameters-8)
-    -   [addConnection](#addconnection)
-        -   [Parameters](#parameters-9)
-    -   [removeConnection](#removeconnection)
-        -   [Parameters](#parameters-10)
-    -   [isConnected](#isconnected-1)
-        -   [Parameters](#parameters-11)
-    -   [connections](#connections)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
+-   [MultiSendEndpoint](#multisendendpoint)
+    -   [Parameters](#parameters-11)
+    -   [isOut](#isout-2)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-2)
 -   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
@@ -159,6 +160,52 @@ Are we connected to a endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is a connection to the other endpoint
 
+## MultiConnectionEndpoint
+
+**Extends Endpoint**
+
+Multiple connection endpoint.
+Can hold several connections.
+
+### Parameters
+
+-   `name`  
+-   `owner`  
+-   `options`   (optional, default `{}`)
+
+### getConnectionState
+
+Deliver connection state
+
+#### Parameters
+
+-   `other` **Entpoint** 
+
+Returns **any** our state for the connection to other
+
+### setConnectionState
+
+Set connection state
+
+#### Parameters
+
+-   `other` **Entpoint** 
+-   `state` **any** for the connection to other
+
+### isConnected
+
+Check connectivity
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we are connected with other
+
+### connections
+
+All connections
+
 ## SendEndpoint
 
 **Extends Endpoint**
@@ -183,7 +230,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ## ReceiveEndpoint
 
-**Extends Endpoint**
+**Extends MultiConnectionEndpoint**
 
 Receiving Endpoint.
 Can receive from several endpoints.
@@ -193,7 +240,7 @@ By default a dummy rejecting receiver is assigned
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
     -   `options.connected` **[Endpoint](#endpoint)?** sending side
 
@@ -202,59 +249,6 @@ By default a dummy rejecting receiver is assigned
 We are always _in_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
-
-### getConnectionState
-
-Deliver connection state
-
-#### Parameters
-
--   `other` **Entpoint** 
-
-Returns **any** our state for the connection to other
-
-### setConnectionState
-
-Set connection state
-
-#### Parameters
-
--   `other` **Entpoint** 
--   `state` **any** for the connection to other
-
-### addConnection
-
-Add connection to other.
-if backpointer is false the opposite connection will be added to
-
-#### Parameters
-
--   `other` **[Endpoint](#endpoint)** 
--   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
-
-### removeConnection
-
-Remove connection to other.
-if backpointer is false the opposite connection will be removed to
-
-#### Parameters
-
--   `other` **[Endpoint](#endpoint)** 
--   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
-
-### isConnected
-
-Check connectivity
-
-#### Parameters
-
--   `other` **[Endpoint](#endpoint)** 
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we are connected with other
-
-### connections
-
-All connections
 
 ## SendEndpointDefault
 
@@ -265,6 +259,28 @@ Send Endpoint acting as a default endpoints
 ### isDefault
 
 We are a default endpoint
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## MultiSendEndpoint
+
+**Extends MultiConnectionEndpoint**
+
+Multiple Sending Endpoint.
+Can hold several connections.
+Back connections to any further endpoints will not be established
+
+### Parameters
+
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service or step)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
+    -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
+
+### isOut
+
+We are always _out_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
