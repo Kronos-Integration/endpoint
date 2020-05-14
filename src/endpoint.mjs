@@ -307,8 +307,4 @@ export class Endpoint {
   setConnectionState() {}
 
   didConnect() {}
-
-  sendIfOpen(...args) {
-    return this.send(...args);
-  }
 }
