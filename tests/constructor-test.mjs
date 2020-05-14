@@ -9,6 +9,7 @@ import {
   SendEndpointDefault,
   MultiSendEndpoint,
   ReceiveEndpoint,
+  DummyReceiveEndpoint,
   ReceiveEndpointDefault,
   ReceiveEndpointSelfConnectedDefault
 } from "@kronos-integration/endpoint";
@@ -101,6 +102,10 @@ const ReceiveEndpointExpectations = {
 
 test(ept, ReceiveEndpoint, undefined, ReceiveEndpointExpectations);
 test(ept, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
+
+test(ept, DummyReceiveEndpoint, {}, {...ReceiveEndpointExpectations,
+  toJSON: { in: true, open: true },
+  toString: "service(o).e(in,open)"});
 
 test(
   ept,

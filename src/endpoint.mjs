@@ -44,6 +44,15 @@ export class Endpoint {
   }
 
   /**
+   * Indicate whatever we are a dummy endpoint.
+   * Dummy endpoints are used duiring construction of the endpoint mesh.
+   * @return {boolean} false
+   */
+  get isDummy() {
+    return false;
+  }
+
+  /**
    * mapping of properties used in toString
    * @return {Object}
    */

@@ -28,6 +28,7 @@ Named communication (end)-points inside of kronos
 -   [Endpoint](#endpoint)
     -   [Parameters](#parameters-1)
     -   [isDefault](#isdefault)
+    -   [isDummy](#isdummy)
     -   [toStringAttributes](#tostringattributes)
     -   [isIn](#isin)
     -   [isOut](#isout)
@@ -57,10 +58,13 @@ Named communication (end)-points inside of kronos
 -   [ReceiveEndpoint](#receiveendpoint)
     -   [Parameters](#parameters-10)
     -   [isIn](#isin-1)
+-   [DummyReceiveEndpoint](#dummyreceiveendpoint)
+    -   [Parameters](#parameters-11)
+    -   [isDummy](#isdummy-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [MultiSendEndpoint](#multisendendpoint)
-    -   [Parameters](#parameters-11)
+    -   [Parameters](#parameters-12)
     -   [isOut](#isout-2)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-2)
@@ -91,6 +95,13 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Indicate whatever we are a default endpoint.
 Default means buildin.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
+
+### isDummy
+
+Indicate whatever we are a dummy endpoint.
+Dummy endpoints are used duiring construction of the endpoint mesh.
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
 
@@ -249,6 +260,25 @@ By default a dummy rejecting receiver is assigned
 We are always _in_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## DummyReceiveEndpoint
+
+**Extends ReceiveEndpoint**
+
+Dummy endpoints are used duiring construction of the endpoint mesh.
+
+### Parameters
+
+-   `name`  
+-   `owner`  
+-   `options`  
+
+### isDummy
+
+Indicate whatever we are a dummy endpoint.
+Dummy endpoints are used duiring construction of the endpoint mesh.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
 
 ## SendEndpointDefault
 
