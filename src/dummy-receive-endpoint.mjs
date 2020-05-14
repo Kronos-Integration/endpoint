@@ -17,6 +17,10 @@ export class DummyReceiveEndpoint extends Endpoint {
     return true;
   }
 
+  get isOpen() {
+    return true;
+  }
+
   /**
    * Indicate whatever we are a dummy endpoint.
    * Dummy endpoints are used duiring construction of the endpoint mesh.
