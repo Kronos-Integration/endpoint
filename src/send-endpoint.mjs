@@ -48,6 +48,7 @@ export class SendEndpoint extends Endpoint {
     if (this._connection === other) {
       return;
     }
+    
 
     if (!this.connectable(other)) {
       throw new Error(
@@ -55,9 +56,15 @@ export class SendEndpoint extends Endpoint {
       );
     }
 
-    // do not break standing connection if only setting backpinter
-    if (backpointer && this._connection) {
-      return;
+    if (this._connection !== undefined) {
+      // do not break standing connection if only setting backpinter
+      if(backpointer) {
+        return;
+      }
+
+      throw new Error(
+        `Already connected to: ${this._connection.identifier}`
+      );
     }
 
     this.removeConnection(this._connection, backpointer);

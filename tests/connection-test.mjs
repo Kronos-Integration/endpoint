@@ -224,8 +224,23 @@ test("connect several receive to one send but only feeding 1st.", async t => {
   t.is(await s1.send(2), 4);
 });
 
+test("connect several receive to one send -> failure", t => {
+  const o = nameIt("o");
+  const s1 = new SendEndpoint("s1", o);
+  const r1 = new ReceiveEndpoint("r1", o);
+  const r2 = new ReceiveEndpoint("r2", o);
 
-test("connect multi send to severl receive", async t => {
+  s1.addConnection(r1);
+
+  t.true(s1.isConnected(r1));
+  t.true(r1.isConnected(s1));
+  
+  t.throws(
+    () => s1.addConnection(r2)
+  );
+});
+
+test("connect multi send to several receive", async t => {
   const s1 = new MultiSendEndpoint("s1", nameIt("o"));
 
   const r1 = new ReceiveEndpoint("r1", nameIt("o"), {
