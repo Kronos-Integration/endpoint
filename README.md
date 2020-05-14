@@ -35,31 +35,35 @@ Named communication (end)-points inside of kronos
     -   [direction](#direction)
     -   [jsonAttributes](#jsonattributes)
     -   [hasInterceptors](#hasinterceptors)
-    -   [receive](#receive)
-    -   [receive](#receive-1)
-        -   [Parameters](#parameters-2)
     -   [connectable](#connectable)
-        -   [Parameters](#parameters-3)
+        -   [Parameters](#parameters-2)
     -   [hasConnections](#hasconnections)
     -   [isConnected](#isconnected)
-        -   [Parameters](#parameters-4)
+        -   [Parameters](#parameters-3)
+-   [ReceivableEndpoint](#receivableendpoint)
+    -   [Parameters](#parameters-4)
+    -   [isIn](#isin-1)
+    -   [receive](#receive)
+    -   [receive](#receive-1)
+        -   [Parameters](#parameters-5)
 -   [MultiConnectionEndpoint](#multiconnectionendpoint)
-    -   [Parameters](#parameters-5)
+    -   [Parameters](#parameters-6)
     -   [getConnectionState](#getconnectionstate)
-        -   [Parameters](#parameters-6)
-    -   [setConnectionState](#setconnectionstate)
         -   [Parameters](#parameters-7)
-    -   [isConnected](#isconnected-1)
+    -   [setConnectionState](#setconnectionstate)
         -   [Parameters](#parameters-8)
+    -   [isConnected](#isconnected-1)
+        -   [Parameters](#parameters-9)
     -   [connections](#connections)
 -   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-9)
+    -   [Parameters](#parameters-10)
     -   [isOut](#isout-1)
 -   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-10)
-    -   [isIn](#isin-1)
--   [DummyReceiveEndpoint](#dummyreceiveendpoint)
     -   [Parameters](#parameters-11)
+    -   [isIn](#isin-2)
+-   [DummyReceiveEndpoint](#dummyreceiveendpoint)
+    -   [receive](#receive-2)
+    -   [isIn](#isin-3)
     -   [isDummy](#isdummy-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
@@ -88,7 +92,6 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
-    -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
     -   `options.interceptors` **(Interceptor | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>)?** interceptors
 
 ### isDefault
@@ -133,20 +136,6 @@ additional attributes to present in json output
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is at least one interceptor assigned
 
-### receive
-
-get the receive function
-
-Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-
-### receive
-
-Set the receive function
-
-#### Parameters
-
--   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-
 ### connectable
 
 in to out and out to in
@@ -171,9 +160,38 @@ Are we connected to a endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is a connection to the other endpoint
 
-## MultiConnectionEndpoint
+## ReceivableEndpoint
 
 **Extends Endpoint**
+
+### Parameters
+
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
+
+### isIn
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
+
+### receive
+
+get the receive function
+
+Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+
+### receive
+
+Set the receive function
+
+#### Parameters
+
+-   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+
+## MultiConnectionEndpoint
+
+**Extends ReceivableEndpoint**
 
 Multiple connection endpoint.
 Can hold several connections.
@@ -219,7 +237,7 @@ All connections
 
 ## SendEndpoint
 
-**Extends Endpoint**
+**Extends ReceivableEndpoint**
 
 Sending Endpoint.
 Can only hold one connection.
@@ -263,15 +281,17 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ## DummyReceiveEndpoint
 
-**Extends ReceiveEndpoint**
+**Extends Endpoint**
 
 Dummy endpoints are used duiring construction of the endpoint mesh.
 
-### Parameters
+### receive
 
--   `name`  
--   `owner`  
--   `options`  
+dummy does nothing by intention
+
+### isIn
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
 
 ### isDummy
 
