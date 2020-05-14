@@ -95,6 +95,10 @@ export class Endpoint {
       entries.push("open");
     }
 
+    if (this.isDummy) {
+      entries.push("dummy");
+    }
+
     return entries.length
       ? `${this.identifier}(${entries.join(",")})`
       : this.identifier;

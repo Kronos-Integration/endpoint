@@ -105,7 +105,7 @@ test(ept, ReceiveEndpoint, {}, ReceiveEndpointExpectations);
 
 test(ept, DummyReceiveEndpoint, {}, {...ReceiveEndpointExpectations,
   toJSON: { in: true, open: true },
-  toString: "service(o).e(in,open)"});
+  toString: "service(o).e(in,open,dummy)"});
 
 test(
   ept,
