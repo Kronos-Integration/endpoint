@@ -233,7 +233,7 @@ test("connect multi send to severl receive", async t => {
   });
 
   const r2 = new ReceiveEndpoint("r2", nameIt("o"), {
-    receive: async arg => arg * arg
+    receive: async arg => arg * arg * arg
   });
 
   s1.addConnection(r1);
@@ -244,7 +244,10 @@ test("connect multi send to severl receive", async t => {
   t.true(s1.isConnected(r2));
   t.true(r2.isConnected(s1));
 
-  const x = await s1.send(2);
+  const results = [];
+  for await( const x of s1.send(2)) {
+    results.push(x);
+  }
 
-  //t.is(await s1.send(2), 4);
+  t.deepEqual(results.sort(), [4,8]);
 });

@@ -24,8 +24,7 @@ export class MultiSendEndpoint extends MultiConnectionEndpoint {
     return true;
   }
 
-  // TODO what to return ?
-  async send(...args) {
+  async * send(...args) {
     const interceptors = this.interceptors;
 
     for (const connection of this.connections()) {
@@ -37,7 +36,7 @@ export class MultiSendEndpoint extends MultiConnectionEndpoint {
             ? connection.receive(...args)
             : interceptors[c++].receive(this, next, ...args);
 
-        next(...args);
+        yield next(...args);
       }
     }
   }
