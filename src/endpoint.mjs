@@ -1,13 +1,10 @@
 import { Interceptor } from "@kronos-integration/interceptor";
 
-const RECEIVE = Symbol("receive");
-
 /**
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service)
  * @param {Object} options
  * @param {Function} [options.didConnect] called after receiver is present
- * @param {Function} [options.receive] reciever function
  * @param {Interceptor|Object[]} [options.interceptors] interceptors
  */
 export class Endpoint {
@@ -28,10 +25,6 @@ export class Endpoint {
     Object.defineProperties(this, properties);
 
     this.instanciateInterceptors(options.interceptors);
-
-    if (options.receive) {
-      this.receive = options.receive;
-    }
   }
 
   /**
@@ -112,7 +105,7 @@ export class Endpoint {
    * @return {boolean} false
    */
   get isIn() {
-    return this[RECEIVE] !== undefined;
+    return false;
   }
 
   /**
@@ -161,12 +154,17 @@ export class Endpoint {
     if (this.isIn) {
       json.in = true;
     }
+    
     if (this.isOut) {
       json.out = true;
     }
 
     if (this.isOpen) {
       json.open = true;
+    }
+
+    if (this.isDummy) {
+      json.dummy = true;
     }
 
     const cs = this.connectionNamesWithStates(options);
@@ -211,24 +209,8 @@ export class Endpoint {
     });
   }
 
-  /**
-   * get the receive function
-   * @return {Function}
-   */
-  get receive() {
-    return this[RECEIVE];
-  }
-
-  /**
-   * Set the receive function
-   * @param {Function} receive
-   */
-  set receive(receive) {
-    this[RECEIVE] = receive;
-  }
-
   get isOpen() {
-    return this[RECEIVE] !== undefined;
+    return false;
   }
 
   /**

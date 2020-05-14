@@ -1,4 +1,4 @@
-import { Endpoint } from "./endpoint.mjs";
+import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
 import { isEndpoint } from "./util.mjs";
 
 /**
@@ -11,7 +11,7 @@ import { isEndpoint } from "./util.mjs";
  * @param {Endpoint} [options.connected] where te requests are delivered to
  * @param {Function} [options.didConnect] called after receiver is present
  */
-export class SendEndpoint extends Endpoint {
+export class SendEndpoint extends ReceivableEndpoint {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
     if (isEndpoint(options.connected)) {

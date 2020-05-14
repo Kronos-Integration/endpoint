@@ -1,11 +1,11 @@
-import { Endpoint } from "./endpoint.mjs";
+import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
 import { isEndpoint } from "./util.mjs";
 
 /**
  * Multiple connection endpoint.
  * Can hold several connections.
  */
-export class MultiConnectionEndpoint extends Endpoint {
+export class MultiConnectionEndpoint extends ReceivableEndpoint {
  
   _connections = new Map();
  
