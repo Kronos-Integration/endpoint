@@ -142,6 +142,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### connectable
 
+Can we form a connection to the other side
 in to out and out to in
 
 #### Parameters

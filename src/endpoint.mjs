@@ -214,6 +214,7 @@ export class Endpoint {
   }
 
   /**
+   * Can we form a connection to the other side
    * in to out and out to in
    * @param {Endpoint} other
    * @return {boolean} true if we can be connected to the other endpoint
@@ -262,7 +263,7 @@ export class Endpoint {
           this.setConnectionState(other, this.didConnect(this, other));
         } else {
           if (this.owner) {
-            this.owner.warn(`Opening ${this} connected is not open`);
+            this.owner.warn(`Opening ${this}: ${other} is not open`);
           }
         }
       }
