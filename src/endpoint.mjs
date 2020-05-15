@@ -154,7 +154,7 @@ export class Endpoint {
     if (this.isIn) {
       json.in = true;
     }
-    
+
     if (this.isOut) {
       json.out = true;
     }
@@ -251,7 +251,7 @@ export class Endpoint {
 
   /**
    * Actually start with the communication
-   * @param {Endpoint} other 
+   * @param {Endpoint} other
    * @param {boolean} backpointer true if this is the call form back call from the other side
    */
   openConnection(other, backpointer) {
@@ -276,7 +276,7 @@ export class Endpoint {
 
   /**
    * Actually stop the communication
-   * @param {Endpoint} other 
+   * @param {Endpoint} other
    * @param {boolean} backpointer true if this is the call form back call from the other side
    */
   closeConnection(other, backpointer) {
@@ -290,6 +290,24 @@ export class Endpoint {
       if (!backpointer) {
         other.closeConnection(this, true);
       }
+    }
+  }
+
+  /**
+   * opens all connections
+   */
+  openConnections() {
+    for (const c of this.connections()) {
+      this.openConnection(c);
+    }
+  }
+
+  /**
+   * closes all connections
+   */
+  closeConnections() {
+    for (const c of this.connections()) {
+      this.closeConnection(c);
     }
   }
 
