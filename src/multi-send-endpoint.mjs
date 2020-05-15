@@ -5,7 +5,7 @@ import { MultiConnectionEndpoint } from "./multi-connection-endpoint.mjs";
  * Can hold several connections.
  * Back connections to any further endpoints will not be established
  * @param {string} name endpoint name
- * @param {Object} owner of the endpoint (service or step)
+ * @param {Object} owner of the endpoint (service)
  * @param {Object} options
  * @param {Endpoint} [options.connected] where te requests are delivered to
  * @param {Function} [options.didConnect] called after receiver is present
@@ -20,7 +20,24 @@ export class MultiSendEndpoint extends MultiConnectionEndpoint {
     return true;
   }
 
-  async * send(...args) {
+  send(...args) {
+    const interceptors = this.interceptors;
+
+    for (const connection of this.connections()) {
+      if (connection.isOpen) {
+        let c = 0;
+
+        const next = async (...args) =>
+          c >= interceptors.length
+            ? connection.receive(...args)
+            : interceptors[c++].receive(this, next, ...args);
+
+        next(...args);
+      }
+    }
+  }
+
+  async * sendAndReceive(...args) {
     const interceptors = this.interceptors;
 
     for (const connection of this.connections()) {

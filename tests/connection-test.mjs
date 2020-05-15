@@ -260,7 +260,7 @@ test("connect multi send to several receive", async t => {
   t.true(r2.isConnected(s1));
 
   const results = [];
-  for await( const x of s1.send(2)) {
+  for await( const x of s1.sendAndReceive(2)) {
     results.push(x);
   }
 
