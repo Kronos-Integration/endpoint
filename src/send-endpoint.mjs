@@ -48,7 +48,6 @@ export class SendEndpoint extends ReceivableEndpoint {
     if (this._connection === other) {
       return;
     }
-    
 
     if (!this.connectable(other)) {
       throw new Error(
@@ -58,13 +57,11 @@ export class SendEndpoint extends ReceivableEndpoint {
 
     if (this._connection !== undefined) {
       // do not break standing connection if only setting backpinter
-      if(backpointer) {
+      if (backpointer) {
         return;
       }
 
-      throw new Error(
-        `Already connected to: ${this._connection.identifier}`
-      );
+      throw new Error(`Already connected to: ${this._connection.identifier}`);
     }
 
     this.removeConnection(this._connection, backpointer);
@@ -112,5 +109,5 @@ export class SendEndpoint extends ReceivableEndpoint {
         : interceptors[c++].receive(this, next, ...args);
 
     return next(...args);
-  } 
+  }
 }
