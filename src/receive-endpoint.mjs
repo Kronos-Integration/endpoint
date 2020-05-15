@@ -5,7 +5,7 @@ import { MultiConnectionEndpoint } from "./multi-connection-endpoint.mjs";
  * Can receive from several endpoints.
  * By default a dummy rejecting receiver is assigned
  * @param {string} name endpoint name
- * @param {Object} owner of the endpoint (service or step)
+ * @param {Object} owner of the endpoint (service)
  * @param {Object} options
  * @param {Function} [options.receive] reciever function
  * @param {Endpoint} [options.connected] sending side

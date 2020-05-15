@@ -6,7 +6,7 @@ import { isEndpoint } from "./util.mjs";
  * Can only hold one connection.
  * Back connections to any further endpoints will not be established
  * @param {string} name endpoint name
- * @param {Object} owner of the endpoint (service or step)
+ * @param {Object} owner of the endpoint (service)
  * @param {Object} options
  * @param {Endpoint} [options.connected] where te requests are delivered to
  * @param {Function} [options.didConnect] called after receiver is present
