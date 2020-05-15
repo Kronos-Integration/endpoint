@@ -44,6 +44,8 @@ Named communication (end)-points inside of kronos
         -   [Parameters](#parameters-4)
     -   [closeConnection](#closeconnection)
         -   [Parameters](#parameters-5)
+    -   [openConnections](#openconnections)
+    -   [closeConnections](#closeconnections)
 -   [ReceivableEndpoint](#receivableendpoint)
     -   [Parameters](#parameters-6)
     -   [isIn](#isin-1)
@@ -182,6 +184,14 @@ Actually stop the communication
 
 -   `other` **[Endpoint](#endpoint)** 
 -   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if this is the call form back call from the other side
+
+### openConnections
+
+opens all connections
+
+### closeConnections
+
+closes all connections
 
 ## ReceivableEndpoint
 

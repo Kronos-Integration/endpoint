@@ -1,5 +1,5 @@
 import test from "ava";
-import { nameIt, wait } from "./helpers/util.mjs";
+import { nameIt } from "./helpers/util.mjs";
 import { Interceptor } from "@kronos-integration/interceptor";
 import {
   MultiSendEndpoint,
@@ -47,7 +47,7 @@ test("connecting with interceptor", async t => {
     connected: re
   });
 
-  await wait(1);
+  se.openConnections();
 
   t.is(sendOpenedCalled, 1);
   t.is(receiveOpenedCalled, 1);
@@ -77,15 +77,12 @@ test("connecting with interceptor", async t => {
 
   se.removeConnection(re);
 
-  await wait(1);
-
   t.is(receiveOpenedCalled, 1);
   t.is(sendClosedCalled, 1);
   t.is(receiveClosedCalled, 1);
 
   se.addConnection(re);
-
-  await wait(1);
+  se.openConnections();
 
   t.is(sendOpenedCalled, 2);
   t.is(receiveOpenedCalled, 2);

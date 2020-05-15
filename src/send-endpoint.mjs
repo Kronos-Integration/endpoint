@@ -71,8 +71,6 @@ export class SendEndpoint extends ReceivableEndpoint {
     if (!backpointer) {
       other.addConnection(this, true);
     }
-
-    process.nextTick(() => this.openConnection(other));
   }
 
   removeConnection(other, backpointer) {

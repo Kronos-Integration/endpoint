@@ -47,10 +47,6 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
       }
 
       this._connections.set(other, undefined); // dummy
-
-      if (this.isOpen) {
-        process.nextTick(() => this.openConnection(other));
-      }
     }
   }
 
