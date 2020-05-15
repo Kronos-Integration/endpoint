@@ -16,12 +16,6 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
     }
   }
 
-/*
-  get isOpen() {
-    return this._connections.length > 0;
-  }
-*/
- 
   /**
    * Deliver connection state
    * @param {Entpoint} other
