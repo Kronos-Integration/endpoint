@@ -40,26 +40,30 @@ Named communication (end)-points inside of kronos
     -   [hasConnections](#hasconnections)
     -   [isConnected](#isconnected)
         -   [Parameters](#parameters-3)
+    -   [openConnection](#openconnection)
+        -   [Parameters](#parameters-4)
+    -   [closeConnection](#closeconnection)
+        -   [Parameters](#parameters-5)
 -   [ReceivableEndpoint](#receivableendpoint)
-    -   [Parameters](#parameters-4)
+    -   [Parameters](#parameters-6)
     -   [isIn](#isin-1)
     -   [receive](#receive)
     -   [receive](#receive-1)
-        -   [Parameters](#parameters-5)
--   [MultiConnectionEndpoint](#multiconnectionendpoint)
-    -   [Parameters](#parameters-6)
-    -   [getConnectionState](#getconnectionstate)
         -   [Parameters](#parameters-7)
-    -   [setConnectionState](#setconnectionstate)
-        -   [Parameters](#parameters-8)
-    -   [isConnected](#isconnected-1)
+-   [MultiConnectionEndpoint](#multiconnectionendpoint)
+    -   [Parameters](#parameters-8)
+    -   [getConnectionState](#getconnectionstate)
         -   [Parameters](#parameters-9)
+    -   [setConnectionState](#setconnectionstate)
+        -   [Parameters](#parameters-10)
+    -   [isConnected](#isconnected-1)
+        -   [Parameters](#parameters-11)
     -   [connections](#connections)
 -   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-10)
+    -   [Parameters](#parameters-12)
     -   [isOut](#isout-1)
 -   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-11)
+    -   [Parameters](#parameters-13)
     -   [isIn](#isin-2)
 -   [DummyReceiveEndpoint](#dummyreceiveendpoint)
     -   [receive](#receive-2)
@@ -68,7 +72,7 @@ Named communication (end)-points inside of kronos
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [MultiSendEndpoint](#multisendendpoint)
-    -   [Parameters](#parameters-12)
+    -   [Parameters](#parameters-14)
     -   [isOut](#isout-2)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-2)
@@ -159,6 +163,24 @@ Are we connected to a endpoint
 -   `other` **[Endpoint](#endpoint)** 
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is a connection to the other endpoint
+
+### openConnection
+
+Actually start with the communication
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+-   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if this is the call form back call from the other side
+
+### closeConnection
+
+Actually stop the communication
+
+#### Parameters
+
+-   `other` **[Endpoint](#endpoint)** 
+-   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if this is the call form back call from the other side
 
 ## ReceivableEndpoint
 

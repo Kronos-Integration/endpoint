@@ -248,6 +248,11 @@ export class Endpoint {
     return false;
   }
 
+  /**
+   * Actually start with the communication
+   * @param {Endpoint} other 
+   * @param {boolean} backpointer true if this is the call form back call from the other side
+   */
   openConnection(other, backpointer) {
     if (other !== undefined) {
       const state = this.getConnectionState(other);
@@ -268,6 +273,11 @@ export class Endpoint {
     }
   }
 
+  /**
+   * Actually stop the communication
+   * @param {Endpoint} other 
+   * @param {boolean} backpointer true if this is the call form back call from the other side
+   */
   closeConnection(other, backpointer) {
     if (other !== undefined) {
       const state = this.getConnectionState(other);
