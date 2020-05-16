@@ -17,7 +17,7 @@ export class ReceivableEndpoint extends Endpoint {
   }
 
   /**
-   * @return {boolean} false
+   * @return {boolean} true is receive function is present
    */
   get isIn() {
     return this[RECEIVE] !== undefined;
