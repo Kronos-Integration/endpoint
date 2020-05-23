@@ -33,7 +33,7 @@
     "lint": "documentation lint ./src/module.mjs"
   },
   "dependencies": {
-    "@kronos-integration/interceptor": "^9.2.0"
+    "@kronos-integration/interceptor": "^9.2.1"
   },
   "devDependencies": {
     "ava": "^3.8.2",
@@ -42,7 +42,7 @@
     "semantic-release": "^17.0.7"
   },
   "engines": {
-    "node": ">=14.2.0"
+    "node": ">=14.3.0"
   },
   "repository": {
     "type": "git",
