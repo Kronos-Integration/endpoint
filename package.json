@@ -53,7 +53,7 @@
   "homepage": "https://github.com/Kronos-Integration/endpoint#readme",
   "template": {
     "inheritFrom": [
-      "arlac77/template-kronos-module",
+      "arlac77/template-kronos-component",
       "arlac77/template-github"
     ]
   }
