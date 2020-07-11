@@ -8,8 +8,6 @@ import { Interceptor } from "@kronos-integration/interceptor";
  * @param {Interceptor|Object[]} [options.interceptors] interceptors
  */
 export class Endpoint {
-  interceptors = [];
-
   constructor(name, owner, options = {}) {
     const properties = {
       name: { value: name },
@@ -23,6 +21,8 @@ export class Endpoint {
     }
 
     Object.defineProperties(this, properties);
+
+    this.interceptors = [];
 
     this.instanciateInterceptors(options.interceptors);
   }
@@ -294,7 +294,7 @@ export class Endpoint {
   }
 
   /**
-   * opens all connections
+   * Opens all connections
    */
   openConnections() {
     for (const c of this.connections()) {
@@ -303,7 +303,7 @@ export class Endpoint {
   }
 
   /**
-   * closes all connections
+   * Closes all connections
    */
   closeConnections() {
     for (const c of this.connections()) {
