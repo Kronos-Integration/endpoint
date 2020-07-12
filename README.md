@@ -187,11 +187,11 @@ Actually stop the communication
 
 ### openConnections
 
-opens all connections
+Opens all connections
 
 ### closeConnections
 
-closes all connections
+Closes all connections
 
 ## ReceivableEndpoint
 
