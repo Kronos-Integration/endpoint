@@ -205,8 +205,12 @@ export class Endpoint {
       if (typeof interceptor === "function") {
         return new interceptor();
       }
-      return new interceptor.type(interceptor);
-    });
+      if (typeof interceptor.type === "function") {
+        return new interceptor.type(interceptor);
+      }
+
+      console.log("Unknwon interceptor", interceptor);
+    }).filter(i => i);
   }
 
   get isOpen() {
