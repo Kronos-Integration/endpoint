@@ -206,7 +206,7 @@ Closes all connections
 
 ### isIn
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true is receive function is present
 
 ### receive
 
