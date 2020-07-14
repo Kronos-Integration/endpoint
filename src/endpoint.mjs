@@ -195,6 +195,9 @@ export class Endpoint {
     return this.interceptors.length > 0;
   }
 
+  /**
+   * 
+   */
   instanciateInterceptors(interceptors) {
     if (interceptors === undefined) return;
 
@@ -205,8 +208,12 @@ export class Endpoint {
       if (typeof interceptor === "function") {
         return new interceptor();
       }
-      if (typeof interceptor.type === "function") {
-        return new interceptor.type(interceptor);
+      
+      switch (typeof interceptor.type) {
+       case "function":
+         return new interceptor.type(interceptor);
+       case "string":
+         return this.owner.instantiateInterceptor(interceptor);   
       }
 
       console.log("Unknwon interceptor", interceptor);
