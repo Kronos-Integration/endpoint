@@ -1,3 +1,5 @@
+import { LimitingInterceptor } from "@kronos-integration/interceptor";
+
 export function nameIt(name) {
   return {
     warn(...args) { console.log(...args);},
@@ -10,7 +12,11 @@ export function nameIt(name) {
     endpointIdentifier(e) {
       if (name === undefined) return undefined;
       return `${this.name}.${e.name}`;
-    }
+    },
+    instantiateInterceptor(interceptorDef)
+    {
+      return new LimitingInterceptor(interceptorDef); 
+    } 
   };
 }
 

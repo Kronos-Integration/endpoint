@@ -35,7 +35,8 @@ test(
   {
     interceptors: [
       LimitingInterceptor,
-      { type: LimitingInterceptor, limits: [{ count: 5 }] }
+      { type: LimitingInterceptor, limits: [{ count: 5 }] },
+      { type: "request-limit", limits: [{ count: 3 }] }
     ]
   },
   {
@@ -56,6 +57,14 @@ test(
           limits: [
             {
               count: 5
+            }
+          ]
+        },
+        {
+          type: "request-limit",
+          limits: [
+            {
+              count: 3
             }
           ]
         }
