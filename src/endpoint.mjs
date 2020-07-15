@@ -205,18 +205,21 @@ export class Endpoint {
       if (interceptor instanceof Interceptor) {
         return interceptor;
       }
-      if (typeof interceptor === "function") {
-        return new interceptor();
+      switch(typeof interceptor) {
+        case "function":
+          return new interceptor();
+        case "string":
+          return this.owner.instantiateInterceptor(interceptor);   
       }
       
       switch (typeof interceptor.type) {
-       case "function":
-         return new interceptor.type(interceptor);
-       case "string":
-         return this.owner.instantiateInterceptor(interceptor);   
+        case "function":
+          return new interceptor.type(interceptor);
+        case "string":
+          return this.owner.instantiateInterceptor(interceptor);   
       }
 
-      console.log("Unknwon interceptor", interceptor);
+      console.log("Unknown interceptor", interceptor);
     }).filter(i => i);
   }
 
