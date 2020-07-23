@@ -25,6 +25,11 @@ export class MultiSendEndpoint extends MultiConnectionEndpoint {
 
     for (const connection of this.connections()) {
       if (connection.isOpen) {
+      
+        if(typeof connection.receive != 'function') {
+          console.log("NO RECEIVE",connection);
+        }
+ 
         let c = 0;
 
         const next = async (...args) =>
