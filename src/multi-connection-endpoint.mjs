@@ -7,10 +7,11 @@ import { isEndpoint } from "./util.mjs";
  */
 export class MultiConnectionEndpoint extends ReceivableEndpoint {
  
-  _connections = new Map();
- 
   constructor(name, owner, options = {}) {
     super(name, owner, options);
+
+    this._connections = new Map();
+
     if (isEndpoint(options.connected)) {
       this.addConnection(options.connected);
     }

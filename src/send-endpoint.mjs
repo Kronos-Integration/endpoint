@@ -17,6 +17,11 @@ export class SendEndpoint extends ReceivableEndpoint {
     if (isEndpoint(options.connected)) {
       this.addConnection(options.connected);
     }
+
+/*    
+  _connection;
+  _state;
+*/
   }
 
   /**
@@ -30,9 +35,6 @@ export class SendEndpoint extends ReceivableEndpoint {
   get isOpen() {
     return this._connection !== undefined;
   }
-
-  _connection;
-  _state;
 
   getConnectionState(other) {
     return other === this._connection ? this._state : undefined;
