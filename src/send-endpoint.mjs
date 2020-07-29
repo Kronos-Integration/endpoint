@@ -17,11 +17,6 @@ export class SendEndpoint extends ReceivableEndpoint {
     if (isEndpoint(options.connected)) {
       this.addConnection(options.connected);
     }
-
-/*    
-  _connection;
-  _state;
-*/
   }
 
   /**
