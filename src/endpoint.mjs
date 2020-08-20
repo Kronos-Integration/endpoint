@@ -46,7 +46,7 @@ export class Endpoint {
   }
 
   /**
-   * mapping of properties used in toString
+   * Mapping of properties used in toString
    * @return {Object}
    */
   get toStringAttributes() {
