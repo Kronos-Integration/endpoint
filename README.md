@@ -118,7 +118,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### toStringAttributes
 
-mapping of properties used in toString
+Mapping of properties used in toString
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
