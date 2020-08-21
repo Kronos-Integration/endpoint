@@ -17,12 +17,15 @@ export class ReceivableEndpoint extends Endpoint {
     }
 
     if (options.receivingInterceptors) {
-      this.receivingInterceptors = instanciateInterceptors(
-        options.receivingInterceptors,
-        this.owner
-      );
+      Object.defineProperties(this, {
+        receivingInterceptors: {
+          value: instanciateInterceptors(
+            options.receivingInterceptors,
+            this.owner
+          )
+        }
+      });
     }
-
   }
 
   /**
