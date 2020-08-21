@@ -35,39 +35,37 @@ Named communication (end)-points inside of kronos
     -   [direction](#direction)
     -   [jsonAttributes](#jsonattributes)
     -   [hasInterceptors](#hasinterceptors)
-    -   [instanciateInterceptors](#instanciateinterceptors)
-        -   [Parameters](#parameters-2)
     -   [connectable](#connectable)
-        -   [Parameters](#parameters-3)
+        -   [Parameters](#parameters-2)
     -   [hasConnections](#hasconnections)
     -   [isConnected](#isconnected)
-        -   [Parameters](#parameters-4)
+        -   [Parameters](#parameters-3)
     -   [openConnection](#openconnection)
-        -   [Parameters](#parameters-5)
+        -   [Parameters](#parameters-4)
     -   [closeConnection](#closeconnection)
-        -   [Parameters](#parameters-6)
+        -   [Parameters](#parameters-5)
     -   [openConnections](#openconnections)
     -   [closeConnections](#closeconnections)
 -   [ReceivableEndpoint](#receivableendpoint)
-    -   [Parameters](#parameters-7)
+    -   [Parameters](#parameters-6)
     -   [isIn](#isin-1)
     -   [receive](#receive)
     -   [receive](#receive-1)
-        -   [Parameters](#parameters-8)
+        -   [Parameters](#parameters-7)
 -   [MultiConnectionEndpoint](#multiconnectionendpoint)
-    -   [Parameters](#parameters-9)
+    -   [Parameters](#parameters-8)
     -   [getConnectionState](#getconnectionstate)
-        -   [Parameters](#parameters-10)
+        -   [Parameters](#parameters-9)
     -   [setConnectionState](#setconnectionstate)
-        -   [Parameters](#parameters-11)
+        -   [Parameters](#parameters-10)
     -   [isConnected](#isconnected-1)
-        -   [Parameters](#parameters-12)
+        -   [Parameters](#parameters-11)
     -   [connections](#connections)
 -   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-13)
+    -   [Parameters](#parameters-12)
     -   [isOut](#isout-1)
 -   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-14)
+    -   [Parameters](#parameters-13)
     -   [isIn](#isin-2)
 -   [DummyReceiveEndpoint](#dummyreceiveendpoint)
     -   [receive](#receive-2)
@@ -76,7 +74,7 @@ Named communication (end)-points inside of kronos
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [MultiSendEndpoint](#multisendendpoint)
-    -   [Parameters](#parameters-15)
+    -   [Parameters](#parameters-14)
     -   [isOut](#isout-2)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-2)
@@ -143,12 +141,6 @@ additional attributes to present in json output
 ### hasInterceptors
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is at least one interceptor assigned
-
-### instanciateInterceptors
-
-#### Parameters
-
--   `interceptors`  
 
 ### connectable
 
