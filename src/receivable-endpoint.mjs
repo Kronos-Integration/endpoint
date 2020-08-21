@@ -1,4 +1,5 @@
 import { Endpoint } from "./endpoint.mjs";
+import { instanciateInterceptors } from "./util.mjs";
 
 const RECEIVE = Symbol("receive");
 
@@ -14,6 +15,14 @@ export class ReceivableEndpoint extends Endpoint {
     if (options.receive) {
       this.receive = options.receive;
     }
+
+    if (options.receivingInterceptors) {
+      this.receivingInterceptors = instanciateInterceptors(
+        options.receivingInterceptors,
+        this.owner
+      );
+    }
+
   }
 
   /**

@@ -1,4 +1,5 @@
 import { Interceptor } from "@kronos-integration/interceptor";
+import { instanciateInterceptors } from "./util.mjs";
 
 /**
  * @param {string} name endpoint name
@@ -22,9 +23,9 @@ export class Endpoint {
 
     Object.defineProperties(this, properties);
 
-    this.interceptors = [];
-
-    this.instanciateInterceptors(options.interceptors);
+    this.interceptors = options.interceptors
+      ? instanciateInterceptors(options.interceptors, this.owner)
+      : [];
   }
 
   /**
@@ -195,34 +196,6 @@ export class Endpoint {
     return this.interceptors.length > 0;
   }
 
-  /**
-   * 
-   */
-  instanciateInterceptors(interceptors) {
-    if (interceptors === undefined) return;
-
-    this.interceptors = interceptors.map(interceptor => {
-      if (interceptor instanceof Interceptor) {
-        return interceptor;
-      }
-      switch(typeof interceptor) {
-        case "function":
-          return new interceptor();
-        case "string":
-          return this.owner.instantiateInterceptor(interceptor);   
-      }
-      
-      switch (typeof interceptor.type) {
-        case "function":
-          return new interceptor.type(interceptor);
-        case "string":
-          return this.owner.instantiateInterceptor(interceptor);   
-      }
-
-      console.log("Unknown interceptor", interceptor);
-    }).filter(i => i);
-  }
-
   get isOpen() {
     return false;
   }
@@ -336,4 +309,8 @@ export class Endpoint {
   setConnectionState() {}
 
   didConnect() {}
+
+  get receivingInterceptors() {
+    return [];
+  }
 }
