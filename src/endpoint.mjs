@@ -223,7 +223,7 @@ export class Endpoint {
 
   /**
    * Are we connected to a endpoint
-   * @param {Endpoint} other
+   * @param {Endpoint} other to check for the connection
    * @return {boolean} true if there is a connection to the other endpoint
    */
   isConnected(other) {
