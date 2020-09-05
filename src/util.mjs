@@ -2,8 +2,8 @@ import { Interceptor } from "@kronos-integration/interceptor";
 import { Endpoint } from "./endpoint.mjs";
 
 /**
- * check for Endpoint
- * @param {any} object
+ * Check for Endpoint
+ * @param {any} object to be cheked
  * @return {boolean} true if object is an Endpoint
  */
 export function isEndpoint(object) {
