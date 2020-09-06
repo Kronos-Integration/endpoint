@@ -81,11 +81,11 @@ Named communication (end)-points inside of kronos
 
 ## isEndpoint
 
-check for Endpoint
+Check for Endpoint
 
 ### Parameters
 
--   `object` **any** 
+-   `object` **any** to be cheked
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if object is an Endpoint
 
@@ -162,7 +162,7 @@ Are we connected to a endpoint
 
 #### Parameters
 
--   `other` **[Endpoint](#endpoint)** 
+-   `other` **[Endpoint](#endpoint)** to check for the connection
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if there is a connection to the other endpoint
 
