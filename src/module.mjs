@@ -1,4 +1,3 @@
-export * from "./util.mjs";
 export * from "./endpoint.mjs";
 export * from "./receivable-endpoint.mjs";
 export * from "./multi-connection-endpoint.mjs";

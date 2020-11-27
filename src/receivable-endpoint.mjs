@@ -1,5 +1,4 @@
-import { Endpoint } from "./endpoint.mjs";
-import { instanciateInterceptors } from "./util.mjs";
+import { Endpoint, instanciateInterceptors } from "./endpoint.mjs";
 
 const RECEIVE = Symbol("receive");
 

@@ -1,5 +1,5 @@
+import { isEndpoint } from "./endpoint.mjs";
 import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
-import { isEndpoint } from "./util.mjs";
 
 /**
  * Multiple connection endpoint.
