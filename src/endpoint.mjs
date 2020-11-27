@@ -47,7 +47,7 @@ export class Endpoint {
   }
 
   /**
-   * Mapping of properties used in toString
+   * Mapping of properties used in toString.
    * @return {Object}
    */
   get toStringAttributes() {
@@ -117,7 +117,7 @@ export class Endpoint {
   }
 
   /**
-   * Deliver data flow direction
+   * Deliver data flow direction.
    * @return {string} delivers data flow direction 'in', 'out', 'inout' or undefined
    */
   get direction() {
@@ -137,7 +137,7 @@ export class Endpoint {
   }
 
   /**
-   * additional attributes to present in json output
+   * Additional attributes to present in json output.
    */
   get jsonAttributes() {
     return [];
@@ -201,8 +201,8 @@ export class Endpoint {
   }
 
   /**
-   * Can we form a connection to the other side
-   * in to out and out to in
+   * Can we form a connection to the other side.
+   * in to out and out to in.
    * @param {Endpoint} other
    * @return {boolean} true if we can be connected to the other endpoint
    */
@@ -222,7 +222,7 @@ export class Endpoint {
   }
 
   /**
-   * Are we connected to a endpoint
+   * Are we connected to a endpoint.
    * @param {Endpoint} other to check for the connection
    * @return {boolean} true if there is a connection to the other endpoint
    */
@@ -237,7 +237,7 @@ export class Endpoint {
   }
 
   /**
-   * Actually start with the communication
+   * Actually start with the communication.
    * @param {Endpoint} other
    * @param {boolean} backpointer true if this is the call form back call from the other side
    */
@@ -262,7 +262,7 @@ export class Endpoint {
   }
 
   /**
-   * Actually stop the communication
+   * Actually stop the communication.
    * @param {Endpoint} other
    * @param {boolean} backpointer true if this is the call form back call from the other side
    */
@@ -281,7 +281,7 @@ export class Endpoint {
   }
 
   /**
-   * Opens all connections
+   * Opens all connections.
    */
   openConnections() {
     for (const c of this.connections()) {
@@ -290,7 +290,7 @@ export class Endpoint {
   }
 
   /**
-   * Closes all connections
+   * Closes all connections.
    */
   closeConnections() {
     for (const c of this.connections()) {
