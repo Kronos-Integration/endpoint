@@ -17,10 +17,8 @@ Named communication (end)-points inside of kronos
 
 ### Table of Contents
 
--   [isEndpoint](#isendpoint)
-    -   [Parameters](#parameters)
 -   [Endpoint](#endpoint)
-    -   [Parameters](#parameters-1)
+    -   [Parameters](#parameters)
     -   [isDefault](#isdefault)
     -   [isDummy](#isdummy)
     -   [toStringAttributes](#tostringattributes)
@@ -30,16 +28,18 @@ Named communication (end)-points inside of kronos
     -   [jsonAttributes](#jsonattributes)
     -   [hasInterceptors](#hasinterceptors)
     -   [connectable](#connectable)
-        -   [Parameters](#parameters-2)
+        -   [Parameters](#parameters-1)
     -   [hasConnections](#hasconnections)
     -   [isConnected](#isconnected)
-        -   [Parameters](#parameters-3)
+        -   [Parameters](#parameters-2)
     -   [openConnection](#openconnection)
-        -   [Parameters](#parameters-4)
+        -   [Parameters](#parameters-3)
     -   [closeConnection](#closeconnection)
-        -   [Parameters](#parameters-5)
+        -   [Parameters](#parameters-4)
     -   [openConnections](#openconnections)
     -   [closeConnections](#closeconnections)
+-   [isEndpoint](#isendpoint)
+    -   [Parameters](#parameters-5)
 -   [ReceivableEndpoint](#receivableendpoint)
     -   [Parameters](#parameters-6)
     -   [isIn](#isin-1)
@@ -74,16 +74,6 @@ Named communication (end)-points inside of kronos
     -   [isDefault](#isdefault-2)
 -   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
 
-## isEndpoint
-
-Check for Endpoint
-
-### Parameters
-
--   `object` **any** to be cheked
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if object is an Endpoint
-
 ## Endpoint
 
 ### Parameters
@@ -110,7 +100,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### toStringAttributes
 
-Mapping of properties used in toString
+Mapping of properties used in toString.
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
@@ -124,13 +114,13 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### direction
 
-Deliver data flow direction
+Deliver data flow direction.
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** delivers data flow direction 'in', 'out', 'inout' or undefined
 
 ### jsonAttributes
 
-additional attributes to present in json output
+Additional attributes to present in json output.
 
 ### hasInterceptors
 
@@ -138,8 +128,8 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### connectable
 
-Can we form a connection to the other side
-in to out and out to in
+Can we form a connection to the other side.
+in to out and out to in.
 
 #### Parameters
 
@@ -153,7 +143,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### isConnected
 
-Are we connected to a endpoint
+Are we connected to a endpoint.
 
 #### Parameters
 
@@ -163,7 +153,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### openConnection
 
-Actually start with the communication
+Actually start with the communication.
 
 #### Parameters
 
@@ -172,7 +162,7 @@ Actually start with the communication
 
 ### closeConnection
 
-Actually stop the communication
+Actually stop the communication.
 
 #### Parameters
 
@@ -181,11 +171,21 @@ Actually stop the communication
 
 ### openConnections
 
-Opens all connections
+Opens all connections.
 
 ### closeConnections
 
-Closes all connections
+Closes all connections.
+
+## isEndpoint
+
+Check for Endpoint
+
+### Parameters
+
+-   `object` **any** to be cheked
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if object is an Endpoint
 
 ## ReceivableEndpoint
 
