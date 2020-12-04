@@ -349,8 +349,6 @@ export function instanciateInterceptors(interceptors, owner) {
         case "string":
           return owner.instantiateInterceptor(interceptor);
       }
-
-      console.log("Unknown interceptor", interceptor);
     })
     .filter(i => i);
 }
