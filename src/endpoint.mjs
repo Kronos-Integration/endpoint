@@ -316,7 +316,7 @@ export class Endpoint {
 }
 
 /**
- * Check for Endpoint
+ * Check for Endpoint.
  * @param {any} object to be cheked
  * @return {boolean} true if object is an Endpoint
  */
@@ -324,6 +324,12 @@ export function isEndpoint(object) {
   return object instanceof Endpoint;
 }
 
+/**
+ * Instanciate interceptors from its definitions.
+ * @param {Interceptor[]|Class[]|String[]} interceptors 
+ * @param {Object} owner
+ * @return {Interceptor[]}
+ */
 export function instanciateInterceptors(interceptors, owner) {
   return interceptors
     .map(interceptor => {

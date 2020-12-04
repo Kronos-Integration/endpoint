@@ -7,6 +7,7 @@ const RECEIVE = Symbol("receive");
  * @param {Object} owner of the endpoint (service)
  * @param {Object} options
  * @param {Function} [options.receive] reciever function
+ * @param {Function} [options.receivingInterceptors]
  */
 export class ReceivableEndpoint extends Endpoint {
   constructor(name, owner, options) {
@@ -35,7 +36,7 @@ export class ReceivableEndpoint extends Endpoint {
   }
 
   /**
-   * get the receive function
+   * Get the receive function.
    * @return {Function}
    */
   get receive() {
@@ -43,7 +44,7 @@ export class ReceivableEndpoint extends Endpoint {
   }
 
   /**
-   * Set the receive function
+   * Set the receive function.
    * @param {Function} receive
    */
   set receive(receive) {
