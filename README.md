@@ -40,26 +40,28 @@ Named communication (end)-points inside of kronos
     -   [closeConnections](#closeconnections)
 -   [isEndpoint](#isendpoint)
     -   [Parameters](#parameters-5)
--   [ReceivableEndpoint](#receivableendpoint)
+-   [instanciateInterceptors](#instanciateinterceptors)
     -   [Parameters](#parameters-6)
+-   [ReceivableEndpoint](#receivableendpoint)
+    -   [Parameters](#parameters-7)
     -   [isIn](#isin-1)
     -   [receive](#receive)
     -   [receive](#receive-1)
-        -   [Parameters](#parameters-7)
+        -   [Parameters](#parameters-8)
 -   [MultiConnectionEndpoint](#multiconnectionendpoint)
-    -   [Parameters](#parameters-8)
+    -   [Parameters](#parameters-9)
     -   [getConnectionState](#getconnectionstate)
-        -   [Parameters](#parameters-9)
-    -   [setConnectionState](#setconnectionstate)
         -   [Parameters](#parameters-10)
-    -   [isConnected](#isconnected-1)
+    -   [setConnectionState](#setconnectionstate)
         -   [Parameters](#parameters-11)
+    -   [isConnected](#isconnected-1)
+        -   [Parameters](#parameters-12)
     -   [connections](#connections)
 -   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-12)
+    -   [Parameters](#parameters-13)
     -   [isOut](#isout-1)
 -   [ReceiveEndpoint](#receiveendpoint)
-    -   [Parameters](#parameters-13)
+    -   [Parameters](#parameters-14)
     -   [isIn](#isin-2)
 -   [DummyReceiveEndpoint](#dummyreceiveendpoint)
     -   [receive](#receive-2)
@@ -68,7 +70,7 @@ Named communication (end)-points inside of kronos
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
 -   [MultiSendEndpoint](#multisendendpoint)
-    -   [Parameters](#parameters-14)
+    -   [Parameters](#parameters-15)
     -   [isOut](#isout-2)
 -   [ReceiveEndpointDefault](#receiveendpointdefault)
     -   [isDefault](#isdefault-2)
@@ -179,13 +181,24 @@ Closes all connections.
 
 ## isEndpoint
 
-Check for Endpoint
+Check for Endpoint.
 
 ### Parameters
 
 -   `object` **any** to be cheked
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if object is an Endpoint
+
+## instanciateInterceptors
+
+Instanciate interceptors from its definitions.
+
+### Parameters
+
+-   `interceptors` **([Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Interceptor> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Class> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)** 
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Interceptor>** 
 
 ## ReceivableEndpoint
 
@@ -197,6 +210,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
+    -   `options.receivingInterceptors` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** 
 
 ### isIn
 
@@ -204,13 +218,13 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### receive
 
-get the receive function
+Get the receive function.
 
 Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
 
 ### receive
 
-Set the receive function
+Set the receive function.
 
 #### Parameters
 
