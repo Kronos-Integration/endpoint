@@ -28,6 +28,15 @@ export class Endpoint {
   }
 
   /**
+   * Name as presented for humans.
+   * @return {string}
+   */
+  get displayName()
+  {
+    return this.name;
+  }
+
+  /**
    * Indicate whatever we are a default endpoint.
    * Default means buildin.
    * @return {boolean} false

@@ -201,7 +201,6 @@ test("connect several send to one receive", async t => {
   t.is(await s2.send(2), 4);
 });
 
-
 test("connect several receive to one send but only feeding 1st.", async t => {
   const o = nameIt("o");
   const r1 = new ReceiveEndpoint("r1", o, { receive: async arg => arg * arg });
