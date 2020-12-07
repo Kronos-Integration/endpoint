@@ -19,6 +19,7 @@ Named communication (end)-points inside of kronos
 
 -   [Endpoint](#endpoint)
     -   [Parameters](#parameters)
+    -   [displayName](#displayname)
     -   [isDefault](#isdefault)
     -   [isDummy](#isdummy)
     -   [toStringAttributes](#tostringattributes)
@@ -85,6 +86,12 @@ Named communication (end)-points inside of kronos
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
     -   `options.interceptors` **(Interceptor | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>)?** interceptors
+
+### displayName
+
+Name as presented for humans.
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### isDefault
 
