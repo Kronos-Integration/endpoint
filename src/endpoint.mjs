@@ -1,6 +1,7 @@
 import { Interceptor } from "@kronos-integration/interceptor";
 
 /**
+ * Connection endpoint.
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service)
  * @param {Object} options
@@ -22,9 +23,7 @@ export class Endpoint {
 
     Object.defineProperties(this, properties);
 
-    this.interceptors = options.interceptors
-      ? instanciateInterceptors(options.interceptors, this.owner)
-      : [];
+    this.interceptors = instanciateInterceptors(options.interceptors, this.owner);
   }
 
   /**
@@ -340,6 +339,7 @@ export function isEndpoint(object) {
  * @return {Interceptor[]}
  */
 export function instanciateInterceptors(interceptors, owner) {
+  if(interceptors === undefined) return [];
   return interceptors
     .map(interceptor => {
       if (interceptor instanceof Interceptor) {
