@@ -342,7 +342,8 @@ export function isEndpoint(object) {
  */
 export function instanciateInterceptors(interceptors, owner) {
   if (interceptors === undefined) return [];
-  return interceptors
+
+  return (Array.isArray(interceptors) ? interceptors : [interceptors])
     .map(interceptor => {
       if (interceptor instanceof Interceptor) {
         return interceptor;

@@ -43,7 +43,7 @@ function iit(t, definition, expected) {
   const owner = {
     instantiateInterceptor(interceptorDef) {
       const factory = t2i[interceptorDef.type];
-      return factory ? new factory(interceptorDef): undefined;
+      return factory ? new factory(interceptorDef) : undefined;
     }
   };
 
@@ -55,28 +55,34 @@ function iit(t, definition, expected) {
 
 function dp(definition) {
   if (definition === undefined) return "undefined";
-  return JSON.stringify(
-    definition.map(d => {
-      function tt(type) {
-        if(type === undefined) return undefined;
-        switch(typeof type) {
-          case "function": return "<class " + type.name + ">";
-          case "string": return type;
-          default:
-           // console.log("TYPEOF",type, typeof type);
-            if(type instanceof Interceptor) {
-              return `<instance ${type.type}>`;
-            }
-        }
+
+  function dp(d) {
+    function tt(type) {
+      if (type === undefined) return undefined;
+      switch (typeof type) {
+        case "function":
+          return "<class " + type.name + ">";
+        case "string":
+          return type;
+        default:
+          if (type instanceof Interceptor) {
+            return `<instance ${type.type}>`;
+          }
       }
+    }
 
-      const r = tt(d);
-      if(r !== undefined) { return r; }
+    const r = tt(d);
+    if (r !== undefined) {
+      return r;
+    }
 
-      let type = tt(d.type);
+    let type = tt(d.type);
 
-      return { ...d, type };
-    })
+    return { ...d, type };
+  }
+
+  return JSON.stringify(
+    Array.isArray(definition) ? definition.map(dp) : dp(definition)
   );
 }
 
@@ -85,7 +91,8 @@ iit.title = (providedTitle = "instanciateInterceptors", definition) =>
 
 test(iit, undefined, []);
 test(iit, [], []);
-test(iit, ['unknown'], []);
+test(iit, ["unknown"], []);
+test(iit, id1, [id1]);
 test(iit, [id1], [id1]);
 test(iit, [id1, id2], [id1, id2]);
 test(iit, [TemplateInterceptor], [{ type: "template", request: {} }]);
