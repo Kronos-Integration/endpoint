@@ -83,6 +83,8 @@ Named communication (end)-points inside of kronos
 
 ## Endpoint
 
+Connection endpoint.
+
 ### Parameters
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
