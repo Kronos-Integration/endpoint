@@ -23,15 +23,17 @@ export class Endpoint {
 
     Object.defineProperties(this, properties);
 
-    this.interceptors = instanciateInterceptors(options.interceptors, this.owner);
+    this.interceptors = instanciateInterceptors(
+      options.interceptors,
+      this.owner
+    );
   }
 
   /**
    * Name as presented for humans.
    * @return {string}
    */
-  get displayName()
-  {
+  get displayName() {
     return this.name;
   }
 
@@ -334,12 +336,12 @@ export function isEndpoint(object) {
 
 /**
  * Instanciate interceptors from its definitions.
- * @param {Interceptor[]|Class[]|String[]} interceptors 
+ * @param {Interceptor[]|Class[]|String[]} interceptors
  * @param {Object} owner
  * @return {Interceptor[]}
  */
 export function instanciateInterceptors(interceptors, owner) {
-  if(interceptors === undefined) return [];
+  if (interceptors === undefined) return [];
   return interceptors
     .map(interceptor => {
       if (interceptor instanceof Interceptor) {
@@ -349,7 +351,7 @@ export function instanciateInterceptors(interceptors, owner) {
         case "function":
           return new interceptor();
         case "string":
-          return owner.instantiateInterceptor(interceptor);
+          return owner.instantiateInterceptor({ type: interceptor });
       }
 
       switch (typeof interceptor.type) {
