@@ -258,7 +258,7 @@ Can hold several connections.
 
 ### getConnectionState
 
-Deliver connection state
+Deliver connection state.
 
 #### Parameters
 
@@ -268,7 +268,7 @@ Returns **any** our state for the connection to other
 
 ### setConnectionState
 
-Set connection state
+Set connection state.
 
 #### Parameters
 
@@ -277,7 +277,7 @@ Set connection state
 
 ### isConnected
 
-Check connectivity
+Check connectivity.
 
 #### Parameters
 
@@ -358,7 +358,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Extends SendEndpoint**
 
-Send Endpoint acting as a default endpoints
+Send Endpoint acting as a default endpoints.
 
 ### isDefault
 
@@ -392,7 +392,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Extends ReceiveEndpoint**
 
-Receive Endpoint acting as a default endpoints
+Receive Endpoint acting as a default endpoints.
 
 ### isDefault
 
@@ -404,7 +404,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Extends ReceiveEndpointDefault**
 
-Receiving endpoint wich can also send to itself
+Receiving endpoint wich can also send to itself.
 
 # install
 
