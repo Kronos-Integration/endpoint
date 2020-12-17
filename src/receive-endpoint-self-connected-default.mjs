@@ -1,7 +1,7 @@
 import { ReceiveEndpointDefault } from "./receive-endpoint-default.mjs";
 
 /**
- * Receiving endpoint wich can also send to itself
+ * Receiving endpoint wich can also send to itself.
  */
 export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault {
   get isOut() {

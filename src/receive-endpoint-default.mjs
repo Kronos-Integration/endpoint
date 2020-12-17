@@ -1,7 +1,7 @@
 import { ReceiveEndpoint } from "./receive-endpoint.mjs";
 
 /**
- * Receive Endpoint acting as a default endpoints
+ * Receive Endpoint acting as a default endpoints.
  */
 export class ReceiveEndpointDefault extends ReceiveEndpoint {
   /**

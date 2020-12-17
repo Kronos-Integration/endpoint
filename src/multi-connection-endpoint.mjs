@@ -18,7 +18,7 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
   }
 
   /**
-   * Deliver connection state
+   * Deliver connection state.
    * @param {Entpoint} other
    * @return {any} our state for the connection to other
    */
@@ -27,7 +27,7 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
   }
 
   /**
-   * Set connection state
+   * Set connection state.
    * @param {Entpoint} other
    * @param {any} state for the connection to other
    */
@@ -61,7 +61,7 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
   }
 
   /**
-   * Check connectivity
+   * Check connectivity.
    * @param {Endpoint} other
    * @return {boolean} true if we are connected with other
    */
