@@ -3,6 +3,7 @@ export * from "./receivable-endpoint.mjs";
 export * from "./multi-connection-endpoint.mjs";
 export * from "./send-endpoint.mjs";
 export * from "./receive-endpoint.mjs";
+export * from "./send-receive-endpoint.mjs";
 export * from "./dummy-receive-endpoint.mjs";
 export * from "./send-endpoint-default.mjs";
 export * from "./multi-send-endpoint.mjs";
