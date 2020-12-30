@@ -71,6 +71,7 @@ Named communication (end)-points inside of kronos
 -   [DummyReceiveEndpoint](#dummyreceiveendpoint)
     -   [receive](#receive-2)
     -   [isIn](#isin-3)
+    -   [isOpen](#isopen)
     -   [isDummy](#isdummy-1)
 -   [SendEndpointDefault](#sendendpointdefault)
     -   [isDefault](#isdefault-1)
@@ -337,13 +338,17 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Extends Endpoint**
 
-Dummy endpoints are used duiring construction of the endpoint mesh.
+Dummy endpoints are used during construction of the endpoint mesh.
 
 ### receive
 
 dummy does nothing by intention
 
 ### isIn
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
+
+### isOpen
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
 
