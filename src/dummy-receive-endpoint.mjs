@@ -1,7 +1,7 @@
 import { Endpoint } from "./endpoint.mjs";
 
 /**
- * Dummy endpoints are used duiring construction of the endpoint mesh.
+ * Dummy endpoints are used during construction of the endpoint mesh.
  *
  */
 export class DummyReceiveEndpoint extends Endpoint {
@@ -17,6 +17,9 @@ export class DummyReceiveEndpoint extends Endpoint {
     return true;
   }
 
+  /**
+   * @return {boolean} true
+   */
   get isOpen() {
     return true;
   }
