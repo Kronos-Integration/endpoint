@@ -63,6 +63,10 @@ export class Endpoint {
     return {};
   }
 
+  /**
+   * 
+   * @param {Object} options
+   */
   connectionNamesWithStates(options = { includeRuntimeInfo: true }) {
     return [...this.connections()]
       .map(c => {
