@@ -331,7 +331,7 @@ export class Endpoint {
 
 /**
  * Check for Endpoint.
- * @param {any} object to be cheked
+ * @param {any} object to be checked
  * @return {boolean} true if object is an Endpoint
  */
 export function isEndpoint(object) {
