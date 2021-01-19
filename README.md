@@ -207,7 +207,7 @@ Check for Endpoint.
 
 ### Parameters
 
--   `object` **any** to be cheked
+-   `object` **any** to be checked
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if object is an Endpoint
 
