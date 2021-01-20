@@ -21,15 +21,20 @@ Named communication (end)-points inside of kronos
 
 ### Table of Contents
 
+-   [DummyReceiveEndpoint](#dummyreceiveendpoint)
+    -   [receive](#receive)
+    -   [isIn](#isin)
+    -   [isOpen](#isopen)
+    -   [isDummy](#isdummy)
 -   [Endpoint](#endpoint)
     -   [Parameters](#parameters)
     -   [displayName](#displayname)
     -   [isDefault](#isdefault)
-    -   [isDummy](#isdummy)
+    -   [isDummy](#isdummy-1)
     -   [toStringAttributes](#tostringattributes)
     -   [connectionNamesWithStates](#connectionnameswithstates)
         -   [Parameters](#parameters-1)
-    -   [isIn](#isin)
+    -   [isIn](#isin-1)
     -   [isOut](#isout)
     -   [direction](#direction)
     -   [jsonAttributes](#jsonattributes)
@@ -49,40 +54,60 @@ Named communication (end)-points inside of kronos
     -   [Parameters](#parameters-6)
 -   [instanciateInterceptors](#instanciateinterceptors)
     -   [Parameters](#parameters-7)
--   [ReceivableEndpoint](#receivableendpoint)
-    -   [Parameters](#parameters-8)
-    -   [isIn](#isin-1)
-    -   [receive](#receive)
-    -   [receive](#receive-1)
-        -   [Parameters](#parameters-9)
 -   [MultiConnectionEndpoint](#multiconnectionendpoint)
-    -   [Parameters](#parameters-10)
+    -   [Parameters](#parameters-8)
     -   [getConnectionState](#getconnectionstate)
-        -   [Parameters](#parameters-11)
+        -   [Parameters](#parameters-9)
     -   [setConnectionState](#setconnectionstate)
-        -   [Parameters](#parameters-12)
+        -   [Parameters](#parameters-10)
     -   [isConnected](#isconnected-1)
-        -   [Parameters](#parameters-13)
+        -   [Parameters](#parameters-11)
     -   [connections](#connections)
--   [SendEndpoint](#sendendpoint)
-    -   [Parameters](#parameters-14)
+-   [MultiSendEndpoint](#multisendendpoint)
+    -   [Parameters](#parameters-12)
     -   [isOut](#isout-1)
+-   [ReceivableEndpoint](#receivableendpoint)
+    -   [Parameters](#parameters-13)
+    -   [isIn](#isin-2)
+    -   [receive](#receive-1)
+    -   [receive](#receive-2)
+        -   [Parameters](#parameters-14)
+-   [ReceiveEndpointDefault](#receiveendpointdefault)
+    -   [isDefault](#isdefault-1)
+-   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
 -   [ReceiveEndpoint](#receiveendpoint)
     -   [Parameters](#parameters-15)
-    -   [isIn](#isin-2)
--   [DummyReceiveEndpoint](#dummyreceiveendpoint)
-    -   [receive](#receive-2)
     -   [isIn](#isin-3)
-    -   [isOpen](#isopen)
-    -   [isDummy](#isdummy-1)
 -   [SendEndpointDefault](#sendendpointdefault)
-    -   [isDefault](#isdefault-1)
--   [MultiSendEndpoint](#multisendendpoint)
+    -   [isDefault](#isdefault-2)
+-   [SendEndpoint](#sendendpoint)
     -   [Parameters](#parameters-16)
     -   [isOut](#isout-2)
--   [ReceiveEndpointDefault](#receiveendpointdefault)
-    -   [isDefault](#isdefault-2)
--   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
+
+## DummyReceiveEndpoint
+
+**Extends Endpoint**
+
+Dummy endpoints are used during construction of the endpoint mesh.
+
+### receive
+
+dummy does nothing by intention
+
+### isIn
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
+
+### isOpen
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
+
+### isDummy
+
+Indicate whatever we are a dummy endpoint.
+Dummy endpoints are used duiring construction of the endpoint mesh.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
 
 ## Endpoint
 
@@ -222,36 +247,6 @@ Instanciate interceptors from its definitions.
 
 Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Interceptor>** 
 
-## ReceivableEndpoint
-
-**Extends Endpoint**
-
-### Parameters
-
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
--   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-    -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
-    -   `options.receivingInterceptors` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** 
-
-### isIn
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true is receive function is present
-
-### receive
-
-Get the receive function.
-
-Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-
-### receive
-
-Set the receive function.
-
-#### Parameters
-
--   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
-
 ## MultiConnectionEndpoint
 
 **Extends ReceivableEndpoint**
@@ -298,19 +293,19 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 All connections
 
-## SendEndpoint
+## MultiSendEndpoint
 
-**Extends ReceivableEndpoint**
+**Extends MultiConnectionEndpoint**
 
-Sending Endpoint.
-Can only hold one connection.
+Multiple Sending Endpoint.
+Can hold several connections.
 Back connections to any further endpoints will not be established
 
 ### Parameters
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
     -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
 
@@ -319,6 +314,54 @@ Back connections to any further endpoints will not be established
 We are always _out_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## ReceivableEndpoint
+
+**Extends Endpoint**
+
+### Parameters
+
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
+    -   `options.receivingInterceptors` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** 
+
+### isIn
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true is receive function is present
+
+### receive
+
+Get the receive function.
+
+Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+
+### receive
+
+Set the receive function.
+
+#### Parameters
+
+-   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+
+## ReceiveEndpointDefault
+
+**Extends ReceiveEndpoint**
+
+Receive Endpoint acting as a default endpoints.
+
+### isDefault
+
+We are a default endpoint
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## ReceiveEndpointSelfConnectedDefault
+
+**Extends ReceiveEndpointDefault**
+
+Receiving endpoint wich can also send to itself.
 
 ## ReceiveEndpoint
 
@@ -342,31 +385,6 @@ We are always _in_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
-## DummyReceiveEndpoint
-
-**Extends Endpoint**
-
-Dummy endpoints are used during construction of the endpoint mesh.
-
-### receive
-
-dummy does nothing by intention
-
-### isIn
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
-
-### isOpen
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
-
-### isDummy
-
-Indicate whatever we are a dummy endpoint.
-Dummy endpoints are used duiring construction of the endpoint mesh.
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
-
 ## SendEndpointDefault
 
 **Extends SendEndpoint**
@@ -379,19 +397,19 @@ We are a default endpoint
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
-## MultiSendEndpoint
+## SendEndpoint
 
-**Extends MultiConnectionEndpoint**
+**Extends ReceivableEndpoint**
 
-Multiple Sending Endpoint.
-Can hold several connections.
+Sending Endpoint.
+Can only hold one connection.
 Back connections to any further endpoints will not be established
 
 ### Parameters
 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
     -   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
     -   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
 
@@ -400,24 +418,6 @@ Back connections to any further endpoints will not be established
 We are always _out_
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
-
-## ReceiveEndpointDefault
-
-**Extends ReceiveEndpoint**
-
-Receive Endpoint acting as a default endpoints.
-
-### isDefault
-
-We are a default endpoint
-
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
-
-## ReceiveEndpointSelfConnectedDefault
-
-**Extends ReceiveEndpointDefault**
-
-Receiving endpoint wich can also send to itself.
 
 # install
 
