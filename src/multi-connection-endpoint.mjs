@@ -6,11 +6,11 @@ import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
  * Can hold several connections.
  */
 export class MultiConnectionEndpoint extends ReceivableEndpoint {
- 
+
+  #connections = new Map();
+   
   constructor(name, owner, options = {}) {
     super(name, owner, options);
-
-    this._connections = new Map();
 
     if (isEndpoint(options.connected)) {
       this.addConnection(options.connected);
@@ -23,7 +23,7 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
    * @return {any} our state for the connection to other
    */
   getConnectionState(other) {
-    return this._connections.get(other);
+    return this.#connections.get(other);
   }
 
   /**
@@ -32,7 +32,7 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
    * @param {any} state for the connection to other
    */
   setConnectionState(other, state) {
-    this._connections.set(other, state);
+    this.#connections.set(other, state);
   }
 
   addConnection(other, backpointer) {
@@ -42,18 +42,18 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
       );
     }
 
-    if (!this._connections.get(other)) {
+    if (!this.#connections.get(other)) {
       if (!backpointer) {
         other.addConnection(this, true);
       }
 
-      this._connections.set(other, undefined); // dummy
+      this.#connections.set(other, undefined); // dummy
     }
   }
 
   removeConnection(other, backpointer) {
     this.closeConnection(other);
-    this._connections.delete(other);
+    this.#connections.delete(other);
 
     if (!backpointer) {
       other.removeConnection(this, true);
@@ -66,13 +66,13 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
    * @return {boolean} true if we are connected with other
    */
   isConnected(other) {
-    return this._connections.has(other);
+    return this.#connections.has(other);
   }
 
   /**
    * All connections
    */
   *connections() {
-    yield* this._connections.keys();
+    yield* this.#connections.keys();
   }
 }
