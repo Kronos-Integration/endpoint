@@ -12,6 +12,10 @@ import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
  * @param {Function} [options.didConnect] called after receiver is present
  */
 export class SendEndpoint extends ReceivableEndpoint {
+
+  #connection;
+  #state;
+  
   constructor(name, owner, options = {}) {
     super(name, owner, options);
     if (isEndpoint(options.connected)) {
@@ -28,21 +32,21 @@ export class SendEndpoint extends ReceivableEndpoint {
   }
 
   get isOpen() {
-    return this._connection !== undefined;
+    return this.#connection !== undefined;
   }
 
   getConnectionState(other) {
-    return other === this._connection ? this._state : undefined;
+    return other === this.#connection ? this.#state : undefined;
   }
 
   setConnectionState(other, state) {
-    if (other === this._connection) {
-      this._state = state;
+    if (other === this.#connection) {
+      this.#state = state;
     }
   }
 
   addConnection(other, backpointer) {
-    if (this._connection === other) {
+    if (this.#connection === other) {
       return;
     }
 
@@ -52,18 +56,18 @@ export class SendEndpoint extends ReceivableEndpoint {
       );
     }
 
-    if (this._connection !== undefined) {
+    if (this.#connection !== undefined) {
       // do not break standing connection if only setting backpinter
       if (backpointer) {
         return;
       }
 
-      throw new Error(`Already connected to: ${this._connection.identifier}`);
+      throw new Error(`Already connected to: ${this.#connection.identifier}`);
     }
 
-    this.removeConnection(this._connection, backpointer);
+    this.removeConnection(this.#connection, backpointer);
 
-    this._connection = other;
+    this.#connection = other;
 
     if (!backpointer) {
       other.addConnection(this, true);
@@ -76,22 +80,22 @@ export class SendEndpoint extends ReceivableEndpoint {
     if (!backpointer && other !== undefined) {
       other.removeConnection(this, true);
     }
-    this._connection = undefined;
+    this.#connection = undefined;
   }
 
   *connections() {
-    if (this._connection) {
-      yield this._connection;
+    if (this.#connection) {
+      yield this.#connection;
     }
   }
 
   async send(...args) {
-    if (this._connection === undefined) {
+    if (this.#connection === undefined) {
       throw new Error(`${this.identifier} is not connected`);
     }
-    if (!this._connection.isOpen) {
+    if (!this.#connection.isOpen) {
       throw new Error(
-        `${this.identifier}: ${this._connection.identifier} is not open`
+        `${this.identifier}: ${this.#connection.identifier} is not open`
       );
     }
 
@@ -100,7 +104,7 @@ export class SendEndpoint extends ReceivableEndpoint {
 
     const next = async (...args) =>
       c >= interceptors.length
-        ? this._connection.receive(...args)
+        ? this.#connection.receive(...args)
         : interceptors[c++].receive(this, next, ...args);
 
     return next(...args);
