@@ -126,7 +126,7 @@ Connection endpoint.
 
 Name as presented for humans.
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**&#x20;
 
 ### isDefault
 
@@ -146,7 +146,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Mapping of properties used in toString.
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### connectionNamesWithStates
 
@@ -183,7 +183,7 @@ in to out and out to in.
 
 #### Parameters
 
-*   `other` **[Endpoint](#endpoint)** 
+*   `other` **[Endpoint](#endpoint)**&#x20;
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we can be connected to the other endpoint
 
@@ -207,7 +207,7 @@ Actually start with the communication.
 
 #### Parameters
 
-*   `other` **[Endpoint](#endpoint)** 
+*   `other` **[Endpoint](#endpoint)**&#x20;
 *   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if this is the call form back call from the other side
 
 ### closeConnection
@@ -216,7 +216,7 @@ Actually stop the communication.
 
 #### Parameters
 
-*   `other` **[Endpoint](#endpoint)** 
+*   `other` **[Endpoint](#endpoint)**&#x20;
 *   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if this is the call form back call from the other side
 
 ### openConnections
@@ -243,10 +243,10 @@ Instanciate interceptors from its definitions.
 
 ### Parameters
 
-*   `interceptors` **([Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Class> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)** 
-*   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+*   `interceptors` **([Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Class> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)**&#x20;
+*   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor>** 
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor>**&#x20;
 
 ## MultiConnectionEndpoint
 
@@ -257,8 +257,8 @@ Can hold several connections.
 
 ### Parameters
 
-*   `name`  
-*   `owner`  
+*   `name` &#x20;
+*   `owner` &#x20;
 *   `options`   (optional, default `{}`)
 
 ### getConnectionState
@@ -267,7 +267,7 @@ Deliver connection state.
 
 #### Parameters
 
-*   `other` **Entpoint** 
+*   `other` **Entpoint**&#x20;
 
 Returns **any** our state for the connection to other
 
@@ -277,7 +277,7 @@ Set connection state.
 
 #### Parameters
 
-*   `other` **Entpoint** 
+*   `other` **Entpoint**&#x20;
 *   `state` **any** for the connection to other
 
 ### isConnected
@@ -286,7 +286,7 @@ Check connectivity.
 
 #### Parameters
 
-*   `other` **[Endpoint](#endpoint)** 
+*   `other` **[Endpoint](#endpoint)**&#x20;
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if we are connected with other
 
@@ -306,7 +306,7 @@ Back connections to any further endpoints will not be established
 
 *   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 *   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
-*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
     *   `options.connected` **[Endpoint](#endpoint)?** where te requests are delivered to
     *   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
@@ -325,10 +325,10 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 *   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 *   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
-*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
     *   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
-    *   `options.receivingInterceptors` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** 
+    *   `options.receivingInterceptors` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?**&#x20;
 
 ### isIn
 
@@ -338,7 +338,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Get the receive function.
 
-Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)**&#x20;
 
 ### receive
 
@@ -346,7 +346,7 @@ Set the receive function.
 
 #### Parameters
 
-*   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+*   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)**&#x20;
 
 ## ReceiveEndpointDefault
 
@@ -378,7 +378,7 @@ By default a dummy rejecting receiver is assigned
 
 *   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 *   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
-*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
     *   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
     *   `options.connected` **[Endpoint](#endpoint)?** sending side
