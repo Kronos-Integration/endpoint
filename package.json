@@ -45,7 +45,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kronos-Integration/endpoint.git"
+    "url": "https://github.com/Kronos-Integration/endpoint"
   },
   "bugs": {
     "url": "https://github.com/Kronos-Integration/endpoint/issues"
