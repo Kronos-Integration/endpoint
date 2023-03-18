@@ -1,7 +1,5 @@
 import { Endpoint, instanciateInterceptors } from "./endpoint.mjs";
 
-const RECEIVE = Symbol("receive");
-
 /**
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service)
@@ -10,6 +8,9 @@ const RECEIVE = Symbol("receive");
  * @param {Function} [options.receivingInterceptors]
  */
 export class ReceivableEndpoint extends Endpoint {
+
+  #receive;
+ 
   constructor(name, owner, options) {
     super(name, owner, options);
     if (options.receive) {
@@ -32,7 +33,7 @@ export class ReceivableEndpoint extends Endpoint {
    * @return {boolean} true is receive function is present
    */
   get isIn() {
-    return this[RECEIVE] !== undefined;
+    return this.#receive !== undefined;
   }
 
   /**
@@ -40,7 +41,7 @@ export class ReceivableEndpoint extends Endpoint {
    * @return {Function}
    */
   get receive() {
-    return this[RECEIVE];
+    return this.#receive;
   }
 
   /**
@@ -48,10 +49,10 @@ export class ReceivableEndpoint extends Endpoint {
    * @param {Function} receive
    */
   set receive(receive) {
-    this[RECEIVE] = receive;
+    this.#receive = receive;
   }
 
   get isOpen() {
-    return this[RECEIVE] !== undefined;
+    return this.#receive !== undefined;
   }
 }
