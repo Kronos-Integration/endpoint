@@ -9,10 +9,10 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
 
   #connections = new Map();
    
-  constructor(name, owner, options = {}) {
+  constructor(name, owner, options) {
     super(name, owner, options);
 
-    if (isEndpoint(options.connected)) {
+    if (isEndpoint(options?.connected)) {
       this.addConnection(options.connected);
     }
   }

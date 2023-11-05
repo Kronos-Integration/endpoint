@@ -13,11 +13,11 @@ export class ReceivableEndpoint extends Endpoint {
  
   constructor(name, owner, options) {
     super(name, owner, options);
-    if (options.receive) {
+    if (options?.receive) {
       this.receive = options.receive;
     }
 
-    if (options.receivingInterceptors) {
+    if (options?.receivingInterceptors) {
       Object.defineProperties(this, {
         receivingInterceptors: {
           value: instanciateInterceptors(

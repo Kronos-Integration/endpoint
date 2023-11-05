@@ -9,13 +9,13 @@ import { Interceptor } from "@kronos-integration/interceptor";
  * @param {Interceptor|Object[]} [options.interceptors] interceptors
  */
 export class Endpoint {
-  constructor(name, owner, options = {}) {
+  constructor(name, owner, options) {
     const properties = {
       name: { value: name },
       owner: { value: owner }
     };
 
-    if (options.didConnect !== undefined) {
+    if (options?.didConnect !== undefined) {
       properties.didConnect = {
         value: options.didConnect
       };
@@ -24,7 +24,7 @@ export class Endpoint {
     Object.defineProperties(this, properties);
 
     this.interceptors = instanciateInterceptors(
-      options.interceptors,
+      options?.interceptors,
       this.owner
     );
   }
