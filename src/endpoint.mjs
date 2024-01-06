@@ -1,6 +1,10 @@
 import { Interceptor } from "@kronos-integration/interceptor";
 
 /**
+ * @typedef {Object} ConnectionState
+ */
+
+/**
  * Connection endpoint.
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service)
@@ -10,18 +14,12 @@ import { Interceptor } from "@kronos-integration/interceptor";
  */
 export class Endpoint {
   constructor(name, owner, options) {
-    const properties = {
-      name: { value: name },
-      owner: { value: owner }
-    };
+    this.name = name;
+    this.owner = owner;
 
     if (options?.didConnect !== undefined) {
-      properties.didConnect = {
-        value: options.didConnect
-      };
+      this.didConnect = options.didConnect;
     }
-
-    Object.defineProperties(this, properties);
 
     this.interceptors = instanciateInterceptors(
       options?.interceptors,
@@ -299,7 +297,7 @@ export class Endpoint {
    */
   openConnections() {
     for (const c of this.connections()) {
-      this.openConnection(c);
+      this.openConnection(c, false);
     }
   }
 
@@ -308,7 +306,7 @@ export class Endpoint {
    */
   closeConnections() {
     for (const c of this.connections()) {
-      this.closeConnection(c);
+      this.closeConnection(c, false);
     }
   }
 
@@ -318,9 +316,19 @@ export class Endpoint {
 
   removeConnection() {}
 
-  getConnectionState() {}
+  /**
+   * Deliver state for a given connection.
+   * @param {Endpoint} other
+   * @return {ConnectionState} 
+   */
+  getConnectionState(other) {}
 
-  setConnectionState() {}
+  /**
+   * Set state for a given connection.
+   * @param {Endpoint} other
+   * @param {ConnectionState} state
+   */
+  setConnectionState(other, state) {}
 
   didConnect() {}
 
