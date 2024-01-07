@@ -26,6 +26,7 @@ Named communication (end)-points inside of kronos
     *   [isIn](#isin)
     *   [isOpen](#isopen)
     *   [isDummy](#isdummy)
+*   [ConnectionState](#connectionstate)
 *   [Endpoint](#endpoint)
     *   [Parameters](#parameters)
     *   [displayName](#displayname)
@@ -50,38 +51,42 @@ Named communication (end)-points inside of kronos
         *   [Parameters](#parameters-5)
     *   [openConnections](#openconnections)
     *   [closeConnections](#closeconnections)
-*   [isEndpoint](#isendpoint)
-    *   [Parameters](#parameters-6)
-*   [instanciateInterceptors](#instanciateinterceptors)
-    *   [Parameters](#parameters-7)
-*   [MultiConnectionEndpoint](#multiconnectionendpoint)
-    *   [Parameters](#parameters-8)
     *   [getConnectionState](#getconnectionstate)
-        *   [Parameters](#parameters-9)
+        *   [Parameters](#parameters-6)
     *   [setConnectionState](#setconnectionstate)
-        *   [Parameters](#parameters-10)
-    *   [isConnected](#isconnected-1)
+        *   [Parameters](#parameters-7)
+*   [isEndpoint](#isendpoint)
+    *   [Parameters](#parameters-8)
+*   [instanciateInterceptors](#instanciateinterceptors)
+    *   [Parameters](#parameters-9)
+*   [MultiConnectionEndpoint](#multiconnectionendpoint)
+    *   [Parameters](#parameters-10)
+    *   [getConnectionState](#getconnectionstate-1)
         *   [Parameters](#parameters-11)
+    *   [setConnectionState](#setconnectionstate-1)
+        *   [Parameters](#parameters-12)
+    *   [isConnected](#isconnected-1)
+        *   [Parameters](#parameters-13)
     *   [connections](#connections)
 *   [MultiSendEndpoint](#multisendendpoint)
-    *   [Parameters](#parameters-12)
+    *   [Parameters](#parameters-14)
     *   [isOut](#isout-1)
 *   [ReceivableEndpoint](#receivableendpoint)
-    *   [Parameters](#parameters-13)
+    *   [Parameters](#parameters-15)
     *   [isIn](#isin-2)
     *   [receive](#receive-1)
     *   [receive](#receive-2)
-        *   [Parameters](#parameters-14)
+        *   [Parameters](#parameters-16)
 *   [ReceiveEndpointDefault](#receiveendpointdefault)
     *   [isDefault](#isdefault-1)
 *   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
 *   [ReceiveEndpoint](#receiveendpoint)
-    *   [Parameters](#parameters-15)
+    *   [Parameters](#parameters-17)
     *   [isIn](#isin-3)
 *   [SendEndpointDefault](#sendendpointdefault)
     *   [isDefault](#isdefault-2)
 *   [SendEndpoint](#sendendpoint)
-    *   [Parameters](#parameters-16)
+    *   [Parameters](#parameters-18)
     *   [isOut](#isout-2)
 
 ## DummyReceiveEndpoint
@@ -108,6 +113,10 @@ Indicate whatever we are a dummy endpoint.
 Dummy endpoints are used duiring construction of the endpoint mesh.
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
+
+## ConnectionState
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 ## Endpoint
 
@@ -226,6 +235,25 @@ Opens all connections.
 ### closeConnections
 
 Closes all connections.
+
+### getConnectionState
+
+Deliver state for a given connection.
+
+#### Parameters
+
+*   `other` **[Endpoint](#endpoint)**&#x20;
+
+Returns **[ConnectionState](#connectionstate)**&#x20;
+
+### setConnectionState
+
+Set state for a given connection.
+
+#### Parameters
+
+*   `other` **[Endpoint](#endpoint)**&#x20;
+*   `state` **[ConnectionState](#connectionstate)**&#x20;
 
 ## isEndpoint
 
