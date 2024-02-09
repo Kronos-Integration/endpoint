@@ -1,5 +1,6 @@
 [![npm](https://img.shields.io/npm/v/@kronos-integration/endpoint.svg)](https://www.npmjs.com/package/@kronos-integration/endpoint)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Typed with TypeScript](https://flat.badgen.net/badge/icon/Typed?icon=typescript\&label\&labelColor=blue\&color=555555)](https://typescriptlang.org)
 [![bundlejs](https://deno.bundlejs.com/?q=@kronos-integration/endpoint\&badge=detailed)](https://bundlejs.com/?q=@kronos-integration/endpoint)
 [![downloads](http://img.shields.io/npm/dm/@kronos-integration/endpoint.svg?style=flat-square)](https://npmjs.org/package/@kronos-integration/endpoint)
 [![GitHub Issues](https://img.shields.io/github/issues/Kronos-Integration/endpoint.svg?style=flat-square)](https://github.com/Kronos-Integration/endpoint/issues)
