@@ -52,6 +52,7 @@ Named communication (end)-points inside of kronos
         *   [Parameters](#parameters-5)
     *   [openConnections](#openconnections)
     *   [closeConnections](#closeconnections)
+    *   [connections](#connections)
     *   [getConnectionState](#getconnectionstate)
         *   [Parameters](#parameters-6)
     *   [setConnectionState](#setconnectionstate)
@@ -68,8 +69,8 @@ Named communication (end)-points inside of kronos
         *   [Parameters](#parameters-12)
     *   [isConnected](#isconnected-1)
         *   [Parameters](#parameters-13)
-    *   [connections](#connections)
-*   [connections](#connections-1)
+    *   [connections](#connections-1)
+*   [connections](#connections-2)
 *   [MultiSendEndpoint](#multisendendpoint)
     *   [Parameters](#parameters-14)
     *   [isOut](#isout-1)
@@ -82,13 +83,15 @@ Named communication (end)-points inside of kronos
 *   [ReceiveEndpointDefault](#receiveendpointdefault)
     *   [isDefault](#isdefault-1)
 *   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
+    *   [removeConnection](#removeconnection)
+        *   [Parameters](#parameters-17)
 *   [ReceiveEndpoint](#receiveendpoint)
-    *   [Parameters](#parameters-17)
+    *   [Parameters](#parameters-18)
     *   [isIn](#isin-3)
 *   [SendEndpointDefault](#sendendpointdefault)
     *   [isDefault](#isdefault-2)
 *   [SendEndpoint](#sendendpoint)
-    *   [Parameters](#parameters-18)
+    *   [Parameters](#parameters-19)
     *   [isOut](#isout-2)
 
 ## DummyReceiveEndpoint
@@ -177,7 +180,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Deliver data flow direction.
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** delivers data flow direction 'in', 'out', 'inout' or undefined
+Returns **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** delivers data flow direction 'in', 'out', 'inout' or undefined
 
 ### jsonAttributes
 
@@ -219,7 +222,7 @@ Actually start with the communication.
 #### Parameters
 
 *   `other` **[Endpoint](#endpoint)**&#x20;
-*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if this is the call form back call from the other side
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call from back call from the other side
 
 ### closeConnection
 
@@ -228,7 +231,7 @@ Actually stop the communication.
 #### Parameters
 
 *   `other` **[Endpoint](#endpoint)**&#x20;
-*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if this is the call form back call from the other side
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call from back call from the other side
 
 ### openConnections
 
@@ -237,6 +240,10 @@ Opens all connections.
 ### closeConnections
 
 Closes all connections.
+
+### connections
+
+Returns **Iterable\<any>**&#x20;
 
 ### getConnectionState
 
@@ -399,6 +406,15 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 **Extends ReceiveEndpointDefault**
 
 Receiving endpoint wich can also send to itself.
+
+### removeConnection
+
+Actually stop the communication.
+
+#### Parameters
+
+*   `other` **[Endpoint](#endpoint)**&#x20;
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call form back call from the other side
 
 ## ReceiveEndpoint
 
