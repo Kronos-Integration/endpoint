@@ -7,7 +7,7 @@ import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
  */
 export class MultiConnectionEndpoint extends ReceivableEndpoint {
 
-  #connections = new Map();
+  /** @type {Map<Endpoint,any>} */ #connections = new Map();
    
   constructor(name, owner, options) {
     super(name, owner, options);
@@ -19,7 +19,7 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
 
   /**
    * Deliver connection state.
-   * @param {Entpoint} other
+   * @param {Endpoint} other
    * @return {any} our state for the connection to other
    */
   getConnectionState(other) {
@@ -28,7 +28,7 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
 
   /**
    * Set connection state.
-   * @param {Entpoint} other
+   * @param {Endpoint} other
    * @param {any} state for the connection to other
    */
   setConnectionState(other, state) {
