@@ -69,6 +69,7 @@ Named communication (end)-points inside of kronos
     *   [isConnected](#isconnected-1)
         *   [Parameters](#parameters-13)
     *   [connections](#connections)
+*   [connections](#connections-1)
 *   [MultiSendEndpoint](#multisendendpoint)
     *   [Parameters](#parameters-14)
     *   [isOut](#isout-1)
@@ -296,7 +297,7 @@ Deliver connection state.
 
 #### Parameters
 
-*   `other` **Entpoint**&#x20;
+*   `other` **[Endpoint](#endpoint)**&#x20;
 
 Returns **any** our state for the connection to other
 
@@ -306,7 +307,7 @@ Set connection state.
 
 #### Parameters
 
-*   `other` **Entpoint**&#x20;
+*   `other` **[Endpoint](#endpoint)**&#x20;
 *   `state` **any** for the connection to other
 
 ### isConnected
@@ -322,6 +323,10 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 ### connections
 
 All connections
+
+## connections
+
+Type: [Map](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map)<[Endpoint](#endpoint), any>
 
 ## MultiSendEndpoint
 
