@@ -1,4 +1,5 @@
 import { ReceiveEndpointDefault } from "./receive-endpoint-default.mjs";
+import { Endpoint } from "./endpoint.mjs";
 
 /**
  * Receiving endpoint wich can also send to itself.
@@ -20,6 +21,11 @@ export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault 
     return super.addConnection(other, backpointer);
   }
 
+  /**
+   * Actually stop the communication.
+   * @param {Endpoint} other
+   * @param {boolean?} backpointer true if this is the call form back call from the other side
+   */
   removeConnection(other, backpointer) {
     if (other === this) {
       return;

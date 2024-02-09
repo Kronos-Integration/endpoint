@@ -129,7 +129,7 @@ export class Endpoint {
 
   /**
    * Deliver data flow direction.
-   * @return {string} delivers data flow direction 'in', 'out', 'inout' or undefined
+   * @return {string|undefined} delivers data flow direction 'in', 'out', 'inout' or undefined
    */
   get direction() {
     if (this.isIn) {
@@ -251,7 +251,7 @@ export class Endpoint {
   /**
    * Actually start with the communication.
    * @param {Endpoint} other
-   * @param {boolean} backpointer true if this is the call form back call from the other side
+   * @param {boolean?} backpointer true if this is the call from back call from the other side
    */
   openConnection(other, backpointer) {
     if (other !== undefined) {
@@ -276,7 +276,7 @@ export class Endpoint {
   /**
    * Actually stop the communication.
    * @param {Endpoint} other
-   * @param {boolean} backpointer true if this is the call form back call from the other side
+   * @param {boolean?} backpointer true if this is the call from back call from the other side
    */
   closeConnection(other, backpointer) {
     if (other !== undefined) {
@@ -310,6 +310,9 @@ export class Endpoint {
     }
   }
 
+  /**
+   * @return {Iterable<any>}
+   */
   *connections() {}
 
   addConnection() {}
@@ -330,7 +333,7 @@ export class Endpoint {
    */
   setConnectionState(other, state) {}
 
-  didConnect() {}
+  didConnect(a,b) {}
 
   get receivingInterceptors() {
     return [];

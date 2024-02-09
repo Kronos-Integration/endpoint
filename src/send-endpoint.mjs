@@ -1,4 +1,4 @@
-import { isEndpoint } from "./endpoint.mjs";
+import { isEndpoint, Endpoint} from "./endpoint.mjs";
 import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
 
 /**
