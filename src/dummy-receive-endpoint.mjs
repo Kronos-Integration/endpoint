@@ -6,7 +6,7 @@ import { Endpoint } from "./endpoint.mjs";
  */
 export class DummyReceiveEndpoint extends Endpoint {
   /**
-   * dummy does nothing by intention
+   * dummy does nothing by intention.
    */
   async receive() {}
 
