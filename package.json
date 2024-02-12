@@ -38,7 +38,7 @@
     "lint:tsc": "tsc --allowJs --checkJs --noEmit -t esnext -m esnext --module nodenext --moduleResolution nodenext ./src**/*.mjs"
   },
   "dependencies": {
-    "@kronos-integration/interceptor": "^10.2.38"
+    "@kronos-integration/interceptor": "^10.3.0"
   },
   "devDependencies": {
     "ava": "^6.1.1",
