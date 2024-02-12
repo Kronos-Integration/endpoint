@@ -103,7 +103,7 @@ Dummy endpoints are used during construction of the endpoint mesh.
 
 ### receive
 
-dummy does nothing by intention
+dummy does nothing by intention.
 
 ### isIn
 
