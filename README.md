@@ -93,6 +93,7 @@ Named communication (end)-points inside of kronos
 *   [SendEndpoint](#sendendpoint)
     *   [Parameters](#parameters-19)
     *   [isOut](#isout-2)
+*   [isIn](#isin-4)
 
 ## DummyReceiveEndpoint
 
@@ -447,7 +448,7 @@ Send Endpoint acting as a default endpoints.
 
 ### isDefault
 
-We are a default endpoint
+We are a default endpoint.
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
@@ -473,6 +474,12 @@ Back connections to any further endpoints will not be established
 We are always *out*
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+## isIn
+
+Always receiving.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true
 
 # install
 
