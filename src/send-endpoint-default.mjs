@@ -5,7 +5,7 @@ import { SendEndpoint } from "./send-endpoint.mjs";
  */
 export class SendEndpointDefault extends SendEndpoint {
   /**
-   * We are a default endpoint
+   * We are a default endpoint.
    * @return {boolean} always true
    */
   get isDefault() {
