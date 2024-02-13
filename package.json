@@ -8,6 +8,14 @@
   "types": "./types/module.d.mts",
   "exports": {
     ".": {
+      "0": "{",
+      "1": "{",
+      "2": "m",
+      "3": "a",
+      "4": "i",
+      "5": "n",
+      "6": "}",
+      "7": "}",
       "types": "./types/module.d.mts",
       "default": "./src/module.mjs"
     }
