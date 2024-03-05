@@ -6,13 +6,16 @@ import { Interceptor } from "@kronos-integration/interceptor";
 
 /**
  * Connection endpoint.
- * @param {string} name endpoint name
- * @param {Object} owner of the endpoint (service)
- * @param {Object} options
- * @param {Function} [options.didConnect] called after receiver is present
- * @param {Interceptor|Object[]} [options.interceptors] interceptors
  */
+
 export class Endpoint {
+  /**
+   * @param {string} name endpoint name
+   * @param {Object} owner of the endpoint (service)
+   * @param {Object} options
+   * @param {function(Endpoint,Endpoint):void} [options.didConnect] called after receiver is present
+   * @param {Interceptor[]|string[]} [options.interceptors] interceptors
+   */
   constructor(name, owner, options) {
     this.name = name;
     this.owner = owner;
@@ -62,7 +65,7 @@ export class Endpoint {
   }
 
   /**
-   * 
+   *
    * @param {Object} options
    */
   connectionNamesWithStates(options = { includeRuntimeInfo: true }) {
@@ -311,22 +314,27 @@ export class Endpoint {
   }
 
   /**
-   * @return {Iterable<any>}
+   * @return {Iterable<Endpoint>}
    */
   *connections() {}
 
   /**
-   * 
-   * @param {any} connection 
+   *
+   * @param {Endpoint} connection
    */
   addConnection(connection) {}
 
-  removeConnection() {}
+  /**
+   * Actually stop the communication.
+   * @param {Endpoint} other
+   * @param {boolean?} backpointer true if this is the call form back call from the other side
+   */
+  removeConnection(other, backpointer) {}
 
   /**
    * Deliver state for a given connection.
    * @param {Endpoint} other
-   * @return {ConnectionState} 
+   * @return {ConnectionState}
    */
   getConnectionState(other) {}
 
@@ -337,7 +345,12 @@ export class Endpoint {
    */
   setConnectionState(other, state) {}
 
-  didConnect(a,b) {}
+  /**
+   *
+   * @param {Endpoint} endpoint
+   * @param {Endpoint} other
+   */
+  didConnect(endpoint, other) {}
 
   get receivingInterceptors() {
     return [];
@@ -355,7 +368,7 @@ export function isEndpoint(object) {
 
 /**
  * Instanciate interceptors from its definitions.
- * @param {Interceptor[]|string[]} interceptors
+ * @param {Interceptor[]|string[]|undefined} interceptors
  * @param {Object} owner
  * @return {Interceptor[]}
  */

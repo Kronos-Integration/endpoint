@@ -51,6 +51,11 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
     }
   }
 
+   /**
+   * Actually stop the communication.
+   * @param {Endpoint} other
+   * @param {boolean?} backpointer true if this is the call form back call from the other side
+   */
   removeConnection(other, backpointer) {
     this.closeConnection(other);
     this.#connections.delete(other);
