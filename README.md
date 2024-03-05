@@ -55,46 +55,54 @@ Named communication (end)-points inside of kronos
     *   [connections](#connections)
     *   [addConnection](#addconnection)
         *   [Parameters](#parameters-6)
-    *   [getConnectionState](#getconnectionstate)
+    *   [removeConnection](#removeconnection)
         *   [Parameters](#parameters-7)
-    *   [setConnectionState](#setconnectionstate)
+    *   [getConnectionState](#getconnectionstate)
         *   [Parameters](#parameters-8)
+    *   [setConnectionState](#setconnectionstate)
+        *   [Parameters](#parameters-9)
+    *   [didConnect](#didconnect)
+        *   [Parameters](#parameters-10)
 *   [isEndpoint](#isendpoint)
-    *   [Parameters](#parameters-9)
-*   [instanciateInterceptors](#instanciateinterceptors)
-    *   [Parameters](#parameters-10)
-*   [MultiConnectionEndpoint](#multiconnectionendpoint)
     *   [Parameters](#parameters-11)
+*   [instanciateInterceptors](#instanciateinterceptors)
+    *   [Parameters](#parameters-12)
+*   [MultiConnectionEndpoint](#multiconnectionendpoint)
+    *   [Parameters](#parameters-13)
     *   [getConnectionState](#getconnectionstate-1)
-        *   [Parameters](#parameters-12)
-    *   [setConnectionState](#setconnectionstate-1)
-        *   [Parameters](#parameters-13)
-    *   [isConnected](#isconnected-1)
         *   [Parameters](#parameters-14)
+    *   [setConnectionState](#setconnectionstate-1)
+        *   [Parameters](#parameters-15)
+    *   [removeConnection](#removeconnection-1)
+        *   [Parameters](#parameters-16)
+    *   [isConnected](#isconnected-1)
+        *   [Parameters](#parameters-17)
     *   [connections](#connections-1)
 *   [connections](#connections-2)
 *   [MultiSendEndpoint](#multisendendpoint)
-    *   [Parameters](#parameters-15)
+    *   [Parameters](#parameters-18)
     *   [isOut](#isout-1)
 *   [ReceivableEndpoint](#receivableendpoint)
-    *   [Parameters](#parameters-16)
+    *   [Parameters](#parameters-19)
     *   [isIn](#isin-2)
     *   [receive](#receive-1)
     *   [receive](#receive-2)
-        *   [Parameters](#parameters-17)
+        *   [Parameters](#parameters-20)
 *   [ReceiveEndpointDefault](#receiveendpointdefault)
     *   [isDefault](#isdefault-1)
 *   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
-    *   [removeConnection](#removeconnection)
-        *   [Parameters](#parameters-18)
+    *   [removeConnection](#removeconnection-2)
+        *   [Parameters](#parameters-21)
 *   [ReceiveEndpoint](#receiveendpoint)
-    *   [Parameters](#parameters-19)
+    *   [Parameters](#parameters-22)
     *   [isIn](#isin-3)
 *   [SendEndpointDefault](#sendendpointdefault)
     *   [isDefault](#isdefault-2)
 *   [SendEndpoint](#sendendpoint)
-    *   [Parameters](#parameters-20)
+    *   [Parameters](#parameters-23)
     *   [isOut](#isout-2)
+    *   [removeConnection](#removeconnection-3)
+        *   [Parameters](#parameters-24)
 *   [SendReceiveEndpoint](#sendreceiveendpoint)
     *   [isIn](#isin-4)
 
@@ -136,9 +144,6 @@ Connection endpoint.
 *   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 *   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
 *   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
-
-    *   `options.didConnect` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** called after receiver is present
-    *   `options.interceptors` **(Interceptor | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>)?** interceptors
 
 ### displayName
 
@@ -247,13 +252,22 @@ Closes all connections.
 
 ### connections
 
-Returns **Iterable\<any>**&#x20;
+Returns **Iterable<[Endpoint](#endpoint)>**&#x20;
 
 ### addConnection
 
 #### Parameters
 
-*   `connection` **any**&#x20;
+*   `connection` **[Endpoint](#endpoint)**&#x20;
+
+### removeConnection
+
+Actually stop the communication.
+
+#### Parameters
+
+*   `other` **[Endpoint](#endpoint)**&#x20;
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call form back call from the other side
 
 ### getConnectionState
 
@@ -274,6 +288,13 @@ Set state for a given connection.
 *   `other` **[Endpoint](#endpoint)**&#x20;
 *   `state` **[ConnectionState](#connectionstate)**&#x20;
 
+### didConnect
+
+#### Parameters
+
+*   `endpoint` **[Endpoint](#endpoint)**&#x20;
+*   `other` **[Endpoint](#endpoint)**&#x20;
+
 ## isEndpoint
 
 Check for Endpoint.
@@ -290,7 +311,7 @@ Instanciate interceptors from its definitions.
 
 ### Parameters
 
-*   `interceptors` **([Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)**&#x20;
+*   `interceptors` **([Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)> | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))**&#x20;
 *   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor>**&#x20;
@@ -326,6 +347,15 @@ Set connection state.
 
 *   `other` **[Endpoint](#endpoint)**&#x20;
 *   `state` **any** for the connection to other
+
+### removeConnection
+
+Actually stop the communication.
+
+#### Parameters
+
+*   `other` **[Endpoint](#endpoint)**&#x20;
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call form back call from the other side
 
 ### isConnected
 
@@ -483,6 +513,15 @@ Back connections to any further endpoints will not be established
 We are always *out*
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+### removeConnection
+
+Actually stop the communication.
+
+#### Parameters
+
+*   `other` **[Endpoint](#endpoint)**&#x20;
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call form back call from the other side
 
 ## SendReceiveEndpoint
 
