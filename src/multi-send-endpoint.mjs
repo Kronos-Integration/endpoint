@@ -12,7 +12,6 @@ import { Endpoint } from "./endpoint.mjs";
  * @param {Function} [options.didConnect] called after receiver is present
  */
 export class MultiSendEndpoint extends MultiConnectionEndpoint {
-
   /**
    * We are always _out_
    * @return {boolean} always true
@@ -30,7 +29,8 @@ export class MultiSendEndpoint extends MultiConnectionEndpoint {
 
         const next = async (...args) =>
           c >= interceptors.length
-            ? connection.receive(...args)
+            ? // @ts-ignore
+              connection.receive(...args)
             : interceptors[c++].receive(this, next, ...args);
 
         next(...args);
@@ -38,7 +38,7 @@ export class MultiSendEndpoint extends MultiConnectionEndpoint {
     }
   }
 
-  async * sendAndReceive(...args) {
+  async *sendAndReceive(...args) {
     const interceptors = this.interceptors;
 
     for (const connection of this.connections()) {
@@ -47,7 +47,8 @@ export class MultiSendEndpoint extends MultiConnectionEndpoint {
 
         const next = async (...args) =>
           c >= interceptors.length
-            ? connection.receive(...args)
+            ? // @ts-ignore
+              connection.receive(...args)
             : interceptors[c++].receive(this, next, ...args);
 
         yield next(...args);

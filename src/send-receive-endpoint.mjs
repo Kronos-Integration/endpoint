@@ -1,5 +1,8 @@
 import { SendEndpoint } from "./send-endpoint.mjs";
 
+/**
+ * bi directional endpint
+ */
 export class SendReceiveEndpoint extends SendEndpoint {
 
   /**

@@ -276,7 +276,7 @@ export class Endpoint {
   /**
    * Actually stop the communication.
    * @param {Endpoint} other
-   * @param {boolean?} backpointer true if this is the call from back call from the other side
+   * @param {boolean} [backpointer] true if this is the call from back call from the other side
    */
   closeConnection(other, backpointer) {
     if (other !== undefined) {
@@ -315,7 +315,11 @@ export class Endpoint {
    */
   *connections() {}
 
-  addConnection() {}
+  /**
+   * 
+   * @param {any} connection 
+   */
+  addConnection(connection) {}
 
   removeConnection() {}
 
@@ -351,7 +355,7 @@ export function isEndpoint(object) {
 
 /**
  * Instanciate interceptors from its definitions.
- * @param {Interceptor[]|Class[]|String[]} interceptors
+ * @param {Interceptor[]|string[]} interceptors
  * @param {Object} owner
  * @return {Interceptor[]}
  */

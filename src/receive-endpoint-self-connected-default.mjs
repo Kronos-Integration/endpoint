@@ -27,6 +27,7 @@ export class ReceiveEndpointSelfConnectedDefault extends ReceiveEndpointDefault 
    * @param {boolean?} backpointer true if this is the call form back call from the other side
    */
   removeConnection(other, backpointer) {
+    // @ts-ignore
     if (other === this) {
       return;
     }
