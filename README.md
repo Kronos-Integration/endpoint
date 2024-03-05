@@ -53,47 +53,50 @@ Named communication (end)-points inside of kronos
     *   [openConnections](#openconnections)
     *   [closeConnections](#closeconnections)
     *   [connections](#connections)
-    *   [getConnectionState](#getconnectionstate)
+    *   [addConnection](#addconnection)
         *   [Parameters](#parameters-6)
-    *   [setConnectionState](#setconnectionstate)
+    *   [getConnectionState](#getconnectionstate)
         *   [Parameters](#parameters-7)
+    *   [setConnectionState](#setconnectionstate)
+        *   [Parameters](#parameters-8)
 *   [isEndpoint](#isendpoint)
-    *   [Parameters](#parameters-8)
-*   [instanciateInterceptors](#instanciateinterceptors)
     *   [Parameters](#parameters-9)
-*   [MultiConnectionEndpoint](#multiconnectionendpoint)
+*   [instanciateInterceptors](#instanciateinterceptors)
     *   [Parameters](#parameters-10)
+*   [MultiConnectionEndpoint](#multiconnectionendpoint)
+    *   [Parameters](#parameters-11)
     *   [getConnectionState](#getconnectionstate-1)
-        *   [Parameters](#parameters-11)
-    *   [setConnectionState](#setconnectionstate-1)
         *   [Parameters](#parameters-12)
-    *   [isConnected](#isconnected-1)
+    *   [setConnectionState](#setconnectionstate-1)
         *   [Parameters](#parameters-13)
+    *   [isConnected](#isconnected-1)
+        *   [Parameters](#parameters-14)
     *   [connections](#connections-1)
 *   [connections](#connections-2)
 *   [MultiSendEndpoint](#multisendendpoint)
-    *   [Parameters](#parameters-14)
+    *   [Parameters](#parameters-15)
     *   [isOut](#isout-1)
 *   [ReceivableEndpoint](#receivableendpoint)
-    *   [Parameters](#parameters-15)
+    *   [Parameters](#parameters-16)
     *   [isIn](#isin-2)
     *   [receive](#receive-1)
     *   [receive](#receive-2)
-        *   [Parameters](#parameters-16)
+        *   [Parameters](#parameters-17)
 *   [ReceiveEndpointDefault](#receiveendpointdefault)
     *   [isDefault](#isdefault-1)
 *   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
     *   [removeConnection](#removeconnection)
-        *   [Parameters](#parameters-17)
+        *   [Parameters](#parameters-18)
 *   [ReceiveEndpoint](#receiveendpoint)
-    *   [Parameters](#parameters-18)
+    *   [Parameters](#parameters-19)
     *   [isIn](#isin-3)
 *   [SendEndpointDefault](#sendendpointdefault)
     *   [isDefault](#isdefault-2)
 *   [SendEndpoint](#sendendpoint)
-    *   [Parameters](#parameters-19)
+    *   [Parameters](#parameters-20)
     *   [isOut](#isout-2)
-*   [isIn](#isin-4)
+*   [SendReceiveEndpoint](#sendreceiveendpoint)
+    *   [isIn](#isin-4)
 
 ## DummyReceiveEndpoint
 
@@ -246,6 +249,12 @@ Closes all connections.
 
 Returns **Iterable\<any>**&#x20;
 
+### addConnection
+
+#### Parameters
+
+*   `connection` **any**&#x20;
+
 ### getConnectionState
 
 Deliver state for a given connection.
@@ -281,7 +290,7 @@ Instanciate interceptors from its definitions.
 
 ### Parameters
 
-*   `interceptors` **([Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Class> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)**&#x20;
+*   `interceptors` **([Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor> | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)**&#x20;
 *   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)\<Interceptor>**&#x20;
@@ -475,7 +484,13 @@ We are always *out*
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
 
-## isIn
+## SendReceiveEndpoint
+
+**Extends SendEndpoint**
+
+bi directional endpint
+
+### isIn
 
 Always receiving.
 
