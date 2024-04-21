@@ -14,7 +14,10 @@
   },
   "description": "named communication (end)-points inside of kronos",
   "keywords": [
-    "endpoint"
+    "cluster",
+    "endpoint",
+    "kronos-integration",
+    "systemd"
   ],
   "contributors": [
     {
@@ -27,6 +30,10 @@
     }
   ],
   "license": "BSD-2-Clause",
+  "bin": {
+    "cluster-node": "src/cluster-node-cli.mjs",
+    "endpoint": "src/endpoint-cli.mjs"
+  },
   "scripts": {
     "prepare": "npm run prepare:typescript",
     "prepare:typescript": "tsc --allowJs --declaration --emitDeclarationOnly --declarationDir types --resolveJsonModule -t esnext -m esnext --module nodenext --moduleResolution nodenext --rootDir src ./src**/*.mjs",
@@ -39,18 +46,42 @@
     "lint:typescript": "tsc --allowJs --checkJs --noEmit --resolveJsonModule -t esnext -m esnext --module nodenext --moduleResolution nodenext ./src**/*.mjs"
   },
   "dependencies": {
-    "@kronos-integration/interceptor": "^10.3.0"
+    "@kronos-integration/interceptor": "^10.3.0",
+    "@kronos-integration/interceptor-decode-json": "^2.1.76",
+    "@kronos-integration/service": "^10.4.56",
+    "@kronos-integration/service-admin": "^3.4.65",
+    "@kronos-integration/service-authenticator": "^1.6.55",
+    "@kronos-integration/service-health": "^5.0.179",
+    "@kronos-integration/service-http": "^10.6.152",
+    "@kronos-integration/service-ldap": "^4.0.134",
+    "@kronos-integration/service-swarm": "^1.9.86"
   },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^12.0.0",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/release-notes-generator": "^13.0.0",
     "ava": "^6.1.2",
     "c8": "^9.1.0",
     "documentation": "^14.0.3",
+    "npm-pkgbuild": "^15.3.0",
     "semantic-release": "^23.0.8",
     "typescript": "^5.4.5"
+  },
+  "optionalDependencies": {
+    "@kronos-integration/service-systemd": "^2.6.0",
+    "mf-hosting": "^2.0.6"
   },
   "engines": {
     "node": ">=20.12.2"
   },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm",
+    "arm64",
+    "x64"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kronos-Integration/endpoint.git"
@@ -59,9 +90,77 @@
     "url": "https://github.com/Kronos-Integration/endpoint/issues"
   },
   "homepage": "https://github.com/Kronos-Integration/endpoint#readme",
+  "pkgbuild": {
+    "content": {
+      "${install.dir}": [
+        {
+          "type": "npm-pack"
+        },
+        {
+          "type": "node-modules"
+        }
+      ],
+      "${config.dir}config.json": "config/config.json",
+      "${systemd.unit.dir}${name}.service": "pkg/${name}.service"
+    },
+    "example": true,
+    "http.path": "/services/${name}/api",
+    "kronos": true,
+    "name": "cluster-node"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/exec",
+        {
+          "publishCmd": "npx npm-pkgbuild --publish dist"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "dist/*.deb",
+              "label": "any Debian Package"
+            },
+            {
+              "path": "dist/*any.pkg.*",
+              "label": "any Arch Linux Package"
+            },
+            {
+              "path": "dist/*x86_64.pkg.*",
+              "label": "x86_64 Arch Linux Package"
+            },
+            {
+              "path": "dist/*aarch64.pkg.*",
+              "label": "arm64 Arch Linux Package"
+            },
+            {
+              "path": "dist/*noarch.rpm",
+              "label": "noarch RPM"
+            },
+            {
+              "path": "dist/*x86_64.rpm",
+              "label": "x86_64 RPM"
+            },
+            {
+              "path": "dist/*aarch64.rpm",
+              "label": "arm64 RPM"
+            }
+          ]
+        }
+      ]
+    ]
+  },
   "template": {
     "inheritFrom": [
+      "Kronos-Integration/cluster-node",
       "arlac77/template-arlac77-github",
+      "arlac77/template-github-action",
       "arlac77/template-kronos-component",
       "arlac77/template-typescript"
     ]
