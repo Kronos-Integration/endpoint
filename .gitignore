@@ -2,9 +2,11 @@ bun.lockb
 build
 /node_modules/**
 *.log
+docroot
 *.dump
 *.node
 .DS_Store
 .test
 .tmp
 types
+dist
