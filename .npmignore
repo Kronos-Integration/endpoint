@@ -4,4 +4,10 @@ doc
 *.log
 *.tmp
 .vscode
+deploy
 .github
+pkg
+dist
+config
+update.sh
+service.json
