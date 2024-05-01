@@ -254,7 +254,7 @@ export class Endpoint {
   /**
    * Actually start with the communication.
    * @param {Endpoint} other
-   * @param {boolean?} backpointer true if this is the call from back call from the other side
+   * @param {boolean} [backpointer] true if this is the call from back call from the other side
    */
   openConnection(other, backpointer) {
     if (other !== undefined) {
@@ -321,13 +321,14 @@ export class Endpoint {
   /**
    *
    * @param {Endpoint} connection
+   * @param {boolean} [backpointer] true if this is the call form back call from the other side
    */
-  addConnection(connection) {}
+  addConnection(connection, backpointer) {}
 
   /**
    * Actually stop the communication.
    * @param {Endpoint} other
-   * @param {boolean?} backpointer true if this is the call form back call from the other side
+   * @param {boolean} [backpointer] true if this is the call form back call from the other side
    */
   removeConnection(other, backpointer) {}
 

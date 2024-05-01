@@ -1,4 +1,4 @@
-import { isEndpoint, Endpoint} from "./endpoint.mjs";
+import { isEndpoint, Endpoint } from "./endpoint.mjs";
 import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
 
 /**
@@ -12,10 +12,9 @@ import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
  * @param {Function} [options.didConnect] called after receiver is present
  */
 export class SendEndpoint extends ReceivableEndpoint {
-
   #connection;
   #state;
-  
+
   constructor(name, owner, options) {
     super(name, owner, options);
     if (isEndpoint(options?.connected)) {
@@ -45,6 +44,11 @@ export class SendEndpoint extends ReceivableEndpoint {
     }
   }
 
+  /**
+   * Add a connection.
+   * @param {Endpoint} other
+   * @param {boolean} [backpointer] true if this is the call form back call from the other side
+   */
   addConnection(other, backpointer) {
     if (this.#connection === other) {
       return;
@@ -77,7 +81,7 @@ export class SendEndpoint extends ReceivableEndpoint {
   /**
    * Actually stop the communication.
    * @param {Endpoint} other
-   * @param {boolean?} backpointer true if this is the call form back call from the other side
+   * @param {boolean} [backpointer] true if this is the call form back call from the other side
    */
   removeConnection(other, backpointer) {
     this.closeConnection(other);
