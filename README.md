@@ -101,8 +101,10 @@ Named communication (end)-points inside of kronos
 *   [SendEndpoint](#sendendpoint)
     *   [Parameters](#parameters-23)
     *   [isOut](#isout-2)
-    *   [removeConnection](#removeconnection-3)
+    *   [addConnection](#addconnection-1)
         *   [Parameters](#parameters-24)
+    *   [removeConnection](#removeconnection-3)
+        *   [Parameters](#parameters-25)
 *   [SendReceiveEndpoint](#sendreceiveendpoint)
     *   [isIn](#isin-4)
 
@@ -259,6 +261,7 @@ Returns **Iterable<[Endpoint](#endpoint)>**&#x20;
 #### Parameters
 
 *   `connection` **[Endpoint](#endpoint)**&#x20;
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call form back call from the other side
 
 ### removeConnection
 
@@ -355,7 +358,7 @@ Actually stop the communication.
 #### Parameters
 
 *   `other` **[Endpoint](#endpoint)**&#x20;
-*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call form back call from the other side
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)??** true if this is the call form back call from the other side
 
 ### isConnected
 
@@ -513,6 +516,15 @@ Back connections to any further endpoints will not be established
 We are always *out*
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** always true
+
+### addConnection
+
+Add a connection.
+
+#### Parameters
+
+*   `other` **[Endpoint](#endpoint)**&#x20;
+*   `backpointer` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** true if this is the call form back call from the other side
 
 ### removeConnection
 
