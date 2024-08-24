@@ -7,7 +7,6 @@ import { Interceptor } from "@kronos-integration/interceptor";
 /**
  * Connection endpoint.
  */
-
 export class Endpoint {
   /**
    * @param {string} name endpoint name
