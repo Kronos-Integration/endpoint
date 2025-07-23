@@ -82,26 +82,23 @@ Named communication (end)-points inside of kronos
 *   [ReceivableEndpoint](#receivableendpoint)
     *   [Parameters](#parameters-19)
     *   [isIn](#isin-2)
-    *   [receive](#receive-1)
-    *   [receive](#receive-2)
-        *   [Parameters](#parameters-20)
 *   [ReceiveEndpointDefault](#receiveendpointdefault)
     *   [isDefault](#isdefault-1)
 *   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
     *   [removeConnection](#removeconnection-2)
-        *   [Parameters](#parameters-21)
+        *   [Parameters](#parameters-20)
 *   [ReceiveEndpoint](#receiveendpoint)
-    *   [Parameters](#parameters-22)
+    *   [Parameters](#parameters-21)
     *   [isIn](#isin-3)
 *   [SendEndpointDefault](#sendendpointdefault)
     *   [isDefault](#isdefault-2)
 *   [SendEndpoint](#sendendpoint)
-    *   [Parameters](#parameters-23)
+    *   [Parameters](#parameters-22)
     *   [isOut](#isout-2)
     *   [addConnection](#addconnection-1)
-        *   [Parameters](#parameters-24)
+        *   [Parameters](#parameters-23)
     *   [removeConnection](#removeconnection-3)
-        *   [Parameters](#parameters-25)
+        *   [Parameters](#parameters-24)
 *   [SendReceiveEndpoint](#sendreceiveendpoint)
     *   [isIn](#isin-4)
 
@@ -414,20 +411,6 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 ### isIn
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true is receive function is present
-
-### receive
-
-Get the receive function.
-
-Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)**&#x20;
-
-### receive
-
-Set the receive function.
-
-#### Parameters
-
-*   `receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)**&#x20;
 
 ## ReceiveEndpointDefault
 
