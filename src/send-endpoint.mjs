@@ -7,9 +7,9 @@ import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
  * Back connections to any further endpoints will not be established
  * @param {string} name endpoint name
  * @param {Object} owner of the endpoint (service)
- * @param {Object} options
- * @param {Endpoint} [options.connected] where te requests are delivered to
- * @param {Function} [options.didConnect] called after receiver is present
+ * @param {Object|undefined} options
+ * @param {Endpoint|undefined} [options.connected] where te requests are delivered to
+ * @param {Function|undefined} [options.didConnect] called after receiver is present
  */
 export class SendEndpoint extends ReceivableEndpoint {
   #connection;

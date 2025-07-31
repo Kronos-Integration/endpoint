@@ -12,8 +12,8 @@ export class Endpoint {
    * @param {string} name endpoint name
    * @param {Object} owner of the endpoint (service)
    * @param {Object} options
-   * @param {function(Endpoint,Endpoint):void} [options.didConnect] called after receiver is present
-   * @param {Interceptor[]|string[]} [options.interceptors] interceptors
+   * @param {function(Endpoint,Endpoint):void|undefined} [options.didConnect] called after receiver is present
+   * @param {Interceptor[]|string[]|undefined} [options.interceptors] interceptors
    */
   constructor(name, owner, options) {
     this.name = name;
