@@ -15,6 +15,12 @@ export class SendEndpoint extends ReceivableEndpoint {
   #connection;
   #state;
 
+  /**
+   * @param {string} name endpoint name
+   * @param {Object} owner of the endpoint (service)
+   * @param {Object} options
+   * @param {Endpoint} [options.connected]
+   */
   constructor(name, owner, options) {
     super(name, owner, options);
     if (isEndpoint(options?.connected)) {

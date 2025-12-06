@@ -14,6 +14,8 @@ export class Endpoint {
    * @param {Object} options
    * @param {function(Endpoint,Endpoint):void|undefined} [options.didConnect] called after receiver is present
    * @param {Interceptor[]|string[]|undefined} [options.interceptors] interceptors
+   * @param {Endpoint} [options.connected]
+   * @param {Array<Interceptor>} [options.receivingInterceptors]
    */
   constructor(name, owner, options) {
     this.name = name;
@@ -66,6 +68,7 @@ export class Endpoint {
   /**
    *
    * @param {Object} options
+   * @param {boolean} [options.includeRuntimeInfo]
    */
   connectionNamesWithStates(options = { includeRuntimeInfo: true }) {
     return [...this.connections()]
@@ -157,6 +160,11 @@ export class Endpoint {
     return [];
   }
 
+  /**
+   * 
+   * @param {Object} [options] 
+   * @returns {Object}
+   */
   toJSONWithOptions(options) {
     const json = {};
 
