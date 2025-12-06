@@ -37,68 +37,70 @@ Named communication (end)-points inside of kronos
     *   [isOut](#isout)
     *   [direction](#direction)
     *   [jsonAttributes](#jsonattributes)
+    *   [toJSONWithOptions](#tojsonwithoptions)
+        *   [Parameters](#parameters-2)
     *   [hasInterceptors](#hasinterceptors)
     *   [connectable](#connectable)
-        *   [Parameters](#parameters-2)
+        *   [Parameters](#parameters-3)
     *   [hasConnections](#hasconnections)
     *   [isConnected](#isconnected)
-        *   [Parameters](#parameters-3)
-    *   [openConnection](#openconnection)
         *   [Parameters](#parameters-4)
-    *   [closeConnection](#closeconnection)
+    *   [openConnection](#openconnection)
         *   [Parameters](#parameters-5)
+    *   [closeConnection](#closeconnection)
+        *   [Parameters](#parameters-6)
     *   [openConnections](#openconnections)
     *   [closeConnections](#closeconnections)
     *   [connections](#connections)
     *   [addConnection](#addconnection)
-        *   [Parameters](#parameters-6)
-    *   [removeConnection](#removeconnection)
         *   [Parameters](#parameters-7)
-    *   [getConnectionState](#getconnectionstate)
+    *   [removeConnection](#removeconnection)
         *   [Parameters](#parameters-8)
-    *   [setConnectionState](#setconnectionstate)
+    *   [getConnectionState](#getconnectionstate)
         *   [Parameters](#parameters-9)
-    *   [didConnect](#didconnect)
+    *   [setConnectionState](#setconnectionstate)
         *   [Parameters](#parameters-10)
+    *   [didConnect](#didconnect)
+        *   [Parameters](#parameters-11)
 *   [isEndpoint](#isendpoint)
-    *   [Parameters](#parameters-11)
-*   [instanciateInterceptors](#instanciateinterceptors)
     *   [Parameters](#parameters-12)
-*   [MultiConnectionEndpoint](#multiconnectionendpoint)
+*   [instanciateInterceptors](#instanciateinterceptors)
     *   [Parameters](#parameters-13)
+*   [MultiConnectionEndpoint](#multiconnectionendpoint)
+    *   [Parameters](#parameters-14)
     *   [getConnectionState](#getconnectionstate-1)
-        *   [Parameters](#parameters-14)
-    *   [setConnectionState](#setconnectionstate-1)
         *   [Parameters](#parameters-15)
-    *   [removeConnection](#removeconnection-1)
+    *   [setConnectionState](#setconnectionstate-1)
         *   [Parameters](#parameters-16)
-    *   [isConnected](#isconnected-1)
+    *   [removeConnection](#removeconnection-1)
         *   [Parameters](#parameters-17)
+    *   [isConnected](#isconnected-1)
+        *   [Parameters](#parameters-18)
     *   [connections](#connections-1)
 *   [connections](#connections-2)
 *   [MultiSendEndpoint](#multisendendpoint)
-    *   [Parameters](#parameters-18)
+    *   [Parameters](#parameters-19)
     *   [isOut](#isout-1)
 *   [ReceivableEndpoint](#receivableendpoint)
-    *   [Parameters](#parameters-19)
+    *   [Parameters](#parameters-20)
     *   [isIn](#isin-2)
 *   [ReceiveEndpointDefault](#receiveendpointdefault)
     *   [isDefault](#isdefault-1)
 *   [ReceiveEndpointSelfConnectedDefault](#receiveendpointselfconnecteddefault)
     *   [removeConnection](#removeconnection-2)
-        *   [Parameters](#parameters-20)
+        *   [Parameters](#parameters-21)
 *   [ReceiveEndpoint](#receiveendpoint)
-    *   [Parameters](#parameters-21)
+    *   [Parameters](#parameters-22)
     *   [isIn](#isin-3)
 *   [SendEndpointDefault](#sendendpointdefault)
     *   [isDefault](#isdefault-2)
 *   [SendEndpoint](#sendendpoint)
-    *   [Parameters](#parameters-22)
+    *   [Parameters](#parameters-23)
     *   [isOut](#isout-2)
     *   [addConnection](#addconnection-1)
-        *   [Parameters](#parameters-23)
-    *   [removeConnection](#removeconnection-3)
         *   [Parameters](#parameters-24)
+    *   [removeConnection](#removeconnection-3)
+        *   [Parameters](#parameters-25)
 *   [SendReceiveEndpoint](#sendreceiveendpoint)
     *   [isIn](#isin-4)
 
@@ -173,6 +175,8 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 *   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{includeRuntimeInfo:true}`)
 
+    *   `options.includeRuntimeInfo` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?**&#x20;
+
 ### isIn
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** false
@@ -190,6 +194,14 @@ Returns **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 ### jsonAttributes
 
 Additional attributes to present in json output.
+
+### toJSONWithOptions
+
+#### Parameters
+
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**&#x20;
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### hasInterceptors
 
@@ -405,9 +417,6 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 *   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
 *   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
-    *   `options.receive` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?** reciever function
-    *   `options.receivingInterceptors` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)?**&#x20;
-
 ### isIn
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true is receive function is present
@@ -486,10 +495,7 @@ Back connections to any further endpoints will not be established
 
 *   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 *   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** of the endpoint (service)
-*   `options` **([Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))**&#x20;
-
-    *   `options.connected` **([Endpoint](#endpoint) | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))?** where te requests are delivered to
-    *   `options.didConnect` **([Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function) | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))?** called after receiver is present
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### isOut
 
