@@ -6,9 +6,8 @@ import { ReceivableEndpoint } from "./receivable-endpoint.mjs";
  * Can hold several connections.
  */
 export class MultiConnectionEndpoint extends ReceivableEndpoint {
-
   /** @type {Map<Endpoint,any>} */ #connections = new Map();
-   
+
   constructor(name, owner, options) {
     super(name, owner, options);
 
@@ -38,7 +37,8 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
   addConnection(other, backpointer) {
     if (!this.connectable(other)) {
       throw new Error(
-        `Can't connect ${this.direction} to ${other.direction}: ${this.identifier} = ${other.identifier}`
+        `Can't connect ${this.direction} to ${other.direction}: ${this.identifier} = ${other.identifier}`,
+        { cause: other }
       );
     }
 
@@ -51,7 +51,7 @@ export class MultiConnectionEndpoint extends ReceivableEndpoint {
     }
   }
 
-   /**
+  /**
    * Actually stop the communication.
    * @param {Endpoint} other
    * @param {boolean?} [backpointer] true if this is the call form back call from the other side
