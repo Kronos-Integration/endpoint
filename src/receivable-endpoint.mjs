@@ -9,8 +9,7 @@ import { Interceptor } from "@kronos-integration/interceptor";
  * @param {Function} [options.receivingInterceptors]
  */
 export class ReceivableEndpoint extends Endpoint {
-
-    /**
+  /**
    * @param {string} name endpoint name
    * @param {Object} owner of the endpoint (service)
    * @param {Object} options
