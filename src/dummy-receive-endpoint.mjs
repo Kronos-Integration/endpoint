@@ -2,7 +2,7 @@ import { Endpoint } from "./endpoint.mjs";
 
 /**
  * Dummy endpoints are used during construction of the endpoint mesh.
- *
+ * The will be replaces by real endpoints during the resolving phase.
  */
 export class DummyReceiveEndpoint extends Endpoint {
   /**
