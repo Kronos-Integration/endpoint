@@ -111,6 +111,7 @@ Named communication (end)-points inside of kronos
 **Extends Endpoint**
 
 Dummy endpoints are used during construction of the endpoint mesh.
+The will be replaces by real endpoints during the resolving phase.
 
 ### receive
 
