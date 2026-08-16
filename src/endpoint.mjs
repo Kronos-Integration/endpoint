@@ -161,8 +161,8 @@ export class Endpoint {
   }
 
   /**
-   * 
-   * @param {Object} [options] 
+   *
+   * @param {Object} [options]
    * @returns {Object}
    */
   toJSONWithOptions(options) {
@@ -362,6 +362,22 @@ export class Endpoint {
 
   get receivingInterceptors() {
     return [];
+  }
+
+  info(...args) {
+    this.owner.info(...args);
+  }
+  warn(...args) {
+    this.owner.warn(...args);
+  }
+  error(...args) {
+    this.owner.error(...args);
+  }
+  trace(...args) {
+    this.owner.trace(...args);
+  }
+  debug(...args) {
+    this.owner.debug(...args);
   }
 }
 
