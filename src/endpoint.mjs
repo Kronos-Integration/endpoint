@@ -364,8 +364,17 @@ export class Endpoint {
     return [];
   }
 
+  trace(...args) {
+    this.owner.trace(...args);
+  }
+  debug(...args) {
+    this.owner.debug(...args);
+  }
   info(...args) {
     this.owner.info(...args);
+  }
+  notice(...args) {
+    this.owner.notice(...args);
   }
   warn(...args) {
     this.owner.warn(...args);
@@ -373,11 +382,11 @@ export class Endpoint {
   error(...args) {
     this.owner.error(...args);
   }
-  trace(...args) {
-    this.owner.trace(...args);
+  crit(...args) {
+    this.owner.crit(...args);
   }
-  debug(...args) {
-    this.owner.debug(...args);
+  alert(...args) {
+    this.owner.alert(...args);
   }
 }
 
