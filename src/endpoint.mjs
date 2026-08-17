@@ -364,29 +364,39 @@ export class Endpoint {
     return [];
   }
 
+  log(level, arg1) {
+    if (this.owner.passingLogLevel(level)) {
+      if (typeof arg1 === "object") {
+        arg1.endpoint = this.name;
+        this.owner.log(level, arg1);
+      }
+      this.owner.log(level, { endpoint: this.name, message: arg1 });
+    }
+  }
+
   trace(...args) {
-    this.owner.trace(...args);
+    this.log("trace", ...args);
   }
   debug(...args) {
-    this.owner.debug(...args);
+    this.log("debug", ...args);
   }
   info(...args) {
-    this.owner.info(...args);
+    this.log("info", ...args);
   }
   notice(...args) {
-    this.owner.notice(...args);
+    this.log("notice", ...args);
   }
   warn(...args) {
-    this.owner.warn(...args);
+    this.log("warn", ...args);
   }
   error(...args) {
-    this.owner.error(...args);
+    this.log("error", ...args);
   }
   crit(...args) {
-    this.owner.crit(...args);
+    this.log("crit", ...args);
   }
   alert(...args) {
-    this.owner.alert(...args);
+    this.log("alert", ...args);
   }
 }
 

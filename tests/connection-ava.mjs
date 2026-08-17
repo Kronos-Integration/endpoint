@@ -52,8 +52,8 @@ test("connecting with interceptor", async t => {
   t.is(sendOpenedCalled, 1);
   t.is(receiveOpenedCalled, 1);
 
-  t.is(`${se}`,'service(owner).se(connected=service(owner).re[TC],out,open)');
-  t.is(`${re}`,'service(owner).re(connected=service(owner).se[TC],in,open)');
+  t.is(`${se}`, "service(owner).se(connected=service(owner).re[TC],out,open)");
+  t.is(`${re}`, "service(owner).re(connected=service(owner).se[TC],in,open)");
 
   t.true(se.isConnected(re));
   t.true(re.isConnected(se));
@@ -163,7 +163,7 @@ test("receive self connected", async t => {
   t.is(await e.send(3), 9);
 
   const s2 = new SendEndpoint("s2", nameIt("o2"));
-  s2.addConnection(e);  
+  s2.addConnection(e);
   t.true(s2.isConnected(e));
   t.true(e.isConnected(s2));
 
@@ -171,7 +171,7 @@ test("receive self connected", async t => {
   t.is(await s2.send(3), 9);
 });
 
-test("receive connect to itself -> exception", async t => {
+test("receive connect to itself -> exception", t => {
   const e = new ReceiveEndpoint("e", nameIt("o"), {
     receive: async arg => arg * arg
   });
@@ -211,10 +211,13 @@ test("connect several receive to one send but only feeding 1st.", async t => {
 
   t.true(s1.isConnected(r1));
   t.true(r1.isConnected(s1));
-  
+
   r2.addConnection(s1);
 
-  t.false(s1.isConnected(r2), "s2 not connected to r2 only the other way around");
+  t.false(
+    s1.isConnected(r2),
+    "s2 not connected to r2 only the other way around"
+  );
   t.true(r2.isConnected(s1));
 
   t.is(await s1.send(2), 4);
@@ -230,10 +233,8 @@ test("connect several receive to one send -> failure", t => {
 
   t.true(s1.isConnected(r1));
   t.true(r1.isConnected(s1));
-  
-  t.throws(
-    () => s1.addConnection(r2)
-  );
+
+  t.throws(() => s1.addConnection(r2));
 });
 
 test("connect multi send to several receive", async t => {
@@ -256,9 +257,9 @@ test("connect multi send to several receive", async t => {
   t.true(r2.isConnected(s1));
 
   const results = [];
-  for await( const x of s1.sendAndReceive(2)) {
+  for await (const x of s1.sendAndReceive(2)) {
     results.push(x);
   }
 
-  t.deepEqual(results.sort(), [4,8]);
+  t.deepEqual(results.sort(), [4, 8]);
 });

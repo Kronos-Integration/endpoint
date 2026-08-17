@@ -2,7 +2,9 @@ import { LimitingInterceptor } from "@kronos-integration/interceptor";
 
 export function nameIt(name) {
   return {
-    warn(...args) { console.log(...args);},
+    warn(...args) {
+      console.log(...args);
+    },
     toString() {
       return name;
     },
@@ -13,10 +15,12 @@ export function nameIt(name) {
       if (name === undefined) return undefined;
       return `${this.name}.${e.name}`;
     },
-    instantiateInterceptor(interceptorDef)
-    {
-      return new LimitingInterceptor(interceptorDef); 
-    } 
+    instantiateInterceptor(interceptorDef) {
+      return new LimitingInterceptor(interceptorDef);
+    },
+    passingLogLevel(level) {
+      return true;
+    }
   };
 }
 
@@ -57,7 +61,6 @@ export function checkInterceptor(t, interceptor, expected, i) {
 export async function wait(msecs = 1000) {
   return new Promise((resolve, reject) => setTimeout(() => resolve(), msecs));
 }
-
 
 export function ept(t, factory, options, expected) {
   let e;
