@@ -16,7 +16,9 @@ tis.title = (providedTitle = "isEndpoint", object) =>
   `${providedTitle} ${
     typeof object === "object" && object != null
       ? object.constructor.name
-      : object
+      : typeof object === "symbol"
+        ? "Symbol"
+        : object
   }`.trim();
 
 test(tis, undefined, false);
@@ -25,6 +27,7 @@ test(tis, 1, false);
 test(tis, true, false);
 test(tis, "endpoint", false);
 test(tis, {}, false);
+test(tis, Symbol("AAA"), false);
 test(tis, new Date(), false);
 test(tis, new Endpoint("X"), true);
 test(tis, new SendEndpoint("X"), true);
