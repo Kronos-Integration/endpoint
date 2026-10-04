@@ -40,7 +40,7 @@
     "lint:typescript": "tsc --allowJs --checkJs --noEmit --resolveJsonModule --target esnext -m esnext --module nodenext --moduleResolution nodenext ./src**/*.mjs"
   },
   "dependencies": {
-    "@kronos-integration/interceptor": "^13.4.6"
+    "@kronos-integration/interceptor": "^13.5.3"
   },
   "devDependencies": {
     "ava": "^8.0.1",
@@ -50,7 +50,7 @@
     "typescript": "^7.0.2"
   },
   "engines": {
-    "node": ">=26.7.0"
+    "node": ">=26.10.0"
   },
   "repository": {
     "type": "git",
